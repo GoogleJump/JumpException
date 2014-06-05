@@ -9,6 +9,14 @@
         <servlet-class>guestbook.SignGuestbookServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>deleteAccount</servlet-name>
+        <servlet-class>guestbook.DeleteAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loggingIn</servlet-name>
+        <servlet-class>guestbook.LogInPage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>logInFail</servlet-name>
         <servlet-class>guestbook.LogInFailServlet</servlet-class>
     </servlet>
@@ -29,8 +37,16 @@
         <url-pattern>/sign</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>deleteAccount</servlet-name>
+        <url-pattern>/deleteAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>practicePage</servlet-name>
         <url-pattern>/practicePage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loggingIn</servlet-name>
+        <url-pattern>/loggingIn</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>signingIn</servlet-name>

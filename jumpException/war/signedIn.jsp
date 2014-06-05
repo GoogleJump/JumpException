@@ -25,9 +25,14 @@
 	<p>
 		Hello, ${fn:escapeXml(username)}!
 	<p>
-	<form action="/practicePage.jsp" method="get">
+	<form action="/logIn.jsp" method="get">
 		<div>
-			<input type="submit" value="Sign Out!" />
+			<input type="submit" value="Sign Out" />
+		</div>
+	</form>
+	<form action="/deleteAccount" method="post">
+		<div>
+			<input type="submit" value="Delete Account" />
 		</div>
 	</form>
 </body>

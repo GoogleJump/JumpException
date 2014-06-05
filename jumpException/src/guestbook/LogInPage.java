@@ -20,7 +20,7 @@ import com.google.appengine.api.datastore.Query;
 //import com.google.appengine.labs.repackaged.org.json.Cookie;
 
 
-public class SigningInServlet extends HttpServlet {
+public class LogInPage extends HttpServlet {
 	  @Override
 	  public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	      throws IOException {
@@ -34,25 +34,29 @@ public class SigningInServlet extends HttpServlet {
 
 			    for(Entity user : greetings){
 			    	if(user.getProperty("user").toString().equals(signInText.toString())) {
-						resp.sendRedirect("/logInFail.jsp");
+			    		String passwordText = req.getParameter("password");
+			    		user.getProperty("password").toString().equals(passwordText);
+			    		Cookie cookie = new Cookie("username", signInText);
+						resp.addCookie(cookie);
+						resp.sendRedirect("/signedIn.jsp");
 						return;
 			    	}
 			    }
+			    resp.sendRedirect("/logInFail.jsp");
 			    
-		    }	    	
+		    }
+		    resp.sendRedirect("/logInFail.jsp");
 		    
-			Entity signIn = new Entity("Shub", signInKey);
-		    signIn.setProperty("user", signInText);
-		    //for checking typing password twice
-		    String passwordText = req.getParameter("passwordText");
-		    signIn.setProperty("password", passwordText);
-		    
-		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		    datastore.put(signIn);
-			req.setAttribute("responseText", "You made it!");
-			Cookie cookie = new Cookie("username", signInText);
-			resp.addCookie(cookie);
-		    resp.sendRedirect("/signedIn.jsp");
+//			Entity signIn = new Entity("Shub", signInKey);
+//		    signIn.setProperty("user", signInText);
+//		    //for checking typing password twice
+//		    String passwordText = req.getParameter("passwordText");
+//		    signIn.setProperty("password", passwordText);
+//		    
+//		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+//		    datastore.put(signIn);
+//			req.setAttribute("responseText", "You made it!");
+//		    resp.sendRedirect("/signedIn.jsp");
 			
 	  }
 }
