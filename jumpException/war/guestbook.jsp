@@ -106,7 +106,7 @@
 			<input type="submit" value="Switch Guestbook" />
 		</div>
 	</form>
-	<form action="/practicePage.jsp" method="post">
+	<form action="/logIn.jsp" method="post">
 		<div>
 			<input type="submit" value="Next Page" />
 		</div>
