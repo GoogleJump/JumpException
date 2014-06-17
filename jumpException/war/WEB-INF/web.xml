@@ -9,6 +9,14 @@
         <servlet-class>guestbook.SignGuestbookServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>loggingOut</servlet-name>
+        <servlet-class>guestbook.LoggingOutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>signingUp</servlet-name>
+        <servlet-class>guestbook.SigningUpServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>openSocialMedias</servlet-name>
         <servlet-class>guestbook.OpenSocialMediasServlet</servlet-class>
     </servlet>
@@ -23,10 +31,6 @@
     <servlet>
         <servlet-name>logInFail</servlet-name>
         <servlet-class>guestbook.LogInFailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>signingIn</servlet-name>
-        <servlet-class>guestbook.SigningInServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>practicePage</servlet-name>
@@ -53,12 +57,16 @@
         <url-pattern>/loggingIn</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>signingIn</servlet-name>
-        <url-pattern>/signingIn</url-pattern>
+        <servlet-name>loggingOut</servlet-name>
+        <url-pattern>/loggingOut</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>guestbook</servlet-name>
         <url-pattern>/guestbook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>signingUp</servlet-name>
+        <url-pattern>/signingUp</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>logInFail</servlet-name>

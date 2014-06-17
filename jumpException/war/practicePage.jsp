@@ -30,7 +30,10 @@
 	    if (signInText == null) {
 	        signInText = "";
 	    }
-	    String passwordText = "";
+	    String passwordText  = request.getParameter("passwordText");
+	    if (passwordText == null) {
+	        passwordText = "";
+	    }
 	    pageContext.setAttribute("signInText", signInText);
 	    pageContext.setAttribute("passwordText", passwordText);
 		/*DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -62,7 +65,7 @@
 		</div>
 	</form>
 	
-	<form action="/signingIn" method="post">
+	<form action="/signingUp" method="post">
 		<div>
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(signInText)}" />
@@ -72,7 +75,15 @@
 				value="${fn:escapeXml(passwordText)}" />
 		</div>
 		<div>
-			<input type="submit" value= "Sign in!" />
+			<input type="submit" value= "Get Started!" />
+		</div>
+	</form>
+	<p>
+		Already with Shub? Go sign in below!
+	</p>
+	<form action="/logIn.jsp" >
+		<div>
+			<input type="submit" value= "Take me there!" />
 		</div>
 	</form>
 	

@@ -7,6 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -20,22 +21,12 @@ import com.google.appengine.api.datastore.Query;
 //import com.google.appengine.labs.repackaged.org.json.Cookie;
 
 
-public class DeleteAccountServlet extends HttpServlet {
+public class LoggingOutServlet extends HttpServlet {
 	  @Override
-	  public void doPost(HttpServletRequest req, HttpServletResponse resp)
+	  public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	      throws IOException {
-		  	String username = req.getSession().getAttribute("username").toString(); //this should be the username
-		  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		  	Key signInKey = KeyFactory.createKey("SignIn", username);
-		  	Query query = new Query("Shub", signInKey);
-		  	List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-		  	for(Entity user : greetings) {
-		  		if(user.getProperty("user").equals(username)) {
-		  			datastore.delete(user.getKey());
-		  			resp.sendRedirect("/logIn.jsp");
-		  		}
-		  	}
-		  	
-		  	
+		  	HttpSession session = req.getSession();
+		  	session.invalidate();
+		  	resp.sendRedirect("/logIn.jsp");	
 	  }
 }
