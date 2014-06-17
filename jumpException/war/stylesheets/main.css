@@ -4,14 +4,14 @@ body {
     background-color: #FFD700;
 }
 
-#fbText{
+.socialTextArea {
 	display:none;
 }
 
-#fbCheckbox:checked #fbText {
+#fbCheckbox:checked + #fbText {
 	display:block;
 }
 
-#twitterCheckbox:checked #twitterText {
+#twitterCheckbox:checked + #twitterText {
 	display:block;
 }
