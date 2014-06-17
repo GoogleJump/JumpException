@@ -9,6 +9,10 @@
         <servlet-class>guestbook.SignGuestbookServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>openSocialMedias</servlet-name>
+        <servlet-class>guestbook.OpenSocialMediasServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>deleteAccount</servlet-name>
         <servlet-class>guestbook.DeleteAccountServlet</servlet-class>
     </servlet>
