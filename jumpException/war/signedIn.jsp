@@ -70,14 +70,16 @@
 	<p>
 	<form onclick="/openSocialMedias" method="post" >
 		<div>
+		<label>Facebook:</label>
 			<input type="checkbox" name="fbCheckbox" id="fbCheckbox"/>
-			<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" />
+			<textarea class="socialTextArea" rows="3" cols= "50" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>
 		</div>
 	</form>
 	<form title="Diverge:" >
 		<div>
-			<textarea rows="3" cols= "50" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>
-			<textarea rows="3" cols= "50" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
+			<label>Twitter:</label>
+			<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" />
+			<textarea class="socialTextArea" rows="3" cols= "50" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
 		</div>
 	</form>
 	

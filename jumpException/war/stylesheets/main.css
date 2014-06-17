@@ -3,3 +3,15 @@ body {
     /* background-color: #FFFFCC; */
     background-color: #FFD700;
 }
+
+#fbText{
+	display:none;
+}
+
+#fbCheckbox:checked #fbText {
+	display:block;
+}
+
+#twitterCheckbox:checked #twitterText {
+	display:block;
+}
