@@ -83,7 +83,7 @@
 		</div>
 	</form>
 	<form action="/practicePage.jsp" method="post">
-		<label>Already have Shub? Go sign in below!</label>
+		<label>Don't have Shub? Go sign up below!</label>
 		<div>
 			<input type= "submit" value = "Sign up!"/>
 		</div>

@@ -46,7 +46,9 @@
                 greetings.get(0).getProperty("user"));*/
     %>
 
-	<p>'${fn:escapeXml(name)}'</p>
+	<p>Special Awesome Page Only for New Users! <br>
+		One time deal per user :D
+	</p>
 	
 	<form action="/practicePage" method="get">
 		<div>
@@ -67,10 +69,12 @@
 	
 	<form action="/signingUp" method="post">
 		<div>
+			<label>Username:</label>		
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(signInText)}" />
 		</div>
 		<div>
+			<label>Password:</label>		
 			<input type="text" name="passwordText"
 				value="${fn:escapeXml(passwordText)}" />
 		</div>
