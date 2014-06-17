@@ -30,7 +30,10 @@
 	    if (signInText == null) {
 	        signInText = "";
 	    }
-	    String passwordText = "";
+	    String passwordText = request.getParameter("passwordText");
+	    if(passwordText == null) {
+	    	passwordText = "";
+	    }
 	    pageContext.setAttribute("signInText", signInText);
 	    pageContext.setAttribute("passwordText", passwordText);
 		/*DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -43,7 +46,9 @@
                 greetings.get(0).getProperty("user"));*/
     %>
 
-	<p>'${fn:escapeXml(name)}'</p>
+	<p>
+		Welcome to Shub!
+	</p>
 	
 	<form action="/practicePage" method="get">
 		<div>
@@ -64,10 +69,12 @@
 	
 	<form action="/loggingIn" method="post">
 		<div>
+			<label>Username:</label>
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(signInText)}" />
 		</div>
 		<div>
+			<label>Password:</label>		
 			<input type="text" name="passwordText"
 				value="${fn:escapeXml(passwordText)}" />
 		</div>
@@ -76,6 +83,7 @@
 		</div>
 	</form>
 	<form action="/practicePage.jsp" method="post">
+		<label>Don't have Shub? Go sign up below!</label>
 		<div>
 			<input type= "submit" value = "Sign up!"/>
 		</div>

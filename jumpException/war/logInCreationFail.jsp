@@ -19,7 +19,7 @@
 </head>
 
 <body>
-		<p> Failure to Log In. Your Username or your password does not match.</p>
+		<p> Failure to Create Log In. Your Username is already in use or not allowed.</p>
 		<p> Please try again. </p>
 		
 	<%
@@ -27,7 +27,7 @@
 		pageContext.setAttribute("username", username);
 	%>
 
-	<form action="/loggingIn" method="post">
+	<form action="/signingUp" method="post">
 		<div>
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(username)}" />
@@ -36,12 +36,15 @@
 			<input type="text" name="passwordText" />
 		</div>
 		<div>
-			<input type="submit" value= "Sign in!" />
+			<input type="submit" value= "Get Started!" />
 		</div>
 	</form>
-	<form action="/practicePage.jsp" >
+	<p>
+		Already with Shub? Go sign in below!
+	</p>
+	<form action="/logIn.jsp" >
 		<div>
-			<input type="submit" value="Sign up!" />
+			<input type="submit" value= "Take me there!" />
 		</div>
 	</form>
 </body>

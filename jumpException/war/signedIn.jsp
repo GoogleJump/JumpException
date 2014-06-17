@@ -18,22 +18,24 @@
 <head>
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <script>
-function overallTextOnChange() {
-	var overallText = document.getElementById("overallText").value;
-	if(!document.getElementById("fbCheckbox").checked) {
-		document.getElementById("fbText").value = overallText;
+	function overallTextOnChange() {
+		var overallText = document.getElementById("overallText").value;
+		if(!document.getElementById("fbCheckbox").checked) {
+			document.getElementById("fbText").value = overallText;
+		}
+		if(!document.getElementById("twitterCheckbox").checked) {
+			document.getElementById("twitterText").value = overallText;
+		}
 	}
-	if(!document.getElementById("twitterCheckbox").checked) {
-		document.getElementById("twitterText").value = overallText;
-	}
-}
+
 </script>
 
  
 </head>
 	<%
-		Cookie cookie = request.getCookies()[0];
-		String username = cookie.getValue();
+		//Cookie cookie = request.getCookies()[0];
+		//String username = cookie.getValue();
+		String username = request.getSession().getAttribute("username").toString();
 		pageContext.setAttribute("username", username);
 		String overallText = "";
 		String fbText = "";
@@ -45,7 +47,7 @@ function overallTextOnChange() {
 	<p>
 		Hello, ${fn:escapeXml(username)}!
 	<p>
-	<form action="/logIn.jsp" method="get">
+	<form action="/loggingOut" method="get">
 		<div>
 			<input type="submit" value="Sign Out" />
 		</div>
