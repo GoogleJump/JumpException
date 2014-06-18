@@ -16,7 +16,13 @@
 
 <html>
 <head>
-<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+	<meta charset="UTF-8">
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <script>
 	function overallTextOnChange() {
 		var overallText = document.getElementById("overallText").value;
@@ -30,7 +36,7 @@
 
 </script>
 
- 
+
 </head>
 <body>
 	<div class="mainPage">
