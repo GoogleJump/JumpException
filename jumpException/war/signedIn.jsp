@@ -1,44 +1,7 @@
-<%@page import="java.awt.Checkbox"%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.google.appengine.api.users.User"%>
-<%@ page import="com.google.appengine.api.users.UserService"%>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
-<%@ page
-	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Entity"%>
-<%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
-<%@ page import="com.google.appengine.api.datastore.Key"%>
-<%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Query"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%String pageName= "signedIn";%>
 
-<html>
-<head>
-	<meta charset="UTF-8">
-    <meta name=description content="">
-    <meta name=viewport content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-<script>
-	function overallTextOnChange() {
-		var overallText = document.getElementById("overallText").value;
-		if(!document.getElementById("fbCheckbox").checked) {
-			document.getElementById("fbText").value = overallText;
-		}
-		if(!document.getElementById("twitterCheckbox").checked) {
-			document.getElementById("twitterText").value = overallText;
-		}
-	}
+<%@ include file="./header.jsp" %>
 
-</script>
-
-
-</head>
-<body>
 	<div class="mainPage">
 		<%
 			//Cookie cookie = request.getCookies()[0];
@@ -91,5 +54,18 @@
 			</div>
 		</form>
 	</div>
-</body>
-</html>
+
+<script>
+	function overallTextOnChange() {
+		var overallText = document.getElementById("overallText").value;
+		if(!document.getElementById("fbCheckbox").checked) {
+			document.getElementById("fbText").value = overallText;
+		}
+		if(!document.getElementById("twitterCheckbox").checked) {
+			document.getElementById("twitterText").value = overallText;
+		}
+	}
+
+</script>
+
+<%@ include file="./footer.jsp" %>

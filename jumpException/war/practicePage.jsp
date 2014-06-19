@@ -1,46 +1,26 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.google.appengine.api.users.User"%>
-<%@ page import="com.google.appengine.api.users.UserService"%>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
-<%@ page
-	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Entity"%>
-<%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
-<%@ page import="com.google.appengine.api.datastore.Key"%>
-<%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Query"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<html>
-<head>
-<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-</head>
-
-<body>
 	<%
-		String responseText = request.getParameter("responseText");
+		responseText = request.getParameter("responseText");
 	    if (responseText == null) {
 	        responseText = "";
 	    }
 	    pageContext.setAttribute("responseText", responseText);
-	    
-	    String signInText = request.getParameter("signInText");
+
+	    signInText = request.getParameter("signInText");
 	    if (signInText == null) {
 	        signInText = "";
 	    }
-	    String passwordText  = request.getParameter("passwordText");
+	    passwordText  = request.getParameter("passwordText");
 	    if (passwordText == null) {
 	        passwordText = "";
 	    }
 	    pageContext.setAttribute("signInText", signInText);
 	    pageContext.setAttribute("passwordText", passwordText);
 		/*DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	    Key signInKey = KeyFactory.createKey("SignIn", signInText);
-	    Query query = new Query("SignIn", signInKey);
-	    List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
-	    String name = "try";
+	    signInKey = KeyFactory.createKey("SignIn", signInText);
+	    query = new Query("SignIn", signInKey);
+	    greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
+	    name = "try";
 	    pageContext.setAttribute("name", name);
 		pageContext.setAttribute("greeting_content",
                 greetings.get(0).getProperty("user"));*/
@@ -49,7 +29,7 @@
 	<p>Special Awesome Page Only for New Users! <br>
 		One time deal per user :D
 	</p>
-	
+
 	<form action="/practicePage" method="get">
 		<div>
 			<input type="submit" value="You Made It! You Can Go Back Now!" />
@@ -66,15 +46,15 @@
 			<input type="submit" value="Post!" />
 		</div>
 	</form>
-	
+
 	<form action="/signingUp" method="post">
 		<div>
-			<label>Username:</label>		
+			<label>Username:</label>
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(signInText)}" />
 		</div>
 		<div>
-			<label>Password:</label>		
+			<label>Password:</label>
 			<input type="text" name="passwordText"
 				value="${fn:escapeXml(passwordText)}" />
 		</div>
@@ -90,11 +70,7 @@
 			<input type="submit" value= "Take me there!" />
 		</div>
 	</form>
-	
+
 	<p>
 		${fn:escapeXml(responseText)}
 	</p>
-	
-
-</body>
-</html>
