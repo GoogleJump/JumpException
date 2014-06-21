@@ -48,7 +48,7 @@
                          <i class="fa fa-bars"></i>
                      </button>
                      <a class="navbar-brand" href="#page-top">
-                         <i class="fa fa-play-circle"></i>  <span class="light">Alex</span> Cory
+                         <i class="fa fa-play-circle"></i>  <span class="light">Shub</span>
                      </a>
                  </div>
                  <!-- Default Nav Links -->
