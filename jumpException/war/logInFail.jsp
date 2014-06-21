@@ -21,7 +21,7 @@
 			<input type="submit" value= "Sign in!" />
 		</div>
 	</form>
-	<form action="/practicePage.jsp" >
+	<form action="#SignUp" >
 		<label>Don't have Shub? Go sign up below!</label>
 		<div>
 			<input type="submit" value="Sign up!" />

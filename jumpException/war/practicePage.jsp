@@ -65,7 +65,7 @@
 	<p>
 		Already with Shub? Go sign in below!
 	</p>
-	<form action="/logIn.jsp" >
+	<form action="#Shub" >
 		<div>
 			<input type="submit" value= "Take me there!" />
 		</div>
