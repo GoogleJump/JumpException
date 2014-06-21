@@ -23,16 +23,19 @@
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Log In</h2>
                 <%
-                    Object indexSession = request.getSession().getAttribute("username");
-                    if(indexSession == null) {
+                    Object logInFailed = request.getSession().getAttribute("logInFailed");
+                    if(logInFailed == null) {
                 %>
-                    <%@ include file = "./logIn.jsp" %>
-                <% } else {
+                    	<%@ include file = "./logIn.jsp" %>
 
-                %>
-                   <%@ include file = "./signedIn.jsp" %>
+                	<% } else if(logInFailed.toString().equals("true")) {
+                    %>
+                    		<%@ include file = "./logInFail.jsp" %>
+                    <% } else {
+                    
+                    %>	
+                        <%@ include file = "./logIn.jsp" %>
                 <% }
-
                 %>
 
 

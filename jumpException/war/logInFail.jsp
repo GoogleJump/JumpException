@@ -9,10 +9,12 @@
 
 	<form action="/loggingIn" method="post">
 		<div>
+			<label>Username:</label>
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(username)}" />
 		</div>
 		<div>
+			<label>Password:</label>
 			<input type="text" name="passwordText" />
 		</div>
 		<div>
@@ -20,6 +22,7 @@
 		</div>
 	</form>
 	<form action="/practicePage.jsp" >
+		<label>Don't have Shub? Go sign up below!</label>
 		<div>
 			<input type="submit" value="Sign up!" />
 		</div>

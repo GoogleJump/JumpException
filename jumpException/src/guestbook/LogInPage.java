@@ -24,12 +24,14 @@ public class LogInPage extends HttpServlet {
 	  public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	      throws IOException {
 		  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		  	req.setAttribute("logInFailed", "false");
 		  	String signInText = req.getParameter("signInText");
 	    	String passwordText = req.getParameter("passwordText");
 		    HttpSession session = req.getSession();
     		session.setAttribute("username", signInText);
 		    if(signInText.equals("") || passwordText.equals("")) {
-			    resp.sendRedirect("/logInFail.jsp");
+		    	req.getSession().setAttribute("logInFailed", "true");
+			    resp.sendRedirect("/index.jsp");
 			    return;
 		    }
 		    Key signInKey = KeyFactory.createKey("SignIn", signInText);
@@ -43,15 +45,19 @@ public class LogInPage extends HttpServlet {
 			    for(Entity user : greetings){
 			    	if(user.getProperty("user").toString().equals(signInText.toString()) &&
 			    	   user.getProperty("password").toString().equals(passwordText.toString())) {
-						//resp.sendRedirect("/signedIn.jsp");
-						resp.sendRedirect("/index.jsp");
+				    	req.getSession().setAttribute("logInFailed", "false");
+						resp.sendRedirect("/signedIn.jsp");
 						return;
 			    	}
 			    }
-			    resp.sendRedirect("/logInFail.jsp");
+//			    req.setAttribute("logInFailed", "true");
+//			    resp.sendRedirect("/logInFail.jsp");
 
 		    }
-		    resp.sendRedirect("/logInFail.jsp");
+	    	req.getSession().setAttribute("logInFailed", "true");
+		    resp.sendRedirect("/index.jsp");
+
+//		    resp.sendRedirect("/logInFail.jsp");
 
 //			Entity signIn = new Entity("Shub", signInKey);
 //		    signIn.setProperty("user", signInText);
