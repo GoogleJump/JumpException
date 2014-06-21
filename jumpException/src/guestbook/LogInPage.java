@@ -41,27 +41,28 @@ public class LogInPage extends HttpServlet {
 //			resp.addCookie(cookie);
 		    if(!greetings.isEmpty()) {
 			    for(Entity user : greetings){
-			    	if(user.getProperty("user").toString().equals(signInText.toString()) && 
+			    	if(user.getProperty("user").toString().equals(signInText.toString()) &&
 			    	   user.getProperty("password").toString().equals(passwordText.toString())) {
-						resp.sendRedirect("/signedIn.jsp");
+						//resp.sendRedirect("/signedIn.jsp");
+						resp.sendRedirect("/index.jsp");
 						return;
 			    	}
 			    }
 			    resp.sendRedirect("/logInFail.jsp");
-			    
+
 		    }
 		    resp.sendRedirect("/logInFail.jsp");
-		    
+
 //			Entity signIn = new Entity("Shub", signInKey);
 //		    signIn.setProperty("user", signInText);
 //		    //for checking typing password twice
 //		    String passwordText = req.getParameter("passwordText");
 //		    signIn.setProperty("password", passwordText);
-//		    
+//
 //		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 //		    datastore.put(signIn);
 //			req.setAttribute("responseText", "You made it!");
 //		    resp.sendRedirect("/signedIn.jsp");
-			
+
 	  }
 }

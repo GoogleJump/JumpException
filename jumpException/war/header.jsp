@@ -59,7 +59,7 @@
                              <a href="#page-top"></a>
                          </li>
                          <li class="home page-scroll">
-                             <a href="#Shub">Shub</a>
+                             <a href="#Shub">Log In</a>
                          </li>
                          <li class="blog page-scroll <%
 

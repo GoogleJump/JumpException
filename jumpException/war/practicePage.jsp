@@ -1,24 +1,24 @@
 
 	<%
-		responseText = request.getParameter("responseText");
+		String responseText = request.getParameter("responseText");
 	    if (responseText == null) {
 	        responseText = "";
 	    }
 	    pageContext.setAttribute("responseText", responseText);
 
-	    signInText = request.getParameter("signInText");
+	    String signInText = request.getParameter("signInText");
 	    if (signInText == null) {
 	        signInText = "";
 	    }
-	    passwordText  = request.getParameter("passwordText");
+	    String passwordText  = request.getParameter("passwordText");
 	    if (passwordText == null) {
 	        passwordText = "";
 	    }
 	    pageContext.setAttribute("signInText", signInText);
 	    pageContext.setAttribute("passwordText", passwordText);
 		/*DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	    signInKey = KeyFactory.createKey("SignIn", signInText);
-	    query = new Query("SignIn", signInKey);
+	    Key signInKey = KeyFactory.createKey("SignIn", signInText);
+	    Query query = new Query("SignIn", signInKey);
 	    greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
 	    name = "try";
 	    pageContext.setAttribute("name", name);

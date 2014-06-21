@@ -5,8 +5,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <h1 class="brand-heading">Grayscale</h1>
-                        <p class="intro-text">A free, premium quality, responsive one page Bootstrap theme created by Start Bootstrap.</p>
+                        <h1 class="brand-heading">Shub</h1>
+                        <p class="intro-text">Unlimited Social Access. One hub.</p>
                         <div class="page-scroll">
                             <a href="#about" class="btn btn-circle">
                                 <i class="fa fa-angle-double-down animated"></i>
@@ -22,7 +22,19 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Log In</h2>
-                <%@ include file="./logIn.jsp" %>
+                <%
+                    Object indexSession = request.getSession().getAttribute("username");
+                    if(indexSession == null) {
+                %>
+                    <%@ include file = "./logIn.jsp" %>
+                <% } else {
+
+                %>
+                   <%@ include file = "./signedIn.jsp" %>
+                <% }
+
+                %>
+
 
             </div>
         </div>

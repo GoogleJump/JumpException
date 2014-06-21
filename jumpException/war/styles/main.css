@@ -23,6 +23,10 @@
 	display:block;
 }
 
-input[type="submit"] {
+input[type="submit"]  {
+color: black;
+}
+
+input[type="text"]  {
 color: black;
 }
