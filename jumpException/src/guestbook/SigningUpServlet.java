@@ -32,7 +32,8 @@ public class SigningUpServlet extends HttpServlet {
 		  	if(signInText.equals("") || signInText.equals(null)) {
 		  		signInText = "";
 		  		session.setAttribute("username", signInText);
-		  		resp.sendRedirect("/logInCreationFail.jsp");
+		  		session.setAttribute("logInCreationFailed", "true");
+		  		resp.sendRedirect("/index.jsp");
 		  		return;
 		  	}
 		    Key signInKey = KeyFactory.createKey("SignIn", signInText);
@@ -42,13 +43,14 @@ public class SigningUpServlet extends HttpServlet {
 		    if(!greetings.isEmpty()) {
 			    for(Entity user : greetings){
 			    	if(user.getProperty("user").toString().equals(signInText.toString())) {
-						resp.sendRedirect("/logInCreationFail.jsp");
+				  		session.setAttribute("logInCreationFailed", "true");
+						resp.sendRedirect("/index.jsp");
 						return;
 			    	}
 			    }
 
 		    }
-
+	  		session.setAttribute("logInCreationFailed", "false");
 			Entity signIn = new Entity("Shub", signInKey);
 		    signIn.setProperty("user", signInText);
 		    //for checking typing password twice

@@ -10,10 +10,12 @@
 
 	<form action="/signingUp" method="post">
 		<div>
+			<label>Username:</label>
 			<input type="text" name="signInText"
 				value="${fn:escapeXml(username)}" />
 		</div>
 		<div>
+			<label>Password:</label>
 			<input type="text" name="passwordText" />
 		</div>
 		<div>

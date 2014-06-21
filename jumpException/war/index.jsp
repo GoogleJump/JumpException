@@ -48,7 +48,21 @@
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>Download Grayscale</h2>
-                    <%@ include file="./practicePage.jsp" %>
+                     <%
+                    Object logInCreationFailed = request.getSession().getAttribute("logInCreationFailed");
+                    if(logInCreationFailed == null) {
+                	%>
+                    	<%@ include file = "./practicePage.jsp" %>
+
+                	<% } else if(logInCreationFailed.toString().equals("true")) {
+                    %>
+                    		<%@ include file = "./logInCreationFail.jsp" %>
+                    <% } else {
+                    
+                    %>	
+                        <%@ include file = "./practicePage.jsp" %>
+                <% }
+                %>
                     <a href="http://startbootstrap.com/grayscale" class="btn btn-default btn-lg">Visit Download Page</a>
                 </div>
             </div>
