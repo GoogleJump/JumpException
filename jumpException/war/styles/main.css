@@ -5,7 +5,7 @@
 }*/
 
 .mainPage {
-	width: 600px;
+	width: 800px;
 	margin:0 auto auto auto;
 	padding:20px;
 	background: rgba(128, 128, 128, 0.7);
@@ -33,4 +33,12 @@ color: black;
 
 textarea[type="text"] {
 color: black;
+}
+
+.facebookInfo {
+	margin:auto 400 auto auto;
+}
+
+.twitterInfo {
+	margin:auto auto auto 400;
 }
