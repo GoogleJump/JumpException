@@ -51,6 +51,7 @@
 									<label>Facebook:</label>
 									<input type="checkbox" name="fbCheckbox" id="fbCheckbox"/>
 									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>
+									
 								</div>
 							</td>
 							<td>
@@ -77,7 +78,6 @@
 			document.getElementById("twitterText").value = overallText;
 		}
 	}
-
 </script>
 
 <%@ include file="./footer.jsp" %>

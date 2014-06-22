@@ -7,12 +7,14 @@
 .mainPage {
 	width: 800px;
 	margin:0 auto auto auto;
+	height: 500px;
 	padding:20px;
 	background: rgba(128, 128, 128, 0.7);
 }
 
 .socialTextArea {
 	display:none;
+	position:absolute;
 }
 
 #fbCheckbox:checked + #fbText {
