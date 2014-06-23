@@ -1,4 +1,4 @@
-
+<%@ include file="./header.jsp" %>
 
 	<%
 		String responseText = request.getParameter("responseText");
@@ -36,12 +36,12 @@
 			<input type="submit" value="You Made It! You Can Go Back Now!" />
 		</div>
 		<input type="hidden" name="guestbookName"
-			value="${fn:escapeXml(guestbookName)}" />
+			 />
 	</form>
 	<form action="/practicePage.jsp" method="post">
 		<div>
 			<input type="text" name="responseText"
-				value="${fn:escapeXml(responseText)}" />
+				 />
 		</div>
 		<div>
 			<input type="submit" value="Post!" />
