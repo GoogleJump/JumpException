@@ -16,12 +16,12 @@ import java.util.Date;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+
 public class SignGuestbookServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
-	  
+
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
 
@@ -36,7 +36,7 @@ public class SignGuestbookServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(greeting);
-    
+
 
     resp.sendRedirect("/guestbook.jsp?guestbookName=" + guestbookName);
   }

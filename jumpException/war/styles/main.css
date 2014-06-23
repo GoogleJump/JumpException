@@ -1,0 +1,46 @@
+/*body {
+    font-family: Verdana, Helvetica, sans-serif;
+     background-color: #FFFFCC;
+    background-color: #00CC7A;
+}*/
+
+.mainPage {
+	width: 800px;
+	margin:0 auto auto auto;
+	height: 500px;
+	padding:20px;
+	background: rgba(128, 128, 128, 0.7);
+}
+
+.socialTextArea {
+	display:none;
+	position:absolute;
+}
+
+#fbCheckbox:checked + #fbText {
+	display:block;
+}
+
+#twitterCheckbox:checked + #twitterText {
+	display:block;
+}
+
+input[type="submit"]  {
+color: black;
+}
+
+input[type="text"]  {
+color: black;
+}
+
+textarea[type="text"] {
+color: black;
+}
+
+.facebookInfo {
+	margin:auto 400 auto auto;
+}
+
+.twitterInfo {
+	margin:auto auto auto 400;
+}

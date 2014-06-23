@@ -32,7 +32,7 @@ public class DeleteAccountServlet extends HttpServlet {
 		  	for(Entity user : greetings) {
 		  		if(user.getProperty("user").equals(username)) {
 		  			datastore.delete(user.getKey());
-		  			resp.sendRedirect("/logIn.jsp");
+		  			resp.sendRedirect("/index.jsp");
 		  		}
 		  	}
 		  	

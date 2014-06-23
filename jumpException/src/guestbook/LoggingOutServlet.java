@@ -27,6 +27,7 @@ public class LoggingOutServlet extends HttpServlet {
 	      throws IOException {
 		  	HttpSession session = req.getSession();
 		  	session.invalidate();
-		  	resp.sendRedirect("/logIn.jsp");	
+		  	//resp.sendRedirect("/logIn.jsp");
+		  	resp.sendRedirect("/index.jsp");
 	  }
 }

@@ -1,28 +1,73 @@
-<%@page import="java.awt.Checkbox"%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.google.appengine.api.users.User"%>
-<%@ page import="com.google.appengine.api.users.UserService"%>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
-<%@ page
-	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Entity"%>
-<%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
-<%@ page import="com.google.appengine.api.datastore.Key"%>
-<%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Query"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%String pageName= "signedIn";%>
 
-<html>
-<head>
-	<meta charset="UTF-8">
-    <meta name=description content="">
-    <meta name=viewport content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+<%@ include file="./header.jsp" %>
+
+<section id="SignedIn" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+				<div class="mainPage">
+					<%
+						//Cookie cookie = request.getCookies()[0];
+						//String username = cookie.getValue();
+						session.setAttribute("logInFailed", "false");
+						session.setAttribute("logInCreationFailed", "false");
+						String username = request.getSession().getAttribute("username").toString();
+						pageContext.setAttribute("username", username);
+						String overallText = "";
+						String fbText = "";
+						String twitterText = "";
+						pageContext.setAttribute("overallText", overallText);
+						//pageContext.setAttribute("fbText", fbText);
+						//pageContext.setAttribute("twitterText", twitterText);
+					%>
+					<p>
+						Hello, ${fn:escapeXml(username)}!
+					<p>
+					<form action="/loggingOut" method="get">
+						<div>
+							<input type="submit" value="Sign Out" />
+						</div>
+					</form>
+					<form action="/deleteAccount" method="post">
+						<div>
+							<input type="submit" value="Delete Account" />
+						</div>
+					</form>
+					<p>
+						Type and Share!
+					<p>
+					<form onchange="overallTextOnChange()">
+						<div>
+							<textarea rows="3" cols= "50" type="text" name= "overallText" id="overallText" value="${fn:escapeXml(overallText)}"></textarea>
+						</div>
+					</form>
+					<p>
+						Individualize:
+					<p>
+					<table>
+						<tr>
+							<td>
+								<div class="facebookInfo">
+									<label>Facebook:</label>
+									<input type="checkbox" name="fbCheckbox" id="fbCheckbox"/>
+									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>
+									
+								</div>
+							</td>
+							<td>
+								<div>
+									<label>Twitter:</label>
+									<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" />
+									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+        </div>
+    </section>
+
 <script>
 	function overallTextOnChange() {
 		var overallText = document.getElementById("overallText").value;
@@ -33,63 +78,6 @@
 			document.getElementById("twitterText").value = overallText;
 		}
 	}
-
 </script>
 
-
-</head>
-<body>
-	<div class="mainPage">
-		<%
-			//Cookie cookie = request.getCookies()[0];
-			//String username = cookie.getValue();
-			String username = request.getSession().getAttribute("username").toString();
-			pageContext.setAttribute("username", username);
-			String overallText = "";
-			String fbText = "";
-			String twitterText = "";
-			pageContext.setAttribute("overallText", overallText);
-			//pageContext.setAttribute("fbText", fbText);
-			//pageContext.setAttribute("twitterText", twitterText);
-		%>
-		<p>
-			Hello, ${fn:escapeXml(username)}!
-		<p>
-		<form action="/loggingOut" method="get">
-			<div>
-				<input type="submit" value="Sign Out" />
-			</div>
-		</form>
-		<form action="/deleteAccount" method="post">
-			<div>
-				<input type="submit" value="Delete Account" />
-			</div>
-		</form>
-		<p>
-			Type and Share!
-		<p>
-		<form onchange="overallTextOnChange()">
-			<div>
-				<textarea rows="3" cols= "50" type="text" name= "overallText" id="overallText" value="${fn:escapeXml(overallText)}"></textarea>
-			</div>
-		</form>
-		<p>
-			Individualize:
-		<p>
-		<form onclick="/openSocialMedias" method="post" >
-			<div>
-			<label>Facebook:</label>
-				<input type="checkbox" name="fbCheckbox" id="fbCheckbox"/>
-				<textarea class="socialTextArea" rows="3" cols= "50" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>
-			</div>
-		</form>
-		<form title="Diverge:" >
-			<div>
-				<label>Twitter:</label>
-				<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" />
-				<textarea class="socialTextArea" rows="3" cols= "50" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
-			</div>
-		</form>
-	</div>
-</body>
-</html>
+<%@ include file="./footer.jsp" %>

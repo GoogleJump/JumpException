@@ -32,35 +32,37 @@ public class SigningUpServlet extends HttpServlet {
 		  	if(signInText.equals("") || signInText.equals(null)) {
 		  		signInText = "";
 		  		session.setAttribute("username", signInText);
-		  		resp.sendRedirect("/logInCreationFail.jsp");
+		  		session.setAttribute("logInCreationFailed", "true");
+		  		resp.sendRedirect("/index.jsp");
 		  		return;
 		  	}
 		    Key signInKey = KeyFactory.createKey("SignIn", signInText);
 		    Query query = new Query("Shub", signInKey);
-		    
+
 		    List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 		    if(!greetings.isEmpty()) {
 			    for(Entity user : greetings){
 			    	if(user.getProperty("user").toString().equals(signInText.toString())) {
-						resp.sendRedirect("/logInCreationFail.jsp");
+				  		session.setAttribute("logInCreationFailed", "true");
+						resp.sendRedirect("/index.jsp");
 						return;
 			    	}
 			    }
-			    
-		    }	    	
-		    
+
+		    }
+	  		session.setAttribute("logInCreationFailed", "false");
 			Entity signIn = new Entity("Shub", signInKey);
 		    signIn.setProperty("user", signInText);
 		    //for checking typing password twice
 		    String passwordText = req.getParameter("passwordText");
 		    signIn.setProperty("password", passwordText);
-		    
+
 		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		    datastore.put(signIn);
 			req.setAttribute("responseText", "You made it!");
 //			Cookie cookie = new Cookie("username", signInText);
 //			resp.addCookie(cookie);
 		    resp.sendRedirect("/signedIn.jsp");
-			
+
 	  }
 }
