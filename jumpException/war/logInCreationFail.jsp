@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 		<p> Failure to Create Log In. Your Username is already in use or not allowed.</p>
 		<p> Please try again. </p>

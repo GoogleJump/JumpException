@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 	<%
 		/*String responseText = request.getParameter("responseText");
 	    if (responseText == null) {
