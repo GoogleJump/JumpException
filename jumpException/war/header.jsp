@@ -21,7 +21,24 @@
 <%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%	
+ String responseText = request.getParameter("responseText");
+if (responseText == null) {
+    responseText = "";
+}
+pageContext.setAttribute("responseText", responseText);
 
+ String signInText = request.getParameter("signInText");
+if (signInText == null) {
+    signInText = "";
+}
+ String passwordText = request.getParameter("passwordText");
+if(passwordText == null) {
+	passwordText = "";
+}
+pageContext.setAttribute("signInText", signInText);
+pageContext.setAttribute("passwordText", passwordText);
+%>
 
 
 <html>
@@ -98,9 +115,9 @@
                                  <!-- The drop down menu -->
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
                                  <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-                                     <form action="" method="post" onsubmit="editor.post()">
-                                         <input placeholder="Username" type="text" class="span6" name="user_email" value="<%// echo $email; %>">
-                                         <input placeholder="*******" type="password" class="span6" name="user_password" value="<%// echo $password; %>">
+                                     <form action="/loggingIn" method="post" onsubmit="editor.post()">
+                                         <input type="text" name="signInText" placeholder="Username" value="${fn:escapeXml(signInText)}" />
+                                         <input type="text" name="passwordText" placeholder="*******"	value="${fn:escapeXml(passwordText)}" />
                                          <br/>
                                          <input type="hidden" name="uID" value="<%// echo $uID; %>"/>
                                          <button id="submit" type="submit" class="btn btn-primary btn-block" >Login</button>
