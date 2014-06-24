@@ -1,6 +1,6 @@
-<%@ include file="./header.jsp" %>
+
 	<%
-		String responseText = request.getParameter("responseText");
+		/*String responseText = request.getParameter("responseText");
 	    if (responseText == null) {
 	        responseText = "";
 	    }

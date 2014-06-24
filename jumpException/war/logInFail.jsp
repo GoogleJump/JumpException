@@ -1,4 +1,4 @@
-<%@ include file="./header.jsp" %>
+
 		<p> Failure to Log In. Your Username or your password does not match.</p>
 		<p> Please try again. </p>
 

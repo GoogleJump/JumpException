@@ -11,6 +11,7 @@
 						//String username = cookie.getValue();
 						session.setAttribute("logInFailed", "false");
 						session.setAttribute("logInCreationFailed", "false");
+						session.setAttribute("loggedIn", "true");
 						String username = request.getSession().getAttribute("username").toString();
 						pageContext.setAttribute("username", username);
 						String overallText = "";
