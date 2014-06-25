@@ -24,22 +24,24 @@
 <%@ page import="guestbook.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%	
- String responseText = request.getParameter("responseText");
-if (responseText == null) {
-    responseText = "";
-}
-pageContext.setAttribute("responseText", responseText);
-
- String signInText = request.getParameter("signInText");
-if (signInText == null) {
-    signInText = "";
-}
- String passwordText = request.getParameter("passwordText");
-if(passwordText == null) {
-	passwordText = "";
-}
-pageContext.setAttribute("signInText", signInText);
-pageContext.setAttribute("passwordText", passwordText);
+	
+	 String responseText = request.getParameter("responseText");
+	if (responseText == null) {
+	    responseText = "";
+	}
+	pageContext.setAttribute("responseText", responseText);
+	
+	 String signInText = request.getParameter("signInText");
+	if (signInText == null) {
+	    signInText = "";
+	}
+	 String passwordText = request.getParameter("passwordText");
+	if(passwordText == null) {
+		passwordText = "";
+	}
+	pageContext.setAttribute("signInText", signInText);
+	pageContext.setAttribute("passwordText", passwordText);
+	
 %>
 
 

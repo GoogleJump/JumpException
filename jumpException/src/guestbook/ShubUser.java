@@ -23,6 +23,10 @@ public class ShubUser implements Serializable{
 		return username;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+	
 	/**
 	   * Always treat de-serialization as a full-blown constructor, by
 	   * validating the final state of the de-serialized object.
