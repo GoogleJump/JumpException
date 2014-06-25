@@ -2,6 +2,7 @@
 
 <%@ include file="./header.jsp" %>
 
+
 <section id="SignedIn" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
@@ -12,7 +13,8 @@
 						session.setAttribute("logInFailed", "false");
 						session.setAttribute("logInCreationFailed", "false");
 						session.setAttribute("loggedIn", "true");
-						String username = request.getSession().getAttribute("username").toString();
+						ShubUser user = (ShubUser) request.getSession().getAttribute("user");
+						String username = user.getUsername();
 						pageContext.setAttribute("username", username);
 						String overallText = "";
 						String fbText = "";
