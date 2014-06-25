@@ -1,5 +1,10 @@
 <%@ include file="./header.jsp" %>
-
+<%
+	ShubUser user = (ShubUser) session.getAttribute("user");
+	if(user != null) {
+		response.sendRedirect("/signedIn.jsp");
+	}
+%>
     <section class="intro">
         <div class="intro-body">
             <div class="container">

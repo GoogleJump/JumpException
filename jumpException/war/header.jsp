@@ -20,24 +20,28 @@
 <%@ page import="com.google.appengine.api.datastore.Key"%>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
+
+<%@ page import="guestbook.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%	
- String responseText = request.getParameter("responseText");
-if (responseText == null) {
-    responseText = "";
-}
-pageContext.setAttribute("responseText", responseText);
-
- String signInText = request.getParameter("signInText");
-if (signInText == null) {
-    signInText = "";
-}
- String passwordText = request.getParameter("passwordText");
-if(passwordText == null) {
-	passwordText = "";
-}
-pageContext.setAttribute("signInText", signInText);
-pageContext.setAttribute("passwordText", passwordText);
+	
+	 String responseText = request.getParameter("responseText");
+	if (responseText == null) {
+	    responseText = "";
+	}
+	pageContext.setAttribute("responseText", responseText);
+	
+	 String signInText = request.getParameter("signInText");
+	if (signInText == null) {
+	    signInText = "";
+	}
+	 String passwordText = request.getParameter("passwordText");
+	if(passwordText == null) {
+		passwordText = "";
+	}
+	pageContext.setAttribute("signInText", signInText);
+	pageContext.setAttribute("passwordText", passwordText);
+	
 %>
 
 
@@ -69,37 +73,39 @@ pageContext.setAttribute("passwordText", passwordText);
                      </a>
                  </div>
                  <!-- Default Nav Links -->
-                 <div class="collapse navbar-collapse navbar-left navbar-main-collapse">
-                     <ul class="nav navbar-nav">
-                         <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                         <li class="hidden">
-                             <a href="#page-top"></a>
-                         </li>
-                         <li class="home page-scroll">
-                             <a href="#Shub">Log In</a>
-                         </li>
-                         <li class="blog page-scroll <%
-
-                              %>">
-                             <a href="#SignUp">Sign Up</a>
-                         </li>
-                         <!--CHECK HERE TO SEE IF USER LOGGED IN -->
-                         <% //if (!$u->isRegistered()):  %>
-                           <!-- <li class="register page-scroll <% //echo ($section == 'register') ? 'active' : ''; %>">
-                               <a href="register/">Register</a>
-                           </li> -->
-                         <% //endif; %>
-                     </ul>
-                 </div>
+                 <% if(session.getAttribute("user") == null) { %>
+	                 <div class="collapse navbar-collapse navbar-left navbar-main-collapse">
+	                     <ul class="nav navbar-nav">
+	                         <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+	                         <li class="hidden">
+	                             <a href="#page-top"></a>
+	                         </li>
+	                         <li class="home page-scroll">
+	                             <a href="#Shub">Log In</a>
+	                         </li>
+	                         <li class="blog page-scroll <%
+	
+	                              %>">
+	                             <a href="#SignUp">Sign Up</a>
+	                         </li>
+	                         <!--CHECK HERE TO SEE IF USER LOGGED IN -->
+	                         <% //if (!$u->isRegistered()):  %>
+	                           <!-- <li class="register page-scroll <% //echo ($section == 'register') ? 'active' : ''; %>">
+	                               <a href="register/">Register</a>
+	                           </li> -->
+	                         <% //endif; %>
+	                     </ul>
+	                 </div>
+	                <%} %>
                  <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                      <ul class="nav navbar-nav pull-right">
                          <li class="dropdown">
                              <% // if the user HAS SIGNED IN %>
-                             <%// if ($u->isRegistered()): %>
-                             <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%// echo $u->getUserName(); %><b class="caret"></b></a>
-                             <ul class="dropdown-menu">
-                                 <li class="logout"><a href="">Logout</a></li>
-                                 <li class="divider"></li> -->
+                             <% if (session.getAttribute("user") != null) { %>
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%// echo $u->getUserName(); %><b class="caret"></b></a>
+                             	<ul class="dropdown-menu">
+                                 <li class="logout"><a href="/loggingOut">Logout</a></li>
+                                 <li class="divider"></li>
                                  <% // if the user has SINED IN  <AND> they are an ADMIN %>
                                  <% // if ($u->isAdmin()): %>
                                  <!-- <li class="manageposts"><a href="" tabindex="-1">Manage Posts</a></li>
@@ -110,8 +116,9 @@ pageContext.setAttribute("passwordText", passwordText);
                                      <li class="divider"></li> -->
                                  <%// endif; %>
                                  <!-- <li><a href="">Settings</a></li> -->
+                             
                              <%// // Otherwise, if nobody is signed in, show a Login button %>
-                             <%// else: // if not registered %>
+                             <%} else { // if not registered %>
                                  <!-- The drop down menu -->
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
                                  <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
@@ -123,7 +130,7 @@ pageContext.setAttribute("passwordText", passwordText);
                                          <button id="submit" type="submit" class="btn btn-primary btn-block" >Login</button>
                                      </form>
                                  </div>
-                             <%// endif; %>
+                             <%} %>
                              </ul>
                          </li>
                      </ul>

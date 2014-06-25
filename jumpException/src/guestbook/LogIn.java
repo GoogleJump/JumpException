@@ -18,7 +18,7 @@ import com.google.appengine.api.datastore.Query;
 
 public class LogIn {
 
-//	private User user;
+	private ShubUser user;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	
@@ -35,7 +35,7 @@ public class LogIn {
 	  	String signInText = req.getParameter("signInText");
     	String passwordText = req.getParameter("passwordText");
     	HttpSession session = req.getSession();
-		session.setAttribute("username", signInText);
+//		session.setAttribute("username", signInText);
 	    if(signInText.equals("") || passwordText.equals("")) {
 	    	req.getSession().setAttribute("logInFailed", "true");
 		    try {
@@ -48,17 +48,20 @@ public class LogIn {
 	    }
 	    Key signInKey = KeyFactory.createKey("SignIn", signInText);
 	    Query query = new Query("Shub", signInKey);
-	    List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 //	    Cookie cookie = new Cookie("username", signInText);
 //	    cookie.setMaxAge(0);
 //	    cookie.setValue(null);
 //		resp.addCookie(cookie);
-	    if(!greetings.isEmpty()) {
-		    for(Entity user : greetings){
-		    	if(user.getProperty("user").toString().equals(signInText.toString()) &&
-		    	   user.getProperty("password").toString().equals(passwordText.toString())) {
-			    	req.getSession().setAttribute("logInFailed", "false");
+	    if(!userDatabase.isEmpty()) {
+		    for(Entity userInDatabase : userDatabase){
+		    	if(userInDatabase.getProperty("user").toString().equals(signInText.toString()) &&
+		    	   userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
+			    	user = new ShubUser(signInText.toString(), passwordText.toString());
+			    	session.setAttribute("user", user);
+		    		req.getSession().setAttribute("logInFailed", "false");
 					try {
+						
 						resp.sendRedirect("/signedIn.jsp");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
