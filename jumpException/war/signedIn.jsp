@@ -6,7 +6,7 @@
 <section id="SignedIn" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-				<div class="mainPage">
+				
 					<%
 						//Cookie cookie = request.getCookies()[0];
 						//String username = cookie.getValue();
@@ -16,6 +16,9 @@
 						ShubUser user = (ShubUser) request.getSession().getAttribute("user");
 						String username = user.getUsername();
 						pageContext.setAttribute("username", username);
+						pageContext.setAttribute("curPassword", "");
+						pageContext.setAttribute("newPassword", "");
+						pageContext.setAttribute("confirmNewPassword", "");
 						String overallText = "";
 						String fbText = "";
 						String twitterText = "";
@@ -23,6 +26,27 @@
 						//pageContext.setAttribute("fbText", fbText);
 						//pageContext.setAttribute("twitterText", twitterText);
 					%>
+				<form onclick="changePassword()">
+					<div>
+						<label id="blah">Current Password:</label>
+						<input type="text" id="curPassword"
+							value="${fn:escapeXml(curPassword)}" />
+					</div>
+					<div>
+						<label>New Password:</label>
+						<input type="text"
+							value="${fn:escapeXml(newPassword)}" />
+					</div>
+					<div>
+						<label>Confirm New Password:</label>
+						<input type="text"
+							value="${fn:escapeXml(signInText)}" />
+					</div>
+					<div>
+						<input type="submit" value="Change Password"/>
+					</div>
+				</form>
+				<div class="mainPage">
 					<p>
 						Hello, ${fn:escapeXml(username)}!
 					<p>
@@ -70,6 +94,21 @@
 			</div>
         </div>
     </section>
+    
+<script>
+	function changePassword() {
+		var text =  "IT WORKED"
+		document.getElementById("blah").value = text;
+		/*String curPassword = pageContext().getAttribute("curPassword");
+		String newPassword = pageContext().getAttribute("newPassword");
+		String confirmNewPassword = pageContext().getAttribute("confirmNewPassword");
+		if(user.changePassword(curPassword, newPassword, confirmNewPassword)) {
+			document.getElementById("blah").value = "IT WORKED";
+		} else {
+			document.getElementById("curPassword").value = "woooo";
+		}*/
+	}
+</script>
 
 <script>
 	function overallTextOnChange() {
@@ -80,6 +119,12 @@
 		if(!document.getElementById("twitterCheckbox").checked) {
 			document.getElementById("twitterText").value = overallText;
 		}
+	}
+</script>
+
+<script>
+	function togglePasswordChangeVisibility() {
+		
 	}
 </script>
 

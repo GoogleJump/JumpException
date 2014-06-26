@@ -105,6 +105,7 @@
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%// echo $u->getUserName(); %><b class="caret"></b></a>
                              	<ul class="dropdown-menu">
                                  <li class="logout"><a href="/loggingOut">Logout</a></li>
+                                 <li class="logout"><a href="" onclick="togglePasswordChangeVisibility()">Change Password</a></li>
                                  <li class="divider"></li>
                                  <% // if the user has SINED IN  <AND> they are an ADMIN %>
                                  <% // if ($u->isAdmin()): %>

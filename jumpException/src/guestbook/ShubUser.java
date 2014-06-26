@@ -27,6 +27,25 @@ public class ShubUser implements Serializable{
 		return password;
 	}
 	
+	public boolean changePassword(String curPassword, String newPassword, String confirmNewPassword) {
+		if(arePasswordsUsable(curPassword, newPassword, confirmNewPassword)) {
+			if(curPassword.equals(password) && 
+				newPassword.equals(confirmNewPassword)) {
+				password = confirmNewPassword;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean arePasswordsUsable(String curPassword, String newPassword,
+			String confirmNewPassword) {
+		// TODO Auto-generated method stub
+		boolean notNull = curPassword != null && newPassword != null && confirmNewPassword != null;
+		boolean notEmpty = !(curPassword.equals("") || newPassword.equals("") || confirmNewPassword.equals(""));
+		return notNull && notEmpty;
+	}
+
 	/**
 	   * Always treat de-serialization as a full-blown constructor, by
 	   * validating the final state of the de-serialized object.
