@@ -27,9 +27,11 @@ public class SigningUpServlet extends HttpServlet {
 	      throws IOException {
 		  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		  	String signInText = req.getParameter("signInText");
+		  	String passwordText = req.getParameter("passwordText");
+		    
 		  	HttpSession session = req.getSession();
     		session.setAttribute("username", signInText);
-		  	if(signInText.equals("") || signInText.equals(null)) {
+		  	if(signInText.equals("") || signInText.equals(null) || passwordText.equals("") || passwordText.equals(null)) {
 		  		signInText = "";
 		  		session.setAttribute("username", signInText);
 		  		session.setAttribute("logInCreationFailed", "true");
@@ -54,7 +56,6 @@ public class SigningUpServlet extends HttpServlet {
 			Entity signIn = new Entity("Shub", signInKey);
 		    signIn.setProperty("user", signInText);
 		    //for checking typing password twice
-		    String passwordText = req.getParameter("passwordText");
 		    signIn.setProperty("password", passwordText);
 
 		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

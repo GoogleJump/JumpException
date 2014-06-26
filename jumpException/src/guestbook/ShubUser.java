@@ -41,9 +41,10 @@ public class ShubUser implements Serializable{
 	private boolean arePasswordsUsable(String curPassword, String newPassword,
 			String confirmNewPassword) {
 		// TODO Auto-generated method stub
-		boolean notNull = curPassword != null && newPassword != null && confirmNewPassword != null;
-		boolean notEmpty = !(curPassword.equals("") || newPassword.equals("") || confirmNewPassword.equals(""));
-		return notNull && notEmpty;
+		if(curPassword != null && newPassword != null && confirmNewPassword != null) {
+			return !(curPassword.equals("") || newPassword.equals("") || confirmNewPassword.equals(""));
+		}
+		return false;
 	}
 
 	/**

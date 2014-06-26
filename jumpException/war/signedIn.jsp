@@ -13,12 +13,9 @@
 						session.setAttribute("logInFailed", "false");
 						session.setAttribute("logInCreationFailed", "false");
 						session.setAttribute("loggedIn", "true");
-						ShubUser user = (ShubUser) request.getSession().getAttribute("user");
+						ShubUser user = (ShubUser) session.getAttribute("user");
 						String username = user.getUsername();
 						pageContext.setAttribute("username", username);
-						pageContext.setAttribute("curPassword", "");
-						pageContext.setAttribute("newPassword", "");
-						pageContext.setAttribute("confirmNewPassword", "");
 						String overallText = "";
 						String fbText = "";
 						String twitterText = "";
@@ -26,26 +23,7 @@
 						//pageContext.setAttribute("fbText", fbText);
 						//pageContext.setAttribute("twitterText", twitterText);
 					%>
-				<form onclick="changePassword()">
-					<div>
-						<label id="blah">Current Password:</label>
-						<input type="text" id="curPassword"
-							value="${fn:escapeXml(curPassword)}" />
-					</div>
-					<div>
-						<label>New Password:</label>
-						<input type="text"
-							value="${fn:escapeXml(newPassword)}" />
-					</div>
-					<div>
-						<label>Confirm New Password:</label>
-						<input type="text"
-							value="${fn:escapeXml(signInText)}" />
-					</div>
-					<div>
-						<input type="submit" value="Change Password"/>
-					</div>
-				</form>
+				
 				<div class="mainPage">
 					<p>
 						Hello, ${fn:escapeXml(username)}!
@@ -97,16 +75,16 @@
     
 <script>
 	function changePassword() {
-		var text =  "IT WORKED"
-		document.getElementById("blah").value = text;
-		/*String curPassword = pageContext().getAttribute("curPassword");
-		String newPassword = pageContext().getAttribute("newPassword");
-		String confirmNewPassword = pageContext().getAttribute("confirmNewPassword");
+		//var text =  "IT WORKED"
+		//document.getElementById("overallText").value = text;
+		var curPassword = pageContext().getAttribute("curPassword").toString();
+		var newPassword = pageContext().getAttribute("newPassword").toString();
+		var confirmNewPassword = pageContext().getAttribute("confirmNewPassword").toString();
 		if(user.changePassword(curPassword, newPassword, confirmNewPassword)) {
-			document.getElementById("blah").value = "IT WORKED";
+			//document.getElementById("blah").value = text;
 		} else {
-			document.getElementById("curPassword").value = "woooo";
-		}*/
+			document.getElementById("curPassword").value = text;
+		}
 	}
 </script>
 
@@ -121,11 +99,12 @@
 		}
 	}
 </script>
-
 <script>
 	function togglePasswordChangeVisibility() {
 		
 	}
 </script>
+
+
 
 <%@ include file="./footer.jsp" %>

@@ -27,14 +27,16 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Log In</h2>
+                
                 <%
-                    Object logInFailed = request.getSession().getAttribute("logInFailed");
+                    Object logInFailed = session.getAttribute("logInFailed");
                     if(logInFailed == null) {
                 %>
                     	<%@ include file = "./logIn.jsp" %>
 
                 	<% } else if(logInFailed.toString().equals("true")) {
                     %>
+                    
                     		<%@ include file = "./logInFail.jsp" %>
                     <% } else {
                     
@@ -54,7 +56,7 @@
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>Download Grayscale</h2>
                      <%
-                    Object logInCreationFailed = request.getSession().getAttribute("logInCreationFailed");
+                    Object logInCreationFailed = session.getAttribute("logInCreationFailed");
                     if(logInCreationFailed == null) {
                 	%>
                     	<%@ include file = "./practicePage.jsp" %>
