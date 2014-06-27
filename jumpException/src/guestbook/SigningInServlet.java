@@ -29,11 +29,11 @@ public class SigningInServlet extends HttpServlet {
 		    Key signInKey = KeyFactory.createKey("SignIn", signInText);
 		    Query query = new Query("Shub", signInKey);
 		    
-		    List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-		    if(!greetings.isEmpty()) {
+		    List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+		    if(!userDatabase.isEmpty()) {
 
-			    for(Entity user : greetings){
-			    	if(user.getProperty("user").toString().equals(signInText.toString())) {
+			    for(Entity userInDatabase : userDatabase){
+			    	if(userInDatabase.getProperty("user").toString().equals(signInText.toString())) {
 						resp.sendRedirect("/logInFail.jsp");
 						return;
 			    	}

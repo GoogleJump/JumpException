@@ -11,17 +11,17 @@
 	<form action="/changePassword" method="post">
 		<div>
 			<label id="blah">Current Password:</label>
-			<input type="text" id="curPassword"
+			<input type="text" name="curPassword"
 				value="${fn:escapeXml(curPassword)}" />
 		</div>
 		<div>
 			<label>New Password:</label>
-			<input type="text"
+			<input type="text" name="newPassword"
 				value="${fn:escapeXml(newPassword)}" />
 		</div>
 		<div>
 			<label>Confirm New Password:</label>
-			<input type="text"
+			<input type="text" name="confirmNewPassword"
 				value="${fn:escapeXml(confirmNewPassword)}" />
 		</div>
 	
