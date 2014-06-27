@@ -112,7 +112,7 @@ a:focus {
 
     .top-nav-collapse {
         padding: 0;
-        background-color: #000;
+        background-color: #FF99AF;
     }
 
     .navbar-custom.top-nav-collapse {
@@ -126,8 +126,9 @@ a:focus {
     height: auto;
     padding: 100px 0;
     text-align: center;
-    color: #fff;
-    background: url(../img/intro-bg.jpg) no-repeat bottom center scroll;
+    color: white;
+    text-shadow: -2px 0 #FF99AF, 0 2px #FF99AF, 1px 0 #FF99AF, 0 -1px #FF99AF;
+    background: url(../img/flowers_and_sky.jpg) no-repeat bottom center scroll;
     background-color: #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -245,7 +246,7 @@ a:focus {
     width: 100%;
     padding: 50px 0;
     color: #fff;
-    background: url(../img/downloads-bg.jpg) no-repeat center center scroll;
+    background: url(../img/trainstation.jpg) no-repeat center center scroll;
     background-color: #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;

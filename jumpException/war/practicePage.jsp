@@ -29,7 +29,7 @@
 	<p>Special Awesome Page Only for New Users! <br>
 		One time deal per user :D
 	</p>
-
+<!-- 
 	<form action="/practicePage" method="get">
 		<div>
 			<input type="submit" value="You Made It! You Can Go Back Now!" />
@@ -46,7 +46,7 @@
 			<input type="submit" value="Post!" />
 		</div>
 	</form>
-
+-->
 	<form action="/signingUp" method="post">
 		<div>
 			<label>Username:</label>

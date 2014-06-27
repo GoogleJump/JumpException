@@ -54,7 +54,7 @@
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Download Grayscale</h2>
+                    <h2>Sign Up</h2>
                      <%
                     Object logInCreationFailed = session.getAttribute("logInCreationFailed");
                     if(logInCreationFailed == null) {
@@ -70,7 +70,7 @@
                         <%@ include file = "./practicePage.jsp" %>
                 <% }
                 %>
-                    <a href="http://startbootstrap.com/grayscale" class="btn btn-default btn-lg">Visit Download Page</a>
+                    <!-- <a href="http://startbootstrap.com/grayscale" class="btn btn-default btn-lg">Visit Download Page</a> -->
                 </div>
             </div>
         </div>
