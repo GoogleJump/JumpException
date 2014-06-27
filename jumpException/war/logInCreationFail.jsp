@@ -4,8 +4,8 @@
 		<p> Please try again. </p>
 
 	<%
-		String username = request.getSession().getAttribute("username").toString();
-		pageContext.setAttribute("username", username);
+		/*String username = request.getSession().getAttribute("username").toString();
+		pageContext.setAttribute("username", username);*/
 	%>
 
 	<form action="/signingUp" method="post">
@@ -30,4 +30,3 @@
 			<input type="submit" value= "Take me there!" />
 		</div>
 	</form>
-<%@ include file="./footer.jsp" %>

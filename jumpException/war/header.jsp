@@ -105,6 +105,7 @@
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%// echo $u->getUserName(); %><b class="caret"></b></a>
                              	<ul class="dropdown-menu">
                                  <li class="logout"><a href="/loggingOut">Logout</a></li>
+                                 <li class="logout"><a href="/settings.jsp">Settings</a></li>
                                  <li class="divider"></li>
                                  <% // if the user has SINED IN  <AND> they are an ADMIN %>
                                  <% // if ($u->isAdmin()): %>
@@ -122,7 +123,7 @@
                                  <!-- The drop down menu -->
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<b class="caret"></b></a>
                                  <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-                                     <form action="/loggingIn" method="post" onsubmit="editor.post()">
+                                     <form action="/loggingIn" method="post" > <!-- onsubmit="editor.post()" -->
                                          <input type="text" name="signInText" placeholder="Username" value="${fn:escapeXml(signInText)}" />
                                          <input type="text" name="passwordText" placeholder="*******"	value="${fn:escapeXml(passwordText)}" />
                                          <br/>

@@ -6,14 +6,14 @@
 <section id="SignedIn" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-				<div class="mainPage">
+				
 					<%
 						//Cookie cookie = request.getCookies()[0];
 						//String username = cookie.getValue();
 						session.setAttribute("logInFailed", "false");
 						session.setAttribute("logInCreationFailed", "false");
 						session.setAttribute("loggedIn", "true");
-						ShubUser user = (ShubUser) request.getSession().getAttribute("user");
+						ShubUser user = (ShubUser) session.getAttribute("user");
 						String username = user.getUsername();
 						pageContext.setAttribute("username", username);
 						String overallText = "";
@@ -23,6 +23,8 @@
 						//pageContext.setAttribute("fbText", fbText);
 						//pageContext.setAttribute("twitterText", twitterText);
 					%>
+				
+				<div class="mainPage">
 					<p>
 						Hello, ${fn:escapeXml(username)}!
 					<p>
@@ -70,6 +72,21 @@
 			</div>
         </div>
     </section>
+    
+<script>
+	function changePassword() {
+		//var text =  "IT WORKED"
+		//document.getElementById("overallText").value = text;
+		var curPassword = pageContext().getAttribute("curPassword").toString();
+		var newPassword = pageContext().getAttribute("newPassword").toString();
+		var confirmNewPassword = pageContext().getAttribute("confirmNewPassword").toString();
+		if(user.changePassword(curPassword, newPassword, confirmNewPassword)) {
+			//document.getElementById("blah").value = text;
+		} else {
+			document.getElementById("curPassword").value = text;
+		}
+	}
+</script>
 
 <script>
 	function overallTextOnChange() {
@@ -82,5 +99,12 @@
 		}
 	}
 </script>
+<script>
+	function togglePasswordChangeVisibility() {
+		
+	}
+</script>
+
+
 
 <%@ include file="./footer.jsp" %>

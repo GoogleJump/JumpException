@@ -24,18 +24,25 @@ public class DeleteAccountServlet extends HttpServlet {
 	  @Override
 	  public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	      throws IOException {
-		  	String username = req.getSession().getAttribute("username").toString(); //this should be the username
+		  	ShubUser user = (ShubUser) req.getSession().getAttribute("user"); //this should be the username
 		  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		  	Key signInKey = KeyFactory.createKey("SignIn", username);
+		  	Key signInKey = KeyFactory.createKey("SignIn", user.getUsername());
 		  	Query query = new Query("Shub", signInKey);
-		  	List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-		  	for(Entity user : greetings) {
-		  		if(user.getProperty("user").equals(username)) {
-		  			datastore.delete(user.getKey());
+		  	List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+		  	for(Entity userInDatabase : userDatabase) {
+//		  		if(!userInDatabase.getKey().toString().equals(user.getKey().toString())) {
+//		  			user.setUsername(user.getKey().toString() + " " + userInDatabase.getKey().toString());
+//		  			resp.sendRedirect("/signedIn.jsp");
+//		  			return;
+//		  		}
+		  		if(userInDatabase.getProperty("username").toString().equals(user.getUsername())) {
+		  			datastore.delete(userInDatabase.getKey());
+		  			req.getSession().invalidate();
 		  			resp.sendRedirect("/index.jsp");
+		  			return;
 		  		}
 		  	}
-		  	
-		  	
+//		  	req.getSession().invalidate();
+		  	resp.sendRedirect("/signedIn.jsp");		  	
 	  }
 }

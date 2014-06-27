@@ -25,6 +25,10 @@
         <servlet-class>guestbook.DeleteAccountServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>changePassword</servlet-name>
+        <servlet-class>guestbook.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>loggingIn</servlet-name>
         <servlet-class>guestbook.LogInPage</servlet-class>
     </servlet>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>guestbook</servlet-name>
         <url-pattern>/guestbook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePassword</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>signingUp</servlet-name>

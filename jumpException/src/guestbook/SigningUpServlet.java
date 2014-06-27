@@ -27,9 +27,11 @@ public class SigningUpServlet extends HttpServlet {
 	      throws IOException {
 		  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		  	String signInText = req.getParameter("signInText");
+		  	String passwordText = req.getParameter("passwordText");
+		    
 		  	HttpSession session = req.getSession();
     		session.setAttribute("username", signInText);
-		  	if(signInText.equals("") || signInText.equals(null)) {
+		  	if(signInText.equals("") || signInText.equals(null) || passwordText.equals("") || passwordText.equals(null)) {
 		  		signInText = "";
 		  		session.setAttribute("username", signInText);
 		  		session.setAttribute("logInCreationFailed", "true");
@@ -39,10 +41,10 @@ public class SigningUpServlet extends HttpServlet {
 		    Key signInKey = KeyFactory.createKey("SignIn", signInText);
 		    Query query = new Query("Shub", signInKey);
 
-		    List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-		    if(!greetings.isEmpty()) {
-			    for(Entity user : greetings){
-			    	if(user.getProperty("user").toString().equals(signInText.toString())) {
+		    List<Entity> usersInDatastore = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+		    if(!usersInDatastore.isEmpty()) {
+			    for(Entity datastoreUser : usersInDatastore){
+			    	if(((ShubUser) datastoreUser.getProperty("user")).getUsername().equals(signInText.toString())) {
 				  		session.setAttribute("logInCreationFailed", "true");
 						resp.sendRedirect("/index.jsp");
 						return;
@@ -52,13 +54,15 @@ public class SigningUpServlet extends HttpServlet {
 		    }
 	  		session.setAttribute("logInCreationFailed", "false");
 			Entity signIn = new Entity("Shub", signInKey);
-		    signIn.setProperty("user", signInText);
-		    //for checking typing password twice
-		    String passwordText = req.getParameter("passwordText");
+		    signIn.setProperty("username", signInText);
+//		    //for checking typing password twice
 		    signIn.setProperty("password", passwordText);
 
 		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		    datastore.put(signIn);
+		    ShubUser user = new ShubUser(signInText, passwordText, signIn.getKey());
+
+	    	session.setAttribute("user", user);
 			req.setAttribute("responseText", "You made it!");
 //			Cookie cookie = new Cookie("username", signInText);
 //			resp.addCookie(cookie);

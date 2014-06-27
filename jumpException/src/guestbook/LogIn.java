@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -31,16 +30,20 @@ public class LogIn {
 		
 		
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
 	  	req.setAttribute("logInFailed", "false");
 	  	String signInText = req.getParameter("signInText");
     	String passwordText = req.getParameter("passwordText");
+    	
     	HttpSession session = req.getSession();
 //		session.setAttribute("username", signInText);
 	    if(signInText.equals("") || passwordText.equals("")) {
-	    	req.getSession().setAttribute("logInFailed", "true");
+	    	session.setAttribute("logInFailed", "true");
+	  		session.setAttribute("username", signInText);
 		    try {
 				resp.sendRedirect("/index.jsp");
-			} catch (IOException e) {
+			} 
+		    catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -54,12 +57,16 @@ public class LogIn {
 //	    cookie.setValue(null);
 //		resp.addCookie(cookie);
 	    if(!userDatabase.isEmpty()) {
-		    for(Entity userInDatabase : userDatabase){
-		    	if(userInDatabase.getProperty("user").toString().equals(signInText.toString()) &&
-		    	   userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
-			    	user = new ShubUser(signInText.toString(), passwordText.toString());
+		    for(Entity userInDatabase : userDatabase){   
+//		    	datastore.delete(userInDatabase.getKey());
+//		    	return;
+		    	String username = signInText.toString();
+		    	String password = passwordText.toString();
+		    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
+		    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
+			    	user = new ShubUser(username, password, userInDatabase.getKey());
 			    	session.setAttribute("user", user);
-		    		req.getSession().setAttribute("logInFailed", "false");
+		    		session.setAttribute("logInFailed", "false");
 					try {
 						
 						resp.sendRedirect("/signedIn.jsp");
@@ -69,12 +76,10 @@ public class LogIn {
 					}
 					return;
 		    	}
-		    }
-//		    req.setAttribute("logInFailed", "true");
-//		    resp.sendRedirect("/logInFail.jsp");
 
+		    }
 	    }
-    	req.getSession().setAttribute("logInFailed", "true");
+    	session.setAttribute("logInFailed", "true");
 	    try {
 			resp.sendRedirect("/index.jsp");
 		} catch (IOException e) {
