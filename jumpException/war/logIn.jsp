@@ -31,7 +31,7 @@
 		Welcome to Shub!
 	</p>
 
-	<form action="/practicePage" method="get">
+	<!-- <form action="/practicePage" method="get">
 		<div>
 			<input type="submit" value="You Made It! You Can Go Back Now!" />
 		</div>
@@ -47,7 +47,7 @@
 			<input type="submit" value="Post!" />
 		</div>
 	</form>
-
+-->
 	<form action="/loggingIn" method="post">
 		<div>
 			<label>Username:</label>
@@ -63,9 +63,11 @@
 			<input type="submit" value= "Sign in!" />
 		</div>
 	</form>
+<!-- 
 	<button>
 		<a href="#SignUp" classes-"btn btn-primary btn-lg" roles="button">Sign Up!</a>
 	</button>
+-->
 	<form action="#SignUp" method="post">
 		<label>Don't have Shub? Go sign up below!</label>
 		<div>
