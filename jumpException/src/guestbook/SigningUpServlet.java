@@ -44,7 +44,7 @@ public class SigningUpServlet extends HttpServlet {
 		    List<Entity> usersInDatastore = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 		    if(!usersInDatastore.isEmpty()) {
 			    for(Entity datastoreUser : usersInDatastore){
-			    	if(((ShubUser) datastoreUser.getProperty("user")).getUsername().equals(signInText.toString())) {
+			    	if(datastoreUser.getProperty("username").toString().equals(signInText.toString())) {
 				  		session.setAttribute("logInCreationFailed", "true");
 						resp.sendRedirect("/index.jsp");
 						return;
