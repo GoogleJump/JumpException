@@ -25,7 +25,7 @@
 		pageContext.setAttribute("greeting_content",
                 greetings.get(0).getProperty("user"));*/
     %>
-
+<div class="shubcolor">
 	<p>Special Awesome Page Only for New Users! <br>
 		One time deal per user :D
 	</p>
@@ -74,3 +74,4 @@
 	<p>
 		${fn:escapeXml(responseText)}
 	</p>
+</div>
