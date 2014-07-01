@@ -1,6 +1,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import = "guestbook.TwitterOAuth" %>
 
 	<%
+		// get the twitter authorization URL
+		TwitterOAuth t = new TwitterOAuth();
+		String authUrl = t.getAuthUrl(request);
+
 		/*String responseText = request.getParameter("responseText");
 	    if (responseText == null) {
 	        responseText = "";
@@ -30,7 +35,10 @@
 	<p>
 		Welcome to Shub!
 	</p>
-
+	
+	<!--  displaying twitter authorization URL -->
+	<a href='<%=authUrl %>'>Sign in with Twitter</a>
+	
 	<!-- <form action="/practicePage" method="get">
 		<div>
 			<input type="submit" value="You Made It! You Can Go Back Now!" />
