@@ -4,8 +4,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Query;
 
 public class ShubUser implements Serializable{
 	
@@ -16,11 +23,13 @@ public class ShubUser implements Serializable{
 	private String username;
 	private String password;
 	private Key datastoreKey;
+	private Newsfeed newsfeed;
 
-	public ShubUser(String username, String password, Key datastoreKey) {
+	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
 		this.password = password;
 		this.datastoreKey = datastoreKey;
+		this.newsfeed = newsfeed;
 	}
 	
 	public String getUsername() {
@@ -33,6 +42,35 @@ public class ShubUser implements Serializable{
 	
 	public Key getKey() {
 		return datastoreKey;
+	}
+	
+	public Newsfeed getNewsfeed() {
+		return newsfeed;
+	}
+	
+	public void fillNewsfeed() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	    // Run an ancestor query to ensure we see the most up-to-date
+	    // view of the Greetings belonging to the selected Guestbook.
+	    Query query = new Query("Post", datastoreKey).addSort("date", Query.SortDirection.DESCENDING);
+	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    for(Entity entity : entities) {
+	    	Date date = (Date) entity.getProperty("date");
+	    	Object overallObj = entity.getProperty("overallText");
+	    	Object fbObj = entity.getProperty("fbText");
+	    	Object twitterObj = entity.getProperty("twitterText");
+	    	String overallText = voidChecking(overallObj);
+	    	String fbText = voidChecking(fbObj);
+	    	String twitterText = voidChecking(twitterObj);
+	    	newsfeed.add(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString()));
+	    }
+	}
+	
+	private String voidChecking(Object textObj) {
+		if(textObj == null) {
+	    	return "";
+	    }
+		return textObj.toString();
 	}
 	
 	public boolean changePassword(String curPassword, String newPassword, String confirmNewPassword) {

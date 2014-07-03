@@ -41,6 +41,10 @@
         <servlet-class>guestbook.PracticePage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>postServlet</servlet-name>
+        <servlet-class>guestbook.PostServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>guestbook</servlet-name>
         <servlet-class>guestbook.GuestbookServlet</servlet-class>
     </servlet>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>loggingOut</servlet-name>
         <url-pattern>/loggingOut</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>postServlet</servlet-name>
+        <url-pattern>/postServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>guestbook</servlet-name>

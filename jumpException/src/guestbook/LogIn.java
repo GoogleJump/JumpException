@@ -64,7 +64,8 @@ public class LogIn {
 		    	String password = passwordText.toString();
 		    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
 		    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
-			    	user = new ShubUser(username, password, userInDatabase.getKey());
+			    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
+			    	user.fillNewsfeed();
 			    	session.setAttribute("user", user);
 		    		session.setAttribute("logInFailed", "false");
 					try {

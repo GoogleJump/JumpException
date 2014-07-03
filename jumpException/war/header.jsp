@@ -42,6 +42,10 @@
 	pageContext.setAttribute("signInText", signInText);
 	pageContext.setAttribute("passwordText", passwordText);
 	
+	String searchText = request.getParameter("searchText");
+	if(searchText == null) {
+		searchText = "";
+	}
 %>
 
 
@@ -97,6 +101,15 @@
 	                     </ul>
 	                 </div>
 	                <%} %>
+	           	<% if(session.getAttribute("user") != null) {
+	           	%>
+		             <form class="navbar-form navbar-left" role="search" action="/filterPosts">
+						<div class="form-group">
+							<input type="text" class="form-control" id="searchText" placeholder="Search">
+						</div>
+						<button type="submit" class="btn btn-default">Submit</button>
+					</form>
+				<% } %>
                  <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                      <ul class="nav navbar-nav pull-right">
                          <li class="dropdown">
