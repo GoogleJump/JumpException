@@ -26,9 +26,11 @@ public class Post implements Serializable {
 		}
 	}
 
+	//THIS METHOD IS NOT CAP SENSITIVE
 	public boolean contains(String filter) {
 		// TODO Auto-generated method stub
-		return fbText.contains(filter) || twitterPost.contains(filter) || overallText.contains(filter);
+		filter = filter.toLowerCase();
+		return fbText.toLowerCase().contains(filter) || twitterPost.toLowerCase().contains(filter) || overallText.toLowerCase().contains(filter);
 	}
 	
 	public Date getDate() {

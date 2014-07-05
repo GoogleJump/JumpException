@@ -66,6 +66,7 @@ public class LogIn {
 		    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
 			    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
 			    	user.fillNewsfeed();
+			    	System.out.println("FAIL");
 			    	session.setAttribute("user", user);
 		    		session.setAttribute("logInFailed", "false");
 					try {
