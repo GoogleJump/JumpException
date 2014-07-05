@@ -69,29 +69,29 @@
 								<textarea rows="3" cols= "50" type="text" name="overallText" id="overallText" value="${fn:escapeXml(overallText)}"></textarea>
 							</div>
 							<button class="btn btn-danger btn-outline" type="submit">Post</button>
+							<div class="col-xs-6 col-md-6">
+								<label>Facebook:</label>
+								<input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked" />
+								<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>			
+							</div>
+							<div class="col-xs-6 col-md-6 col-md-offset-6">
+								<label>Twitter:</label>
+								<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked" />
+								<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
+							</div>
 						</form>
 						<p>
 							Individualize:
 						<p>
 						
 						
-						<div class="col-xs-6 col-md-6">
-						<label>Facebook:</label>
-						<input type="checkbox" name="fbCheckbox" id="fbCheckbox"/>
-						<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>			
-					</div>
-					<div class="col-xs-6 col-md-6 col-md-offset-6">
-						<label>Twitter:</label>
-						<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" />
-						<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
-					</div>
+					
 					<div class="col-xs-6 col-md-6 mg-btm-2">
 						<h3>Facebook</h3>
 						<%
 							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curFacebookPost", post.getPost("date"));
-								pageContext.setAttribute("curDatePost", post.getPost("facebook"));
-								System.out.println("OVERALL " + post.getPost("overall") + " Facebook " + post.getPost("facebook"));
+								pageContext.setAttribute("curDatePost", post.getPost("date"));
+								pageContext.setAttribute("curFacebookPost", post.getPost("facebook"));
 						%>
 								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
 								<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
@@ -103,9 +103,8 @@
 						<h3>Twitter</h3>
 						<%
 							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curTwitterPost", post.getPost("twitter"));
 								pageContext.setAttribute("curDatePost", post.getPost("date"));
-								
+								pageContext.setAttribute("curTwitterPost", post.getPost("twitter"));
 						%>
 								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
 								<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>

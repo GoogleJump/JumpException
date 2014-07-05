@@ -47,7 +47,6 @@
 	if(searchTextObj != null) {
 		searchText = searchTextObj.toString();
 	}
-	System.out.println("SEARCHTEXTFILTER " + searchText);
 %>
 
 

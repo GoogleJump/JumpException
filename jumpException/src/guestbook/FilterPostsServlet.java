@@ -13,7 +13,7 @@ public class FilterPostsServlet extends HttpServlet{
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		super.doPost(req, resp);
-		System.out.println("SEARCH TEXT : " + req.getParameter("searchText"));
+//		System.out.println("SEARCH TEXT : " + req.getParameter("searchText"));
 		req.getSession().setAttribute("searchText", req.getParameter("searchText"));
 		resp.sendRedirect("/signedIn.jsp");
 	}
