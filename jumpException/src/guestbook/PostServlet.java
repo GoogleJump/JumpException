@@ -18,14 +18,17 @@ public class PostServlet extends HttpServlet{
 	    Date date = new Date();
 	    ShubUser user = (ShubUser) req.getSession().getAttribute("user");
 	    String overallText = req.getParameter("overallText");
-	    System.out.println("TESTING " + overallText);
+	   
 	    String fbText = req.getParameter("fbText");
-	    System.out.println("TESTING " + fbText);
+
 	    String twitterText = req.getParameter("twitterText");
 	    Entity post = new Entity("Post", user.getKey());
 	    overallText = voidOverallChecking(overallText);
 	    fbText = voidFacebookChecking(fbText, overallText, req);
 	    twitterText = voidTwitterChecking(twitterText, overallText, req);
+	    System.out.println("OVERALL " + overallText);
+	    System.out.println("FB " + fbText);
+	    System.out.println("TWITTER " + twitterText);
 	    post.setProperty("date", date);
 	    post.setProperty("overallPost", overallText);
 	    post.setProperty("fbPost", fbText);
@@ -33,7 +36,7 @@ public class PostServlet extends HttpServlet{
 
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    datastore.put(post);
-	    user.getNewsfeed().add(new Post(date, overallText, fbText, twitterText));
+	    user.getNewsfeed().addFirst(new Post(date, overallText, fbText, twitterText));
 	    try {
 			resp.sendRedirect("/signedIn.jsp");
 		} catch (IOException e) {
@@ -51,10 +54,13 @@ public class PostServlet extends HttpServlet{
 	}
 	
 	private String voidFacebookChecking(Object textObj, Object overallText, HttpServletRequest req) {
-		if(textObj == null) {
-	    	return "";
-	    }
+		String facebookString = "";
+//		if(textObj == null) {
+//	    	return "";
+//	    }
 		
+		
+		System.out.println("FACEBOOK CHECKBOX " + req.getParameter("fbCheckbox"));
 		boolean isFbCheckboxChecked = req.getParameter("fbCheckbox") != null;
 	    if(!isFbCheckboxChecked) {
 	    	textObj = overallText;

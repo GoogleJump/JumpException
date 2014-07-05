@@ -1,6 +1,12 @@
    
  <%@ include file="./header.jsp" %>
-
+<%
+	ShubUser user = (ShubUser) session.getAttribute("user");
+	if(user == null) {
+		response.sendRedirect("/loggingOut");
+		return;
+	}
+%>
 <section id="Settings" class="container content-section text-center">
 
 	<%
@@ -8,6 +14,11 @@
 		pageContext.setAttribute("newPassword", "");
 		pageContext.setAttribute("confirmNewPassword", "");
 	%>
+	<form action="/deleteAccount" method="post">
+		<div>
+			<input type="submit" value="Delete Account" />
+		</div>
+	</form>
 	<form action="/changePassword" method="post">
 		<div>
 			<label id="blah">Current Password:</label>

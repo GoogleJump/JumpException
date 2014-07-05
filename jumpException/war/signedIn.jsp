@@ -1,7 +1,34 @@
 <%String pageName= "signedIn";%>
 
 <%@ include file="./header.jsp" %>
-
+<%
+	ShubUser user = (ShubUser) session.getAttribute("user");
+	if(user == null) {
+		response.sendRedirect("/loggingOut");
+		return;
+	}
+	/*Object searchTextObj = session.getAttribute("searchText");
+	String searchText = "";
+	if(searchTextObj != null) {
+		searchText = searchTextObj.toString();
+	}*/
+	/*
+	Object isFilteredNewsfeedObj = session.getAttribute("isFilteredNewsfeed");
+	String isFilteredNewsfeed = "false";
+	if(isFilteredNewsfeedObj == null) {
+		isFilteredNewsfeed = "false";
+		session.setAttribute("isFilteredNewsfeed", isFilteredNewsfeed);
+	} else {//true
+		isFilteredNewsfeed = isFilteredNewsfeedObj.toString();
+	}
+	Newsfeed newsfeed;
+	if(isFilteredNewsfeed.equals("true")) {
+		newsfeed = new Newsfeed(user.getNewsfeed().getFilteredPosts(session.getAttribute("searchFilter").toString()));
+	} else {
+		newsfeed = user.getNewsfeed();
+	}
+	*/
+%>
 
 <section id="SignedIn" class="container content-section text-center">
         <div class="row">
@@ -13,7 +40,7 @@
 						session.setAttribute("logInFailed", "false");
 						session.setAttribute("logInCreationFailed", "false");
 						session.setAttribute("loggedIn", "true");
-						ShubUser user = (ShubUser) session.getAttribute("user");
+						//ShubUser user = (ShubUser) session.getAttribute("user");
 						String username = user.getUsername();
 						pageContext.setAttribute("username", username);
 						String overallText = "";
@@ -32,11 +59,6 @@
 						<form action="/loggingOut" method="get">
 							<div>
 								<input type="submit" value="Sign Out" />
-							</div>
-						</form>
-						<form action="/deleteAccount" method="post">
-							<div>
-								<input type="submit" value="Delete Account" />
 							</div>
 						</form>
 						<p>
@@ -66,10 +88,12 @@
 					<div class="col-xs-6 col-md-6 mg-btm-2">
 						<h3>Facebook</h3>
 						<%
-							for(Post post : user.getNewsfeed().getAllPosts()) {
-								pageContext.setAttribute("curFacebookPost", post.getPost("overall"));
-								//System.out.println("HELLO " + post.getDate().toString());
+							for(Post post : user.getNewsfeed().getPosts(searchText)) {
+								pageContext.setAttribute("curFacebookPost", post.getPost("date"));
+								pageContext.setAttribute("curDatePost", post.getPost("facebook"));
+								System.out.println("OVERALL " + post.getPost("overall") + " Facebook " + post.getPost("facebook"));
 						%>
+								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
 								<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
 						<%
 							}
@@ -78,9 +102,12 @@
 					<div class="col-xs-6 col-md-6 col-md-offset-6 mg-btm-2">
 						<h3>Twitter</h3>
 						<%
-							for(Post post : user.getNewsfeed().getAllPosts()) {
-												pageContext.setAttribute("curTwitterPost", post.getPost("twitter"));
+							for(Post post : user.getNewsfeed().getPosts(searchText)) {
+								pageContext.setAttribute("curTwitterPost", post.getPost("twitter"));
+								pageContext.setAttribute("curDatePost", post.getPost("date"));
+								
 						%>
+								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
 								<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
 						<%
 							}

@@ -1,31 +1,35 @@
 package guestbook;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Newsfeed implements Serializable {
-	private ArrayList<Post> posts;
+	private LinkedList<Post> posts;
 	
 	public Newsfeed() {
-		posts = new ArrayList<Post>();
+		posts = new LinkedList<Post>();
 	}
 	
-	public void add(Post post) {
-		posts.add(post);
+	public Newsfeed(LinkedList<Post> posts) {
+		this.posts = posts;
 	}
 	
-	public ArrayList<Post> getAllPosts() {
+	public void addFirst(Post post) {
+		posts.addFirst(post);
+	}
+	
+	public LinkedList<Post> getAllPosts() {
 		return posts;
 	}
 	
-	public ArrayList<Post> getFilteredPosts(String filter) {
+	public LinkedList<Post> getPosts(String filter) {
 		if(filter == null || filter.equals("")) {
 			return posts;
 		}
-		ArrayList<Post> filteredPosts = new ArrayList<Post>();
+		LinkedList<Post> filteredPosts = new LinkedList<Post>();
 		for(Post post : posts) {
 			if(post.contains(filter)) {
-				filteredPosts.add(post);
+				filteredPosts.addFirst(post);
 			}
 		}
 		return filteredPosts;

@@ -18,6 +18,7 @@ public class Post implements Serializable {
 	
 	public String getPost(String socialMedia) {
 		switch(socialMedia) {
+			case "date" : return date.toString();
 			case "overall" : return overallText;
 			case "facebook" : return fbText;
 			case "twitter" : return twitterPost;

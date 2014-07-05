@@ -52,17 +52,18 @@ public class ShubUser implements Serializable{
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    // Run an ancestor query to ensure we see the most up-to-date
 	    // view of the Greetings belonging to the selected Guestbook.
-	    Query query = new Query("Post", datastoreKey).addSort("date", Query.SortDirection.DESCENDING);
+	    Query query = new Query("Post", datastoreKey).addSort("date", Query.SortDirection.ASCENDING);
 	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 	    for(Entity entity : entities) {
 	    	Date date = (Date) entity.getProperty("date");
-	    	Object overallObj = entity.getProperty("overallText");
-	    	Object fbObj = entity.getProperty("fbText");
-	    	Object twitterObj = entity.getProperty("twitterText");
+	    	Object overallObj = entity.getProperty("overallPost");
+	    	Object fbObj = entity.getProperty("fbPost");
+	    	Object twitterObj = entity.getProperty("twitterPost");
 	    	String overallText = voidChecking(overallObj);
 	    	String fbText = voidChecking(fbObj);
 	    	String twitterText = voidChecking(twitterObj);
-	    	newsfeed.add(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString()));
+	    	System.out.println("OVERALL: " + overallText.toString() + " FB: " + fbText.toString() + " TWITTER: " + twitterText.toString());
+	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString()));
 	    }
 	}
 	
