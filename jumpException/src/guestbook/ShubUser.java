@@ -62,7 +62,7 @@ public class ShubUser implements Serializable{
 	    	String overallText = voidChecking(overallObj);
 	    	String fbText = voidChecking(fbObj);
 	    	String twitterText = voidChecking(twitterObj);
-//	    	System.out.println("OVERALL: " + overallText.toString() + " FB: " + fbText.toString() + " TWITTER: " + twitterText.toString());
+	    	System.out.println("APP IDS" + entity.getParent());
 	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString()));
 	    }
 	}
