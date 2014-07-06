@@ -26,55 +26,56 @@
 		pageContext.setAttribute("greeting_content",
                 greetings.get(0).getProperty("user"));*/
     %>
-
-	<p>
-		Welcome to Shub!
-	</p>
-
-	<!-- <form action="/practicePage" method="get">
-		<div>
-			<input type="submit" value="You Made It! You Can Go Back Now!" />
-		</div>
-		<input type="hidden" name="guestbookName"
-			 />
-	</form>
-	<form action="/practicePage.jsp" method="post">
-		<div>
-			<input type="text" name="responseText"
+	<div class="shubTheme">
+		<p>
+			Welcome to Shub!
+		</p>
+	
+		<!-- <form action="/practicePage" method="get">
+			<div>
+				<input type="submit" value="You Made It! You Can Go Back Now!" />
+			</div>
+			<input type="hidden" name="guestbookName"
 				 />
-		</div>
-		<div>
-			<input type="submit" value="Post!" />
-		</div>
-	</form>
--->
-	<form action="/loggingIn" method="post">
-		<div>
-			<label>Username:</label>
-			<input type="text" name="signInText"
-				value="${fn:escapeXml(signInText)}" />
-		</div>
-		<div>
-			<label>Password:</label>
-			<input type="text" name="passwordText"
-				value="${fn:escapeXml(passwordText)}" />
-		</div>
-		<div>
-			<input type="submit" value= "Sign in!" />
-		</div>
-	</form>
-<!-- 
-	<button>
-		<a href="#SignUp" classes-"btn btn-primary btn-lg" roles="button">Sign Up!</a>
-	</button>
--->
-	<form action="#SignUp" method="post">
-		<label>Don't have Shub? Go sign up below!</label>
-		<div>
-			<input type= "submit" value = "Sign up!"/>
-		</div>
-	</form>
-
-	<p>
-		${fn:escapeXml(responseText)}
-	</p>
+		</form>
+		<form action="/practicePage.jsp" method="post">
+			<div>
+				<input type="text" name="responseText"
+					 />
+			</div>
+			<div>
+				<input type="submit" value="Post!" />
+			</div>
+		</form>
+	-->
+		<form action="/loggingIn" method="post">
+			<div>
+				<label>Username:</label>
+				<input type="text" name="signInText"
+					value="${fn:escapeXml(signInText)}" />
+			</div>
+			<div>
+				<label>Password:</label>
+				<input type="password" name="passwordText"
+					value="${fn:escapeXml(passwordText)}" />
+			</div>
+			<div>
+				<input type="submit" value= "Sign in!" />
+			</div>
+		</form>
+	<!-- 
+		<button>
+			<a href="#SignUp" classes-"btn btn-primary btn-lg" roles="button">Sign Up!</a>
+		</button>
+	-->
+		<form action="#SignUp" method="post">
+			<label>Don't have Shub? Go sign up below!</label>
+			<div>
+				<input type= "submit" value = "Sign up!"/>
+			</div>
+		</form>
+	
+		<p>
+			${fn:escapeXml(responseText)}
+		</p>
+	</div>

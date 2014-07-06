@@ -25,7 +25,7 @@
 		pageContext.setAttribute("greeting_content",
                 greetings.get(0).getProperty("user"));*/
     %>
-<div class="shubcolor">
+<div class="shubTheme">
 	<p>Special Awesome Page Only for New Users! <br>
 		One time deal per user :D
 	</p>
@@ -55,7 +55,7 @@
 		</div>
 		<div>
 			<label>Password:</label>
-			<input type="text" name="passwordText"
+			<input type="password" name="passwordText"
 				value="${fn:escapeXml(passwordText)}" />
 		</div>
 		<div>
