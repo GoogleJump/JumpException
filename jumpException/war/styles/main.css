@@ -8,10 +8,14 @@
 	background: "#FF99AF"
 }
 
+div.col-lg-8.col-lg-offset-2 {
+	margin-bottom: 10em;
+}
+
 .mainPage {
 	width: 800px;
 	margin:0 auto auto auto;
-	height: 500px;
+	height: 100%;
 	padding:20px;
 	background: rgba(128, 128, 128, 0.7);
 }
@@ -41,6 +45,12 @@ textarea[type="text"] {
 color: black;
 }
 
+div.col-xs-6.col-md-6.mg-btm-2 {
+	position: absolute;
+	bottom: 1em;
+}
+
+/*
 .facebookInfo {
 	margin:auto 400 auto auto;
 }
@@ -48,3 +58,4 @@ color: black;
 .twitterInfo {
 	margin:auto auto auto 400;
 }
+*/

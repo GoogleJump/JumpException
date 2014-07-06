@@ -41,6 +41,14 @@
         <servlet-class>guestbook.PracticePage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>postServlet</servlet-name>
+        <servlet-class>guestbook.PostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filterPosts</servlet-name>
+        <servlet-class>guestbook.FilterPostsServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>guestbook</servlet-name>
         <servlet-class>guestbook.GuestbookServlet</servlet-class>
     </servlet>
@@ -65,6 +73,10 @@
         <url-pattern>/loggingOut</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>postServlet</servlet-name>
+        <url-pattern>/postServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>guestbook</servlet-name>
         <url-pattern>/guestbook</url-pattern>
     </servlet-mapping>
@@ -79,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>logInFail</servlet-name>
         <url-pattern>/logInFail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filterPosts</servlet-name>
+        <url-pattern>/filterPosts</url-pattern>
     </servlet-mapping>
 <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

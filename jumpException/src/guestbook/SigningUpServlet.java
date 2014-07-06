@@ -57,10 +57,11 @@ public class SigningUpServlet extends HttpServlet {
 		    signIn.setProperty("username", signInText);
 //		    //for checking typing password twice
 		    signIn.setProperty("password", passwordText);
-
+		    
 		    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		    datastore.put(signIn);
-		    ShubUser user = new ShubUser(signInText, passwordText, signIn.getKey());
+
+		    ShubUser user = new ShubUser(signInText, passwordText, signIn.getKey(), new Newsfeed());
 
 	    	session.setAttribute("user", user);
 			req.setAttribute("responseText", "You made it!");

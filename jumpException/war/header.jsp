@@ -25,7 +25,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%	
 	
-	 String responseText = request.getParameter("responseText");
+	String responseText = request.getParameter("responseText");
 	if (responseText == null) {
 	    responseText = "";
 	}
@@ -42,6 +42,11 @@
 	pageContext.setAttribute("signInText", signInText);
 	pageContext.setAttribute("passwordText", passwordText);
 	
+	Object searchTextObj = session.getAttribute("searchText");
+	String searchText = "";
+	if(searchTextObj != null) {
+		searchText = searchTextObj.toString();
+	}
 %>
 
 
@@ -97,6 +102,15 @@
 	                     </ul>
 	                 </div>
 	                <%} %>
+	           	<% if(session.getAttribute("user") != null) {
+	           	%>
+		             <form class="navbar-form navbar-left" role="search" action="/filterPosts" method="post">
+						<div class="form-group">
+							<input type="text" class="form-control" name="searchText" id="searchText" placeholder="Search" value="${fn:escapeXml(searchText)}">
+						</div>
+						<button type="submit" class="btn btn-default">Submit</button>
+					</form>
+				<% } %>
                  <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                      <ul class="nav navbar-nav pull-right">
                          <li class="dropdown">
