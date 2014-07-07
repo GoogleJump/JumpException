@@ -1,6 +1,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import = "guestbook.TwitterOAuth" %>
 
 	<%
+		// get the twitter authorization URL
+		TwitterOAuth t = new TwitterOAuth();
+		String authUrl = t.getAuthUrl(request);
+
 		/*String responseText = request.getParameter("responseText");
 	    if (responseText == null) {
 	        responseText = "";
