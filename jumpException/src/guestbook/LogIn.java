@@ -16,7 +16,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 
 public class LogIn {
-
 	private ShubUser user;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
@@ -27,8 +26,7 @@ public class LogIn {
 	}
 	
 	public void doLogIn() {
-		
-		
+
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
 	  	req.setAttribute("logInFailed", "false");
