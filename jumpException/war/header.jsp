@@ -108,7 +108,7 @@
 						<div class="form-group">
 							<input type="text" class="form-control" name="searchText" id="searchText" placeholder="Search" value="${fn:escapeXml(searchText)}">
 						</div>
-						<button type="submit" class="btn btn-default">Submit</button>
+						<button type="submit" class="btn btn-default shubTheme">Submit</button>
 					</form>
 				<% } %>
                  <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
@@ -139,7 +139,7 @@
                                  <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
                                      <form action="/loggingIn" method="post" > <!-- onsubmit="editor.post()" -->
                                          <input type="text" name="signInText" placeholder="Username" value="${fn:escapeXml(signInText)}" />
-                                         <input type="text" name="passwordText" placeholder="*******"	value="${fn:escapeXml(passwordText)}" />
+                                         <input type="password" name="passwordText" placeholder="*******"	value="${fn:escapeXml(passwordText)}" />
                                          <br/>
                                          <input type="hidden" name="uID" value="<%// echo $uID; %>"/>
                                          <button id="submit" type="submit" class="btn btn-primary btn-block" >Login</button>

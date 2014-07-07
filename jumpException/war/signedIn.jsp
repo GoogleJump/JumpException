@@ -31,63 +31,47 @@
 %>
 
 <section id="SignedIn" class="container content-section text-center">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2">
-				
-					<%
-						//Cookie cookie = request.getCookies()[0];
-						//String username = cookie.getValue();
-						session.setAttribute("logInFailed", "false");
-						session.setAttribute("logInCreationFailed", "false");
-						session.setAttribute("loggedIn", "true");
-						//ShubUser user = (ShubUser) session.getAttribute("user");
-						String username = user.getUsername();
-						pageContext.setAttribute("username", username);
-						String overallText = "";
-						String fbText = "";
-						String twitterText = "";
-						pageContext.setAttribute("overallText", overallText);
-						pageContext.setAttribute("fbText", fbText);
-						pageContext.setAttribute("twitterText", twitterText);
-					%>
-				
-				<div class="mainPage">
-					<div> <!-- Top Innerbox -->
-						<p>
-							Hello, ${fn:escapeXml(username)}!
-						<p>
-						<form action="/loggingOut" method="get">
-							<div>
-								<input type="submit" value="Sign Out" />
-							</div>
-						</form>
-						<p>
-							Type and Share!
-						<p>
-						<form action="/postServlet" method="post" onchange="overallTextOnChange()">
-							<div>
-								<textarea rows="3" cols= "50" type="text" name="overallText" id="overallText" value="${fn:escapeXml(overallText)}"></textarea>
-							</div>
-							<button class="btn btn-danger btn-outline" type="submit">Post</button>
-							<div class="col-xs-6 col-md-6">
-								<label>Facebook:</label>
-								<input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked" />
-								<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>			
-							</div>
-							<div class="col-xs-6 col-md-6 col-md-offset-6">
-								<label>Twitter:</label>
-								<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked" />
-								<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
-							</div>
-						</form>
-						<p>
-							Individualize:
-						<p>
-						
-						
-					
-					<div class="col-xs-6 col-md-6 mg-btm-2">
-						<h3>Facebook</h3>
+    <div class="container body">
+        <!--<div class="row"> Top Innerbox -->
+        <div class="post-top">
+            <p>Hello, test!</p>
+            <p></p>
+            <form action="/loggingOut" method="get">
+                <div>
+                    <input type="submit" value="Sign Out">
+                </div>
+            </form>
+            <p>Type and Share!</p>
+            <p></p>
+            <form class="margin-bottom-8em" action="/postServlet" method="post" onchange="overallTextOnChange()">
+                <div>
+                    <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
+                </div>
+                <button class="btn btn-danger btn-outline" type="submit">Post</button>
+                <div class="col-xs-6 col-md-6 mg-btm-2">
+                    <label>Facebook:</label>
+                    <input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked">
+                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbText" id="fbText" value=""></textarea>
+                </div>
+                <div class="col-md-offset-6 col-md-6">
+                    <label>Twitter:</label>
+                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
+                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
+                </div>
+            </form>
+            <p >Individualize:</p>
+            <p></p>
+            <div class="col-xs-6 col-md-6 mg-btm-2">
+				<h3>Facebook</h3>
+			</div>
+			<div class="col-md-offset-6">
+				<h3>Twitter</h3>
+			</div>
+        </div>
+        <div class="post-bottom">
+            <div class="col-xs-6 col-md-6 mg-btm-2">
+                   <!-- FACEBOOK -->
+            
 						<%
 							for(Post post : user.getNewsfeed().getPosts(searchText)) {
 								pageContext.setAttribute("curDatePost", post.getPost("date"));
@@ -98,9 +82,9 @@
 						<%
 							}
 						%>
-					</div>
-					<div class="col-xs-6 col-md-6 col-md-offset-6 mg-btm-2">
-						<h3>Twitter</h3>
+            </div>
+            <div class="col-xs-6 col-md-6 col-md-offset-6 mg-btm-2">
+            	<!-- TWITTER -->
 						<%
 							for(Post post : user.getNewsfeed().getPosts(searchText)) {
 								pageContext.setAttribute("curDatePost", post.getPost("date"));
@@ -111,16 +95,17 @@
 						<%
 							}
 						%>
-					</div>
-					</div><!--  /top innerbox -->
-					
-					<!-- <table>
+            </div>
+        </div>
+    </div>
+    <!-- /top innerbox -->
+    <!-- <table>
 						<tr>
 							<td>
 								<div class="facebookInfo">
 									<label>Facebook:</label>
 									<input type="checkbox" name="fbCheckbox" id="fbCheckbox"/>
-									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value="${fn:escapeXml(fbText)}"></textarea>
+									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "fbText" id="fbText" value=""></textarea>
 									
 								</div>
 							</td>
@@ -128,19 +113,14 @@
 								<div>
 									<label>Twitter:</label>
 									<input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" />
-									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "twitterText" id="twitterText" value="${fn:escapeXml(twitterText)}"></textarea>
+									<textarea class="socialTextArea" rows="4" cols= "30" type="text" name= "twitterText" id="twitterText" value=""></textarea>
 								</div>
 							</td>
 						</tr>
 					</table> -->
-					
-					
-					
-				</div>
-			</div>
-        </div>
-    </section>
-    
+    <!--</div> -->
+</section>
+
 <script>
 	function changePassword() {
 		//var text =  "IT WORKED"

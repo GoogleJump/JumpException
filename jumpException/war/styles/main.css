@@ -4,13 +4,50 @@
     background-color: #00CC7A;
 }*/
 
+.margin-bottom-8em {
+	margin-bottom: 8em;
+}
+
+div.container.body {
+    border-radius: 1em;
+    background: rgba(26, 26, 26, 0.9);
+    position: relative;
+    /* margin-bottom: 10em; */
+    height: auto;
+    /* height: auto; */
+    /* overflow: overlay; */
+}
+div.post-top {
+    position: relative;
+}
+div.post-bottom {
+    position: relative;
+    /* width: initial; */
+    height: 100%;
+    /* overflow-y: visible; */
+    overflow: auto;
+    /* bottom: 2em; */
+}
+
+section#SignedIn {
+    height: auto;
+    position: relative;
+}
+
 .shubcolor {
 	background: "#FF99AF"
 }
 
+.shubTheme {
+	background: #FF99AF;
+}
+
+
 div.col-lg-8.col-lg-offset-2 {
 	margin-bottom: 10em;
 }
+
+
 
 .mainPage {
 	width: 800px;
@@ -27,27 +64,34 @@ div.col-lg-8.col-lg-offset-2 {
 
 #fbCheckbox:checked + #fbText {
 	display:block;
+	width: 90%;
 }
 
 #twitterCheckbox:checked + #twitterText {
 	display:block;
+	width: 90%;
+	margin-left: 1.6em;	
 }
 
-input[type="submit"]  {
-color: black;
+input[type="submit"] {
+	color: black;
 }
 
-input[type="text"]  {
-color: black;
+input[type="text"] {
+	color:black;
+}
+
+input[type="password"]  {
+	color: black;
 }
 
 textarea[type="text"] {
-color: black;
+	color: black;
 }
 
 div.col-xs-6.col-md-6.mg-btm-2 {
 	position: absolute;
-	bottom: 1em;
+	/*bottom: 1em;*/
 }
 
 /*
