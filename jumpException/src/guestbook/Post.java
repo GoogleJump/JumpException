@@ -2,21 +2,48 @@ package guestbook;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Query;
+
+@PersistenceCapable(detachable="true")
 public class Post implements Serializable {
+	
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key key;
+	
+	@Persistent
 	private Date date;
+	
+	@Persistent
 	private String overallText;
+	
+	@Persistent
 	private String fbText;
+	
+	@Persistent
 	private String twitterPost;
 	
-	public Post(Date date, String overallText, String fbText, String twitterText) {
+	public Post(Date date, String overallText, String fbText, String twitterText, Key key) {
 		this.date = date;
 		this.overallText = overallText;
 		this.fbText = fbText;
 		this.twitterPost = twitterText;
+		this.key = key;
 	}
 	
-	public String getPost(String socialMedia) {
+	public String getText(String socialMedia) {
 		switch(socialMedia) {
 			case "date" : return date.toString();
 			case "overall" : return overallText;
@@ -35,5 +62,16 @@ public class Post implements Serializable {
 	
 	public Date getDate() {
 		return date;
+	}
+
+	public boolean delete() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Query query = new Query("Post", key).addSort("date", Query.SortDirection.ASCENDING);
+	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    if(entities.size() == 1) {
+	    		datastore.delete(key);
+	    		return true;
+		}
+	    return false;
 	}
 }

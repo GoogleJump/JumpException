@@ -7,6 +7,8 @@
 		response.sendRedirect("/loggingOut");
 		return;
 	}
+	pageContext.setAttribute("username", user.getUsername());
+
 	/*Object searchTextObj = session.getAttribute("searchText");
 	String searchText = "";
 	if(searchTextObj != null) {
@@ -34,7 +36,7 @@
     <div class="container body">
         <!--<div class="row"> Top Innerbox -->
         <div class="post-top">
-            <p>Hello, test!</p>
+            <p>Hello, ${fn:escapeXml(username)}!</p>
             <p></p>
             <form action="/loggingOut" method="get">
                 <div>
@@ -73,10 +75,14 @@
                    <!-- FACEBOOK -->
             
 						<%
-							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curDatePost", post.getPost("date"));
-								pageContext.setAttribute("curFacebookPost", post.getPost("facebook"));
-						%>
+  							for(Post post : user.getNewsfeed().getPosts(searchText)) {
+								pageContext.setAttribute("curDatePost", post.getText("date"));
+								pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
+  						%>
+								<form action="/deletePost" method="post">
+									<input type="submit" value="X" />
+									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+								</form>
 								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
 								<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
 						<%
@@ -87,9 +93,13 @@
             	<!-- TWITTER -->
 						<%
 							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curDatePost", post.getPost("date"));
-								pageContext.setAttribute("curTwitterPost", post.getPost("twitter"));
+												pageContext.setAttribute("curDatePost", post.getText("date"));
+												pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
 						%>
+								<form action="/deletePost" method="post">
+									<input type="submit" value="X" />
+									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+								</form>
 								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
 								<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
 						<%

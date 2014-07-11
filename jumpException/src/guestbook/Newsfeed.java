@@ -3,7 +3,23 @@ package guestbook;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Newsfeed implements Serializable {
+import javax.jdo.annotations.Element;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.Key;
+
+@PersistenceCapable(detachable="true")
+public class Newsfeed implements Serializable{ 
+	
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key key;
+	
+	@Persistent
+	@Element(dependent="true")
 	private LinkedList<Post> posts;
 	
 	public Newsfeed() {
@@ -33,5 +49,33 @@ public class Newsfeed implements Serializable {
 			}
 		}
 		return filteredPosts;
+	}
+	
+	public Post getPost(String date) {
+		for(Post post : posts) {
+			if(post.getDate().toString().equals(date)) {
+				return post;
+			}
+		}
+		return null;
+	}
+	
+	public boolean removePost(Post post) {
+		if(post.delete()) {
+			return posts.remove(post);
+		} else {
+			return false;
+		}
+	}
+
+	public void setPosts(LinkedList<Post> linkedList) {
+		// TODO Auto-generated method stub
+		this.posts = linkedList;
+	}
+
+	public void delete() {
+		for(Post post : posts) {
+			removePost(post);
+		}
 	}
 }

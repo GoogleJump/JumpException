@@ -3,6 +3,7 @@ package guestbook;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,28 @@ public class PostServlet extends HttpServlet{
 	    String fbText = req.getParameter("fbText");
 
 	    String twitterText = req.getParameter("twitterText");
+	    
+	    //NEW WAY
+//	    overallText = voidOverallChecking(overallText);
+//	    fbText = voidFacebookChecking(fbText, overallText, req);
+//	    twitterText = voidTwitterChecking(twitterText, overallText, req);
+//	    Post post = new Post(date, overallText, fbText, twitterText);
+//	    user.getNewsfeed().addFirst(post);
+//	    PersistenceManager pm = PMF.get().getPersistenceManager();
+//	    try {
+//	    	pm.makePersistent(user);
+//	    } finally {
+//	    	pm.close();
+//	    }
+//	    
+//	    try {
+//			resp.sendRedirect("/signedIn.jsp");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	    
+	    //OLD WAY
 	    Entity post = new Entity("Post", user.getKey());
 	    overallText = voidOverallChecking(overallText);
 	    fbText = voidFacebookChecking(fbText, overallText, req);
@@ -36,7 +59,8 @@ public class PostServlet extends HttpServlet{
 
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    datastore.put(post);
-	    user.getNewsfeed().addFirst(new Post(date, overallText, fbText, twitterText));
+	    user.getNewsfeed().addFirst(new Post(date, overallText, fbText, twitterText, post.getKey()));
+		req.getSession().setAttribute("user", user);
 	    try {
 			resp.sendRedirect("/signedIn.jsp");
 		} catch (IOException e) {

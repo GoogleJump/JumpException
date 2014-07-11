@@ -3,6 +3,7 @@ package guestbook;
 import java.io.IOException;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,24 +26,16 @@ public class DeleteAccountServlet extends HttpServlet {
 	  public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	      throws IOException {
 		  	ShubUser user = (ShubUser) req.getSession().getAttribute("user"); //this should be the username
-		  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		  	Key signInKey = KeyFactory.createKey("SignIn", user.getUsername());
-		  	Query query = new Query("Shub", signInKey);
-		  	List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-		  	for(Entity userInDatabase : userDatabase) {
-//		  		if(!userInDatabase.getKey().toString().equals(user.getKey().toString())) {
-//		  			user.setUsername(user.getKey().toString() + " " + userInDatabase.getKey().toString());
-//		  			resp.sendRedirect("/signedIn.jsp");
-//		  			return;
-//		  		}
-		  		if(userInDatabase.getProperty("username").toString().equals(user.getUsername())) {
-		  			datastore.delete(userInDatabase.getKey());
-		  			req.getSession().invalidate();
-		  			resp.sendRedirect("/index.jsp");
-		  			return;
-		  		}
-		  	}
+		  	
+//NEW PERSISTENCEMANAGER
+//		    PersistenceManager pm = PMF.get().getPersistenceManager();
+//		    pm.deletePersistent(user);
 //		  	req.getSession().invalidate();
-		  	resp.sendRedirect("/signedIn.jsp");		  	
+//		  	resp.sendRedirect("/index.jsp");
+		  	
+//		  	OLD WAY
+		  	user.deleteAccount(req, resp);
+		  	resp.sendRedirect("/index.jsp");
 	  }
+		  	
 }
