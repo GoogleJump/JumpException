@@ -13,6 +13,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
+import twitter4j.auth.AccessToken;
 
 public class ShubUser implements Serializable{
 	
@@ -24,12 +25,13 @@ public class ShubUser implements Serializable{
 	private String password;
 	private Key datastoreKey;
 	private Newsfeed newsfeed;
-
+	
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
 		this.password = password;
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
+		// TODO: add AccessToken to constructor
 	}
 	
 	public String getUsername() {
@@ -129,5 +131,4 @@ public class ShubUser implements Serializable{
 			// TODO Auto-generated method stub
 			this.username = string;
 		}
-	
 }

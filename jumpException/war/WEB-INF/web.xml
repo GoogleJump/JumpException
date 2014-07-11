@@ -52,6 +52,16 @@
         <servlet-name>guestbook</servlet-name>
         <servlet-class>guestbook.GuestbookServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>twitterOAuth</servlet-name>
+        <servlet-class>guestbook.TwitterOAuthServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>twitterPostStatus</servlet-name>
+        <servlet-class>guestbook.TwitterPostStatusServlet</servlet-class>
+    </servlet>
+    
+    
     <servlet-mapping>
         <servlet-name>sign</servlet-name>
         <url-pattern>/sign</url-pattern>
@@ -96,6 +106,15 @@
         <servlet-name>filterPosts</servlet-name>
         <url-pattern>/filterPosts</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>twitterOAuth</servlet-name>
+        <url-pattern>/twitterOAuth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>twitterPostStatus</servlet-name>
+        <url-pattern>/twitterPostStatus</url-pattern>
+    </servlet-mapping>
+    
 <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
