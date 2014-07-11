@@ -29,7 +29,7 @@ public class LogIn {
 
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
-	  	req.setAttribute("logInFailed", "false");
+//	  	req.setAttribute("logInFailed", "false");
 	  	String signInText = req.getParameter("signInText");
     	String passwordText = req.getParameter("passwordText");
     	
@@ -47,6 +47,42 @@ public class LogIn {
 			}
 		    return;
 	    }
+	    
+	  //NEW PERSISTENCEMANAGER
+//	    Key signInKey = KeyFactory.createKey(ShubUser.class.getSimpleName(), signInText);
+//
+//	    PersistenceManager pm = PMF.get().getPersistenceManager();
+//	    
+//	    try {
+//	    	ShubUser user = pm.detachCopy(pm.getObjectById(ShubUser.class, signInKey));//username already defined
+//	    	pm.close();
+////	    	user.getNewsfeed().setPosts(new LinkedList<Post>());
+//	    	if(user.getNewsfeed().getAllPosts() == null) {
+//	    		user.getNewsfeed().setPosts(new LinkedList<Post>());
+//	    	}
+//		    session.setAttribute("user", user);
+//    		session.setAttribute("logInFailed", "false");
+//			try {
+//				resp.sendRedirect("/signedIn.jsp");
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			return;
+//	    } catch(JDOFatalUserException|JDOObjectNotFoundException e) {
+//	    	//user is not in datastore so can create new user :)
+//	    	session.setAttribute("logInFailed", "true");
+//			try {
+//				resp.sendRedirect("/index.jsp");
+//			} catch (IOException ex) {
+//				// TODO Auto-generated catch block
+//				ex.printStackTrace();
+//			}
+//			pm.close();
+//	    }
+//	    return;
+
+	    //OLD WAY
 	    Key signInKey = KeyFactory.createKey("SignIn", signInText);
 	    Query query = new Query("Shub", signInKey);
 	    List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
@@ -54,29 +90,26 @@ public class LogIn {
 //	    cookie.setMaxAge(0);
 //	    cookie.setValue(null);
 //		resp.addCookie(cookie);
-	    if(!userDatabase.isEmpty()) {
-		    for(Entity userInDatabase : userDatabase){   
+	    if(userDatabase.size() == 1) {  //there should be only one username for each user!
 //		    	datastore.delete(userInDatabase.getKey());
 //		    	return;
-		    	String username = signInText.toString();
-		    	String password = passwordText.toString();
-		    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
-		    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
-			    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
-			    	user.fillNewsfeed();
-			    	session.setAttribute("user", user);
-		    		session.setAttribute("logInFailed", "false");
-					try {
-						
-						resp.sendRedirect("/signedIn.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					return;
-		    	}
-
-		    }
+	    	Entity userInDatabase = userDatabase.get(0);
+	    	String username = signInText.toString();
+	    	String password = passwordText.toString();
+	    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
+	    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
+		    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
+		    	user.fillNewsfeed();
+		    	session.setAttribute("user", user);
+	    		session.setAttribute("logInFailed", "false");
+				try {
+					resp.sendRedirect("/signedIn.jsp");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+	    	}
 	    }
     	session.setAttribute("logInFailed", "true");
 	    try {

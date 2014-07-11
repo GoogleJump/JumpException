@@ -13,6 +13,10 @@
         <servlet-class>guestbook.LoggingOutServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>deletePost</servlet-name>
+        <servlet-class>guestbook.DeletePostServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>signingUp</servlet-name>
         <servlet-class>guestbook.SigningUpServlet</servlet-class>
     </servlet>
@@ -69,6 +73,10 @@
     <servlet-mapping>
         <servlet-name>deleteAccount</servlet-name>
         <url-pattern>/deleteAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deletePost</servlet-name>
+        <url-pattern>/deletePost</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>practicePage</servlet-name>

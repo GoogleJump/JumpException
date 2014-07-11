@@ -1,8 +1,12 @@
 package guestbook;
 
 import java.io.IOException;
+
 import java.util.List;
 
+import javax.jdo.JDOFatalUserException;
+import javax.jdo.JDOObjectNotFoundException;
+import javax.jdo.PersistenceManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +22,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import guestbook.PMF;
 //import com.google.appengine.labs.repackaged.org.json.Cookie;
 
 
@@ -38,7 +43,43 @@ public class SigningUpServlet extends HttpServlet {
 		  		resp.sendRedirect("/index.jsp");
 		  		return;
 		  	}
+		    
+		    
+//		    //NEW PERSISTENCEMANAGER
+//		  	Key signInKey = KeyFactory.createKey(ShubUser.class.getSimpleName(), signInText);
+//		    PersistenceManager pm = PMF.get().getPersistenceManager();
+//		    try {
+//		    	pm.getObjectById(ShubUser.class, signInKey);//username already defined
+//		    	session.setAttribute("logInCreationFailed", "true");
+//				resp.sendRedirect("/index.jsp");
+//				pm.close();
+//				return;
+//		    } catch(JDOFatalUserException|JDOObjectNotFoundException e) {
+//		    	//user is not in datastore so can create new user :)
+//		  		session.setAttribute("logInCreationFailed", "false");
+//			    ShubUser user = new ShubUser(signInText, passwordText, signInKey, new Newsfeed());
+//			    try {
+//			    	pm.makePersistent(user);
+//			    	user = pm.detachCopy(user);
+//			    } finally {
+//			    	pm.close();
+//			    }
+//		    	session.setAttribute("user", user);
+//			    resp.sendRedirect("/signedIn.jsp");
+//		    }
+//		    return;
+//		    if(user != null) {
+//		    	System.out.println("NOT NULL " + user.getUsername());
+//		    } else {
+//		    	System.out.println("NULL ");
+//
+//		    }
+//		    return;
+		    
+		    
+//			OLD WAY
 		    Key signInKey = KeyFactory.createKey("SignIn", signInText);
+
 		    Query query = new Query("Shub", signInKey);
 
 		    List<Entity> usersInDatastore = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));

@@ -7,31 +7,45 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
-import twitter4j.auth.AccessToken;
 
-public class ShubUser implements Serializable{
+@PersistenceCapable(detachable="true")
+public class ShubUser implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6791653357365117438L;
+	@Persistent
 	private String username;
-	private String password;
-	private Key datastoreKey;
-	private Newsfeed newsfeed;
 	
+	@Persistent
+	private String password;
+	
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key datastoreKey;
+	
+	@Persistent(dependent="true")
+	private Newsfeed newsfeed;
+
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
 		this.password = password;
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
-		// TODO: add AccessToken to constructor
 	}
 	
 	public String getUsername() {
@@ -64,8 +78,7 @@ public class ShubUser implements Serializable{
 	    	String overallText = voidChecking(overallObj);
 	    	String fbText = voidChecking(fbObj);
 	    	String twitterText = voidChecking(twitterObj);
-	    	System.out.println("APP IDS" + entity.getParent());
-	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString()));
+	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), entity.getKey()));
 	    }
 	}
 	
@@ -90,6 +103,10 @@ public class ShubUser implements Serializable{
 	public void setPassword(String confirmNewPassword) {
 		// TODO Auto-generated method stub
 		this.password = confirmNewPassword;
+	}
+	
+	public void setKey(Key key) {
+		this.datastoreKey = key;
 	}
 
 	private boolean arePasswordsUsable(String curPassword, String newPassword,
@@ -131,4 +148,70 @@ public class ShubUser implements Serializable{
 			// TODO Auto-generated method stub
 			this.username = string;
 		}
+
+		public void deleteAccount(HttpServletRequest req, HttpServletResponse resp) {
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+//		  	Key signInKey = KeyFactory.createKey("SignIn", user.getUsername());
+//		  	Query query = new Query("Shub", datastoreKey);
+//		  	List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+//		  	if(userDatabase.size() == 1) { //there should only be one
+//		  		if(!userInDatabase.getKey().toString().equals(user.getKey().toString())) {
+//		  			user.setUsername(user.getKey().toString() + " " + userInDatabase.getKey().toString());
+//		  			resp.sendRedirect("/signedIn.jsp");
+//		  			return;
+//		  		}
+
+//		  		if(userInDatabase.getProperty("username").toString().equals(user.getUsername())) {
+		  			newsfeed.delete();
+		  			datastore.delete(datastoreKey);
+		  			req.getSession().invalidate();
+		  			try {
+						resp.sendRedirect("/index.jsp");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		  			return;
+//		  		}
+//		  	}
+		  	
+		  	//IF THIS EVER OCCURS IT IS AN ERROR. EVENTUALLY SOMETHING SHOULD BE DONE
+//		  	req.getSession().invalidate();
+//		  	try {
+//				resp.sendRedirect("/index.jsp");
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}		  	
+		}
+		
+		public boolean deletePost(HttpServletRequest req, HttpServletResponse resp, Post post) {
+			if(post == null) {
+				String date = req.getParameter("hiddenDate").toString();
+				post = newsfeed.getPost(date);
+			}
+			newsfeed.removePost(post);
+			req.getSession().setAttribute("user", this);
+//			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+//			Query query = new Query("Post", datastoreKey).addSort("date", Query.SortDirection.ASCENDING);
+//		    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+//		    for(Entity entity : entities) {
+//		    	if(entity.getProperty("date").equals(post.getDate())) {
+//		    		datastore.delete(entity.getKey());
+//		    		newsfeed.removePost(post);
+//		    		req.getSession().setAttribute("user", this);
+//		    	}
+//			}
+			try {
+				resp.sendRedirect("/signedIn.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		}
+
+		
+		
+
 }
