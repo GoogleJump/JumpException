@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -20,9 +19,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
-import twitter4j.auth.AccessToken;
 
 @PersistenceCapable(detachable="true")
 public class ShubUser implements Serializable {
@@ -43,13 +40,12 @@ public class ShubUser implements Serializable {
 	
 	@Persistent(dependent="true")
 	private Newsfeed newsfeed;
-	
+
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
 		this.password = password;
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
-		// TODO: add AccessToken to constructor
 	}
 	
 	public String getUsername() {
@@ -152,7 +148,6 @@ public class ShubUser implements Serializable {
 			// TODO Auto-generated method stub
 			this.username = string;
 		}
-<<<<<<< HEAD
 
 		public void deleteAccount(HttpServletRequest req, HttpServletResponse resp) {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -216,9 +211,7 @@ public class ShubUser implements Serializable {
 			return true;
 		}
 
-
 		
-
-
+		
 
 }
