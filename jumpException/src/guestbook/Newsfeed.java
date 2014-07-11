@@ -74,8 +74,8 @@ public class Newsfeed implements Serializable{
 	}
 
 	public void delete() {
-		for(Post post : posts) {
-			removePost(post);
+		while(posts.size() != 0) {
+			removePost(posts.get(0));
 		}
 	}
 }
