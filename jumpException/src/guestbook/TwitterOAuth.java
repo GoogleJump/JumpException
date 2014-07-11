@@ -5,34 +5,28 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+import twitter4j.Status;
+import twitter4j.User;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
+
 
 public class TwitterOAuth {
 	public TwitterOAuth() {}
-	public String getAuthUrl(HttpServletRequest request) {
-		// create twitter instance, set API keys
+	public void setAccessToken(HttpServletRequest request, HttpSession session) {
 		Twitter twitter = new TwitterFactory().getInstance();
-		twitter.setOAuthConsumer("9y0uovmQ2KncyOs0cDnb2jsA5", "0Jw2R2GZAkX6lugrSBq1AHwMJebIL867u2JhyLZJ8sCkmW7n1L"); 
-		RequestToken requestToken = null; 
-		String authUrl = null; 
-		// get and store request token and authorization URL
-		try { 
-			requestToken = twitter.getOAuthRequestToken(); 
-				if (requestToken!=null) { 
-					HttpSession session = request.getSession(); 
-					String token = requestToken.getToken(); 
-					String tokenSecret = requestToken.getTokenSecret(); 
-					session.setAttribute("TOKEN_ATTRIBUTE", token); 
-					session.setAttribute("TOKEN_SECRET_ATTRIBUTE", tokenSecret); 
-					authUrl = requestToken.getAuthorizationURL(); 
-				} 
-		} catch (TwitterException e) { 
-            e.printStackTrace(); 
-        }
-		return authUrl;
+		twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
+		AccessToken accessToken = null;
+		try {
+			String token = (String) session.getAttribute("token");
+			String tokenSecret = (String) session.getAttribute("tokenSecret");
+			String oauth_verifier = request.getParameter("oauth_verifier");
+			accessToken = twitter.getOAuthAccessToken(new RequestToken(token, tokenSecret), oauth_verifier);
+			session.setAttribute("twitterToken", token);
+			session.setAttribute("twitterSecret", tokenSecret);
+			twitter.updateStatus("hi");
+		} catch (TwitterException e) {}
 	}
+
 
 }

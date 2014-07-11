@@ -43,6 +43,11 @@
                     <input type="submit" value="Sign Out">
                 </div>
             </form>
+            <form action="/twitterPostStatus" method="post">
+				<div>
+					<input type="submit" value="Say Hi to Twitter!" />
+				</div>
+			</form>
             <p>Type and Share!</p>
             <p></p>
             <form class="margin-bottom-8em" action="/postServlet" method="post" onchange="overallTextOnChange()">
@@ -68,7 +73,7 @@
 			</div>
 			<div class="col-md-offset-6">
 				<h3>Twitter</h3>
-			</div>
+			</div>						
         </div>
         <div class="post-bottom">
             <div class="col-xs-6 col-md-6 mg-btm-2">
