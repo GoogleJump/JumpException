@@ -212,6 +212,58 @@ public class ShubUser implements Serializable {
 		}
 
 		
+		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) {
+			Date date = new Date();
+		    
+		    Entity post = new Entity("Post", datastoreKey);
+		    overallText = voidOverallChecking(overallText);
+		    fbText = voidFacebookChecking(fbText, overallText, req);
+		    twitterText = voidTwitterChecking(twitterText, overallText, req);
+		    
+		    post.setProperty("date", date);
+		    post.setProperty("overallPost", overallText);
+		    post.setProperty("fbPost", fbText);
+		    post.setProperty("twitterPost", twitterText);
+
+		    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		    datastore.put(post);
+		    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, post.getKey()));
+			req.getSession().setAttribute("user", this);
+		    try {
+				resp.sendRedirect("/signedIn.jsp");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
+		private String voidOverallChecking(Object textObj) {
+			if(textObj == null) {
+		    	return "";
+		    }
+			return textObj.toString();
+		}
+		
+		private String voidFacebookChecking(Object textObj, Object overallText, HttpServletRequest req) {
+			System.out.println("FACEBOOK CHECKBOX " + req.getParameter("fbCheckbox"));
+			boolean isFbCheckboxChecked = req.getParameter("fbCheckbox") != null;
+		    if(!isFbCheckboxChecked) {
+		    	textObj = overallText;
+		    } else if(textObj == null){
+		    	return "";
+		    }
+			return textObj.toString();
+		}
+		
+		private String voidTwitterChecking(Object textObj, Object overallText, HttpServletRequest req) {
+			System.out.println("TWITTER CHECKBOX " + req.getParameter("twitterCheckbox"));
+			boolean isTwitterCheckboxChecked = req.getParameter("twitterCheckbox") != null;
+		    if(!isTwitterCheckboxChecked) {
+		    	textObj = overallText;
+		    } else if(textObj == null){
+		    	return "";
+		    }
+			
+			return textObj.toString();
+		}
 
 }
