@@ -39,6 +39,12 @@ public class PlusSampleAuthCallbackServlet extends HttpServlet {
       throws IOException, ServletException {
     // Note that this implementation does not handle the user denying authorization.
     GoogleAuthorizationCodeFlow authFlow = Utils.initializeFlow();
+    
+    //if null then authorization was denied
+    if(req.getParameter("code") == null) {
+    	resp.sendRedirect("/index.html");
+    	return;
+    }
     // Exchange authorization code for user credentials.
     GoogleTokenResponse tokenResponse = authFlow.newTokenRequest(req.getParameter("code"))
         .setRedirectUri(Utils.getRedirectUri(req)).execute();
