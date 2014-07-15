@@ -14,6 +14,8 @@ import javax.jdo.annotations.PrimaryKey;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import twitter4j.auth.AccessToken;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -40,6 +42,8 @@ public class ShubUser implements Serializable {
 	
 	@Persistent(dependent="true")
 	private Newsfeed newsfeed;
+	
+	private AccessToken twitterAccessToken;
 
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
@@ -264,6 +268,36 @@ public class ShubUser implements Serializable {
 		    }
 			
 			return textObj.toString();
+		}
+
+		public void setTwitterToken(String accessTokenString,
+				String accessTokenSecret) {
+			// TODO Auto-generated method stub
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+			Entity entity = null;
+			if(twitterAccessToken != null) {
+				Query query = new Query("TwitterAccessToken", datastoreKey);
+			    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+			    if(entities.size() == 1) {
+			    		entity = entities.get(0);
+				} else {
+					//ERROR
+					return;
+				}
+			} else {
+				entity = new Entity("TwitterAccessToken", datastoreKey);
+
+			}
+			entity.setProperty("accessToken", twitterAccessToken.getToken());
+			entity.setProperty("accessTokenSecret", twitterAccessToken.getTokenSecret());
+			datastore.put(entity);
+			
+			twitterAccessToken = new AccessToken(accessTokenString, accessTokenSecret);
+		}
+		
+		public AccessToken getTwitterAccessToken() {
+			return twitterAccessToken;
 		}
 
 }
