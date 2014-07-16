@@ -50,6 +50,7 @@ public class ShubUser implements Serializable {
 		this.password = password;
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
+		this.twitterAccessToken = null;
 	}
 	
 	public String getUsername() {
@@ -287,10 +288,9 @@ public class ShubUser implements Serializable {
 				}
 			} else {
 				entity = new Entity("TwitterAccessToken", datastoreKey);
-
 			}
-			entity.setProperty("accessToken", twitterAccessToken.getToken());
-			entity.setProperty("accessTokenSecret", twitterAccessToken.getTokenSecret());
+			entity.setProperty("accessToken", accessTokenString);
+			entity.setProperty("accessTokenSecret", accessTokenSecret);
 			datastore.put(entity);
 			
 			twitterAccessToken = new AccessToken(accessTokenString, accessTokenSecret);
@@ -298,6 +298,24 @@ public class ShubUser implements Serializable {
 		
 		public AccessToken getTwitterAccessToken() {
 			return twitterAccessToken;
+		}
+
+		public void fillAccessTokens() {
+			// TODO Auto-generated method stub
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+			//TwitterTokens
+			Query query = new Query("TwitterAccessToken", datastoreKey);
+		    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+		    if(entities.size() == 1) {
+		    		Entity entity = entities.get(0);
+		    		twitterAccessToken = new AccessToken(entity.getProperty("accessToken").toString(), entity.getProperty("accessTokenSecret").toString());
+			} else {
+				//No Token
+				return;
+			}
+		    
+		    //FacebookTokens
 		}
 
 }

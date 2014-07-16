@@ -14,11 +14,18 @@
 		pageContext.setAttribute("newPassword", "");
 		pageContext.setAttribute("confirmNewPassword", "");
 	%>
-	<form action="/twitterOAuth" method="post">
-		<div>
-			<input type="submit" value="Connect Twitter Account" />
-		</div>
-	</form>
+	<% if(user.getTwitterAccessToken() == null) { %>
+		<form action="/twitterOAuth" method="post">
+			<div>
+				<input type="submit" value="Connect Twitter Account" />
+			</div>
+		</form>
+	<% } else { %>
+		<p>
+			YOU ARE CONNECTED TO TWITTER
+		</p>
+	<% } %>
+	
 	<form action="/deleteAccount" method="post">
 		<div>
 			<input type="submit" value="Delete Account" />
