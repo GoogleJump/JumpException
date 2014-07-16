@@ -6,8 +6,10 @@
 		response.sendRedirect("/loggingOut");
 		return;
 	}
+	pageContext.setAttribute("sectionWithDynamicBackgroundImage", "container content-section text-center " + user.getBackgroundImage());
+
 %>
-<section id="Settings" class="container content-section text-center">
+<section id="Settings" class="${fn:escapeXml(sectionWithDynamicBackgroundImage)}">
 
 	<%
 		pageContext.setAttribute("curPassword", "");
@@ -25,7 +27,14 @@
 			YOU ARE CONNECTED TO TWITTER
 		</p>
 	<% } %>
-	
+	<form action="/updateBackgroundImageServlet" method="post">
+		<p>Background Photo</p>
+		<div>
+			<input type="radio" name="backgroundImage" value="backgroundImage_FlowersAndSky" checked/>Default</br>
+			<input type="radio" name="backgroundImage" value="backgroundImage_Grassbells" />Default2</br>
+			<input type="submit" value="Save Background Image" />
+		</div>
+	</form>
 	<form action="/deleteAccount" method="post">
 		<div>
 			<input type="submit" value="Delete Account" />
@@ -47,8 +56,6 @@
 			<input type="text" name="confirmNewPassword"
 				value="${fn:escapeXml(confirmNewPassword)}" />
 		</div>
-	
-	
 		<div>
 			<input type="submit" value="Change Password"/>
 		</div>
