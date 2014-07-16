@@ -99,6 +99,7 @@ public class LogIn {
 	    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
 	    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
 		    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
+		    	user.fillAccessTokens();
 		    	user.fillNewsfeed();
 		    	session.setAttribute("user", user);
 	    		session.setAttribute("logInFailed", "false");
