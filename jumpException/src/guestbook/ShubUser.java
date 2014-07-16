@@ -43,6 +43,8 @@ public class ShubUser implements Serializable {
 	@Persistent(dependent="true")
 	private Newsfeed newsfeed;
 	
+	private String backgroundImage;
+	
 	private AccessToken twitterAccessToken;
 
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
@@ -51,6 +53,7 @@ public class ShubUser implements Serializable {
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
 		this.twitterAccessToken = null;
+		this.backgroundImage = "backgroundImage_FlowersAndSky";//default backgound image
 	}
 	
 	public String getUsername() {
@@ -67,6 +70,10 @@ public class ShubUser implements Serializable {
 	
 	public Newsfeed getNewsfeed() {
 		return newsfeed;
+	}
+	
+	public String getBackgroundImage() {
+		return backgroundImage;
 	}
 	
 	public void fillNewsfeed() {
@@ -316,6 +323,12 @@ public class ShubUser implements Serializable {
 			}
 		    
 		    //FacebookTokens
+		    
+		}
+
+		public void setBackgroundImage(String backgroundImage) {
+			// TODO Auto-generated method stub
+			this.backgroundImage = backgroundImage;
 		}
 
 }

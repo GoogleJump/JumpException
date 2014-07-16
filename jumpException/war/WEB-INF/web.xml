@@ -64,8 +64,15 @@
         <servlet-name>twitterPostStatus</servlet-name>
         <servlet-class>guestbook.TwitterPostStatusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateBackgroundImageServlet</servlet-name>
+        <servlet-class>guestbook.UpdateBackgroundImageServlet</servlet-class>
+    </servlet>
     
-    
+    <servlet-mapping>
+        <servlet-name>updateBackgroundImageServlet</servlet-name>
+        <url-pattern>/updateBackgroundImageServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>sign</servlet-name>
         <url-pattern>/sign</url-pattern>

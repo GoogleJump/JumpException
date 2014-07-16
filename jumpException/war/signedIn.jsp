@@ -8,6 +8,7 @@
 		return;
 	}
 	pageContext.setAttribute("username", user.getUsername());
+	pageContext.setAttribute("sectionWithDynamicBackgroundImage", "container content-section text-center " + user.getBackgroundImage());
 
 	/*Object searchTextObj = session.getAttribute("searchText");
 	String searchText = "";
@@ -32,7 +33,7 @@
 	*/
 %>
 
-<section id="SignedIn" class="container content-section text-center">
+<section id="SignedIn" class="${fn:escapeXml(sectionWithDynamicBackgroundImage)}">
     <div class="container body">
         <!--<div class="row"> Top Innerbox -->
         <div class="post-top">

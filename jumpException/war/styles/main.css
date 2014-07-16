@@ -4,6 +4,14 @@
     background-color: #00CC7A;
 }*/
 
+.backgroundImage_FlowersAndSky {
+	background: url("./img/flowers_and_sky.jpg");
+}
+
+.backgroundImage_Grassbells {
+	background: url("./img/grassbells.jpg");
+}
+
 .margin-bottom-8em {
 	margin-bottom: 8em;
 }
