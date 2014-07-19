@@ -49,6 +49,11 @@
 					<input type="submit" value="Say Hi to Twitter!" />
 				</div>
 			</form>
+			<form action="/facebookPostStatus" method="post">
+				<div>
+					<input type="submit" value="Say Hi to Facebook!" />
+				</div>
+			</form>
             <p>Type and Share!</p>
             <p></p>
             <form class="margin-bottom-8em" action="/postServlet" method="post" onchange="overallTextOnChange()">
