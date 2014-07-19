@@ -33,13 +33,16 @@ public class Post implements Serializable {
 	private String fbText;
 	
 	@Persistent
-	private String twitterPost;
+	private String twitterText;
 	
-	public Post(Date date, String overallText, String fbText, String twitterText, Key key) {
+	private long twitterPostId;
+	
+	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key) {
 		this.date = date;
 		this.overallText = overallText;
 		this.fbText = fbText;
-		this.twitterPost = twitterText;
+		this.twitterText = twitterText;
+		this.twitterPostId = twitterPostId;
 		this.key = key;
 	}
 	
@@ -48,7 +51,7 @@ public class Post implements Serializable {
 			case "date" : return date.toString();
 			case "overall" : return overallText;
 			case "facebook" : return fbText;
-			case "twitter" : return twitterPost;
+			case "twitter" : return twitterText;
 			default : return "ERROR";//error
 		}
 	}
@@ -57,7 +60,7 @@ public class Post implements Serializable {
 	public boolean contains(String filter) {
 		// TODO Auto-generated method stub
 		filter = filter.toLowerCase();
-		return fbText.toLowerCase().contains(filter) || twitterPost.toLowerCase().contains(filter) || overallText.toLowerCase().contains(filter);
+		return fbText.toLowerCase().contains(filter) || twitterText.toLowerCase().contains(filter) || overallText.toLowerCase().contains(filter);
 	}
 	
 	public Date getDate() {

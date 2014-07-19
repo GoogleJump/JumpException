@@ -14,6 +14,10 @@ import javax.jdo.annotations.PrimaryKey;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -87,10 +91,11 @@ public class ShubUser implements Serializable {
 	    	Object overallObj = entity.getProperty("overallPost");
 	    	Object fbObj = entity.getProperty("fbPost");
 	    	Object twitterObj = entity.getProperty("twitterPost");
+	    	long twitterPostId = (long) entity.getProperty("twitterPostId");
 	    	String overallText = voidChecking(overallObj);
 	    	String fbText = voidChecking(fbObj);
 	    	String twitterText = voidChecking(twitterObj);
-	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), entity.getKey()));
+	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), twitterPostId, entity.getKey()));
 	    }
 	}
 	
@@ -223,6 +228,19 @@ public class ShubUser implements Serializable {
 			return true;
 		}
 
+		public long twitterPost(String twitterText) {
+			Twitter twitter = new TwitterFactory().getInstance();
+			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
+			Status status = null;
+			try {
+				if(twitterAccessToken != null) {
+					twitter.setOAuthAccessToken(twitterAccessToken);
+					status = twitter.updateStatus(twitterText);
+				}
+			} catch (TwitterException e) {}
+			if (status == null) return -1;
+			else return status.getId();
+		}
 		
 		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) {
 			Date date = new Date();
@@ -231,15 +249,17 @@ public class ShubUser implements Serializable {
 		    overallText = voidOverallChecking(overallText);
 		    fbText = voidFacebookChecking(fbText, overallText, req);
 		    twitterText = voidTwitterChecking(twitterText, overallText, req);
-		    
+		    long twitterPostId = twitterPost(twitterText);
+
 		    post.setProperty("date", date);
 		    post.setProperty("overallPost", overallText);
 		    post.setProperty("fbPost", fbText);
 		    post.setProperty("twitterPost", twitterText);
-
+		    post.setProperty("twitterPostId", twitterPostId);
+		    
 		    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		    datastore.put(post);
-		    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, post.getKey()));
+		    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey()));
 			req.getSession().setAttribute("user", this);
 		    try {
 				resp.sendRedirect("/signedIn.jsp");
