@@ -68,6 +68,22 @@
         <servlet-name>updateBackgroundImageServlet</servlet-name>
         <servlet-class>guestbook.UpdateBackgroundImageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>facebookOAuth</servlet-name>
+        <servlet-class>guestbook.FacebookOAuthServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SignInServlet</servlet-name>
+        <servlet-class>guestbook.SignInServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>facebookPostStatus</servlet-name>
+        <servlet-class>guestbook.FacebookPostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostFacebookFinal</servlet-name>
+        <servlet-class>guestbook.PostFacebookFinal</servlet-class>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>updateBackgroundImageServlet</servlet-name>
@@ -126,8 +142,24 @@
         <url-pattern>/twitterOAuth</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>facebookOAuth</servlet-name>
+        <url-pattern>/facebookOAuth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SignInServlet</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>twitterPostStatus</servlet-name>
         <url-pattern>/twitterPostStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>facebookPostStatus</servlet-name>
+        <url-pattern>/facebookPostStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostFacebookFinal</servlet-name>
+        <url-pattern>/facebookPostFinal</url-pattern>
     </servlet-mapping>
     
 <welcome-file-list>

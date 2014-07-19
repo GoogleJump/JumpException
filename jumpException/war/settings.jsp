@@ -27,6 +27,11 @@
 			YOU ARE CONNECTED TO TWITTER
 		</p>
 	<% } %>
+	<form action="/facebookOAuth" method="post">
+		<div>
+			<input type="submit" value="Connect Facebook Account" />
+		</div>
+	</form>
 	<form action="/updateBackgroundImageServlet" method="post">
 		<p>Background Photo</p>
 		<div>
