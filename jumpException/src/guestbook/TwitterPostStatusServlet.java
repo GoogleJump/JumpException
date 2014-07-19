@@ -33,6 +33,7 @@ public class TwitterPostStatusServlet extends HttpServlet {
 			if(twitterAccessToken != null) {
 				twitter.setOAuthAccessToken(user.getTwitterAccessToken());
 				twitter.updateStatus("hi");
+				
 			}
 		} catch (TwitterException e) {}
 //		req.getSession().setAttribute("twitterToken", token);

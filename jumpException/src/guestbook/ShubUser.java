@@ -312,18 +312,15 @@ public class ShubUser implements Serializable {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 			//TwitterTokens
-			Query query = new Query("TwitterAccessToken", datastoreKey);
-		    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+			Query queryTwitter = new Query("TwitterAccessToken", datastoreKey);
+		    List<Entity> entities = datastore.prepare(queryTwitter).asList(FetchOptions.Builder.withLimit(100));
 		    if(entities.size() == 1) {
 		    		Entity entity = entities.get(0);
 		    		twitterAccessToken = new AccessToken(entity.getProperty("accessToken").toString(), entity.getProperty("accessTokenSecret").toString());
-			} else {
-				//No Token
-				return;
-			}
+			} 
 		    
 		    //FacebookTokens
-		    
+		 
 		}
 
 		public void setBackgroundImage(String backgroundImage) {
