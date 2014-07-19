@@ -1,5 +1,6 @@
 package guestbook;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,12 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.servlet.http.HttpServletResponse;
+
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -67,14 +74,29 @@ public class Post implements Serializable {
 		return date;
 	}
 
-	public boolean delete() {
+	public boolean delete(AccessToken twitterAccessToken) throws IOException {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Query query = new Query("Post", key).addSort("date", Query.SortDirection.ASCENDING);
 	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 	    if(entities.size() == 1) {
+		    	deleteTwitterPost(twitterAccessToken);
 	    		datastore.delete(key);
 	    		return true;
 		}
 	    return false;
+	}
+
+	private void deleteTwitterPost(AccessToken twitterAccessToken) throws IOException {
+		if(twitterPostId != -1) {
+			Twitter twitter = new TwitterFactory().getInstance();
+			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2");
+			twitter.setOAuthAccessToken(twitterAccessToken);
+			try {
+				twitter.destroyStatus(twitterPostId);
+			} catch (TwitterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

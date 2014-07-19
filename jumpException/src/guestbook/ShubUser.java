@@ -27,9 +27,9 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 
-import facebook4j.Facebook;
-import facebook4j.FacebookException;
-import facebook4j.FacebookFactory;
+//import facebook4j.Facebook;
+//import facebook4j.FacebookException;
+//import facebook4j.FacebookFactory;
 
 @PersistenceCapable(detachable="true")
 public class ShubUser implements Serializable {
@@ -55,7 +55,7 @@ public class ShubUser implements Serializable {
 	
 	private AccessToken twitterAccessToken;
 	
-	private facebook4j.auth.AccessToken facebookAccessToken;
+//	private facebook4j.auth.AccessToken facebookAccessToken;
 
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
@@ -63,7 +63,7 @@ public class ShubUser implements Serializable {
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
 		this.twitterAccessToken = null;
-		this.facebookAccessToken = null;
+//		this.facebookAccessToken = null;
 		this.backgroundImage = "backgroundImage_FlowersAndSky";//default backgound image
 	}
 	
@@ -209,12 +209,12 @@ public class ShubUser implements Serializable {
 //			}		  	
 		}
 		
-		public boolean deletePost(HttpServletRequest req, HttpServletResponse resp, Post post) {
+		public boolean deletePost(HttpServletRequest req, HttpServletResponse resp, Post post) throws IOException {
 			if(post == null) {
 				String date = req.getParameter("hiddenDate").toString();
 				post = newsfeed.getPost(date);
 			}
-			newsfeed.removePost(post);
+			newsfeed.removePost(post, twitterAccessToken);
 			req.getSession().setAttribute("user", this);
 //			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 //			Query query = new Query("Post", datastoreKey).addSort("date", Query.SortDirection.ASCENDING);
@@ -235,14 +235,26 @@ public class ShubUser implements Serializable {
 			return true;
 		}
 
-		public long twitterPost(String twitterText) {
+		public long twitterPost(String twitterText, HttpServletResponse resp) {
 			Twitter twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
 			Status status = null;
+			System.out.println("twitterPost");
 			try {
+
 				if(twitterAccessToken != null) {
 					twitter.setOAuthAccessToken(twitterAccessToken);
 					status = twitter.updateStatus(twitterText);
+					try {
+						resp.getWriter().println("status id is " + status.getId());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("status id is " + status.getId());
+				} else {
+					System.out.println("twitter accesstoken null");
+
 				}
 			} catch (TwitterException e) {}
 			if (status == null) return -1;
@@ -251,12 +263,13 @@ public class ShubUser implements Serializable {
 		
 		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) {
 			Date date = new Date();
-		    
+			System.out.println("twitterPost");
+			long twitterPostId = twitterPost(twitterText, resp);
 		    Entity post = new Entity("Post", datastoreKey);
 		    overallText = voidOverallChecking(overallText);
 		    fbText = voidFacebookChecking(fbText, overallText, req);
-		    twitterText = voidTwitterChecking(twitterText, overallText, req);
-		    long twitterPostId = twitterPost(twitterText);
+		    twitterText = voidTwitterChecking(twitterText, overallText, twitterPostId, req);
+		    
 
 		    post.setProperty("date", date);
 		    post.setProperty("overallPost", overallText);
@@ -293,15 +306,19 @@ public class ShubUser implements Serializable {
 			return textObj.toString();
 		}
 		
-		private String voidTwitterChecking(Object textObj, Object overallText, HttpServletRequest req) {
+		private String voidTwitterChecking(Object textObj, Object overallText, long twitterPostId, HttpServletRequest req) {
 			System.out.println("TWITTER CHECKBOX " + req.getParameter("twitterCheckbox"));
-			boolean isTwitterCheckboxChecked = req.getParameter("twitterCheckbox") != null;
-		    if(!isTwitterCheckboxChecked) {
-		    	textObj = overallText;
-		    } else if(textObj == null){
-		    	return "";
-		    }
-			
+			if(twitterPostId != -1) { 
+				boolean isTwitterCheckboxChecked = req.getParameter("twitterCheckbox") != null;
+			    if(!isTwitterCheckboxChecked) {
+			    	textObj = overallText;
+			    } else if(textObj == null){
+			    	return "";
+			    }
+			} else { //no post to twitter
+				return "";
+			}
+				
 			return textObj.toString();
 		}
 
@@ -347,23 +364,23 @@ public class ShubUser implements Serializable {
 			} 
 		    
 		    //FacebookTokens
-		    Query queryFacebook = new Query("FacebookAccessToken", datastoreKey);
-		    List<Entity> entitiesFacebook = datastore.prepare(queryFacebook).asList(FetchOptions.Builder.withLimit(100));
-		    if(entitiesFacebook.size() == 1) {
-		    		Entity entityFacebook = entitiesFacebook.get(0);
-		    		Facebook facebook1 = new FacebookFactory().getInstance();
-			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
-			        facebook1.setOAuthPermissions("public_profile,publish_actions");
-			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
-					
-					
-					try {
-						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString());
-					} catch (FacebookException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
+//		    Query queryFacebook = new Query("FacebookAccessToken", datastoreKey);
+//		    List<Entity> entitiesFacebook = datastore.prepare(queryFacebook).asList(FetchOptions.Builder.withLimit(100));
+//		    if(entitiesFacebook.size() == 1) {
+//		    		Entity entityFacebook = entitiesFacebook.get(0);
+//		    		Facebook facebook1 = new FacebookFactory().getInstance();
+//			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+//			        facebook1.setOAuthPermissions("public_profile,publish_actions");
+//			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
+//					
+//					
+//					try {
+//						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString());
+//					} catch (FacebookException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//			}
 		    
 		}
 
@@ -374,40 +391,40 @@ public class ShubUser implements Serializable {
 
 		public void setFacebookToken(String code) {
 			// TODO Auto-generated method stub
-			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-			
-			Entity entity = null;
-			if(facebookAccessToken != null) {
-				Query query = new Query("FacebookAccessToken", datastoreKey);
-			    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-			    if(entities.size() == 1) {
-			    		entity = entities.get(0);
-				} else {
-					//ERROR
-					return;
-				}
-			} else {
-				entity = new Entity("FacebookAccessToken", datastoreKey);
-			}
-			entity.setProperty("facebookAccessCode", code);
-			datastore.put(entity);
-			
-			Facebook facebook1 = new FacebookFactory().getInstance();
-	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
-	        facebook1.setOAuthPermissions("public_profile,publish_actions");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
-			
-			
-			try {
-				facebookAccessToken = facebook1.getOAuthAccessToken(code);
-			} catch (FacebookException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+//			
+//			Entity entity = null;
+//			if(facebookAccessToken != null) {
+//				Query query = new Query("FacebookAccessToken", datastoreKey);
+//			    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+//			    if(entities.size() == 1) {
+//			    		entity = entities.get(0);
+//				} else {
+//					//ERROR
+//					return;
+//				}
+//			} else {
+//				entity = new Entity("FacebookAccessToken", datastoreKey);
+//			}
+//			entity.setProperty("facebookAccessCode", code);
+//			datastore.put(entity);
+//			
+//			Facebook facebook1 = new FacebookFactory().getInstance();
+//	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+//	        facebook1.setOAuthPermissions("public_profile,publish_actions");
+//	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
+//			
+//			
+//			try {
+//				facebookAccessToken = facebook1.getOAuthAccessToken(code);
+//			} catch (FacebookException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		
-		public facebook4j.auth.AccessToken getFacebookAccessToken() {
-			return facebookAccessToken;
-		}
+//		public facebook4j.auth.AccessToken getFacebookAccessToken() {
+//			return facebookAccessToken;
+//		}
 
 }
