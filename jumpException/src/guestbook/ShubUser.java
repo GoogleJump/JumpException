@@ -252,7 +252,7 @@ public class ShubUser implements Serializable {
 				deleteTwitterAccessToken();
 				return -2;
 			}
-			return status.getId();
+			return 5;
 		}
 		
 		public void deleteTwitterAccessToken() {
