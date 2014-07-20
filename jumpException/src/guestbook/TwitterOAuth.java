@@ -10,6 +10,8 @@ import twitter4j.User;
 
 import javax.servlet.http.*;
 
+import com.google.appengine.api.datastore.Entity;
+
 
 public class TwitterOAuth {
 	public TwitterOAuth() {}
@@ -22,9 +24,11 @@ public class TwitterOAuth {
 			String tokenSecret = (String) session.getAttribute("tokenSecret");
 			String oauth_verifier = request.getParameter("oauth_verifier");
 			accessToken = twitter.getOAuthAccessToken(new RequestToken(token, tokenSecret), oauth_verifier);
-			session.setAttribute("twitterToken", token);
-			session.setAttribute("twitterSecret", tokenSecret);
-			twitter.updateStatus("hi");
+			String accessTokenString = accessToken.getToken();
+			String accessTokenSecret = accessToken.getTokenSecret();
+			ShubUser user = (ShubUser) session.getAttribute("user");
+			user.setTwitterToken(accessTokenString, accessTokenSecret);
+			session.setAttribute("user", user);
 		} catch (TwitterException e) {}
 	}
 

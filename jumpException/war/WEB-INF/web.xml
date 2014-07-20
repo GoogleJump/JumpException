@@ -1,129 +1,281 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE web-app PUBLIC
- "-//Oracle Corporation//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
 
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
-    <servlet>
-        <servlet-name>sign</servlet-name>
-        <servlet-class>guestbook.SignGuestbookServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>loggingOut</servlet-name>
-        <servlet-class>guestbook.LoggingOutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deletePost</servlet-name>
-        <servlet-class>guestbook.DeletePostServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>signingUp</servlet-name>
-        <servlet-class>guestbook.SigningUpServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>openSocialMedias</servlet-name>
-        <servlet-class>guestbook.OpenSocialMediasServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deleteAccount</servlet-name>
-        <servlet-class>guestbook.DeleteAccountServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>changePassword</servlet-name>
-        <servlet-class>guestbook.ChangePasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>loggingIn</servlet-name>
-        <servlet-class>guestbook.LogInPage</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>logInFail</servlet-name>
-        <servlet-class>guestbook.LogInFailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>practicePage</servlet-name>
-        <servlet-class>guestbook.PracticePage</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>postServlet</servlet-name>
-        <servlet-class>guestbook.PostServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>filterPosts</servlet-name>
-        <servlet-class>guestbook.FilterPostsServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>guestbook</servlet-name>
-        <servlet-class>guestbook.GuestbookServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>twitterOAuth</servlet-name>
-        <servlet-class>guestbook.TwitterOAuthServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>twitterPostStatus</servlet-name>
-        <servlet-class>guestbook.TwitterPostStatusServlet</servlet-class>
-    </servlet>
-    
-    
-    <servlet-mapping>
-        <servlet-name>sign</servlet-name>
-        <url-pattern>/sign</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deleteAccount</servlet-name>
-        <url-pattern>/deleteAccount</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deletePost</servlet-name>
-        <url-pattern>/deletePost</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>practicePage</servlet-name>
-        <url-pattern>/practicePage</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>loggingIn</servlet-name>
-        <url-pattern>/loggingIn</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>loggingOut</servlet-name>
-        <url-pattern>/loggingOut</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>postServlet</servlet-name>
-        <url-pattern>/postServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>guestbook</servlet-name>
-        <url-pattern>/guestbook</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>changePassword</servlet-name>
-        <url-pattern>/changePassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>signingUp</servlet-name>
-        <url-pattern>/signingUp</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>logInFail</servlet-name>
-        <url-pattern>/logInFail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>filterPosts</servlet-name>
-        <url-pattern>/filterPosts</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>twitterOAuth</servlet-name>
-        <url-pattern>/twitterOAuth</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>twitterPostStatus</servlet-name>
-        <url-pattern>/twitterPostStatus</url-pattern>
-    </servlet-mapping>
-    
+<!DOCTYPE web-app PUBLIC "-//Oracle Corporation//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
+
+
+<servlet>
+
+<servlet-name>sign</servlet-name>
+
+<servlet-class>guestbook.SignGuestbookServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>loggingOut</servlet-name>
+
+<servlet-class>guestbook.LoggingOutServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>deletePost</servlet-name>
+
+<servlet-class>guestbook.DeletePostServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>signingUp</servlet-name>
+
+<servlet-class>guestbook.SigningUpServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>openSocialMedias</servlet-name>
+
+<servlet-class>guestbook.OpenSocialMediasServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>deleteAccount</servlet-name>
+
+<servlet-class>guestbook.DeleteAccountServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>changePassword</servlet-name>
+
+<servlet-class>guestbook.ChangePasswordServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>loggingIn</servlet-name>
+
+<servlet-class>guestbook.LogInPage</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>logInFail</servlet-name>
+
+<servlet-class>guestbook.LogInFailServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>practicePage</servlet-name>
+
+<servlet-class>guestbook.PracticePage</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>postServlet</servlet-name>
+
+<servlet-class>guestbook.PostServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>filterPosts</servlet-name>
+
+<servlet-class>guestbook.FilterPostsServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>guestbook</servlet-name>
+
+<servlet-class>guestbook.GuestbookServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>twitterOAuth</servlet-name>
+
+<servlet-class>guestbook.TwitterOAuthServlet</servlet-class>
+
+</servlet>
+
+
+<servlet>
+
+<servlet-name>twitterPostStatus</servlet-name>
+
+<servlet-class>guestbook.TwitterPostStatusServlet</servlet-class>
+
+</servlet>
+
+<servlet> <servlet-name>updateBackgroundImageServlet</servlet-name> <servlet-class>guestbook.UpdateBackgroundImageServlet</servlet-class> </servlet>
+
+
+<!-- <servlet> <servlet-name>facebookOAuth</servlet-name> <servlet-class>guestbook.FacebookOAuthServlet</servlet-class> </servlet> <servlet> - <servlet-name>facebookPostStatus</servlet-name> <servlet-class>guestbook.FacebookPostServlet</servlet-class> </servlet> -->
+
+
+<!-- <servlet> <servlet-name>PostFacebookFinal</servlet-name> <servlet-class>guestbook.PostFacebookFinal</servlet-class> </servlet>-->
+
+
+<!-- <servlet-mapping> <servlet-name>updateBackgroundImageServlet</servlet-name> <url-pattern>/updateBackgroundImageServlet</url-pattern> </servlet-mapping> -->
+
+
+
+<servlet-mapping>
+
+<servlet-name>sign</servlet-name>
+
+<url-pattern>/sign</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>deleteAccount</servlet-name>
+
+<url-pattern>/deleteAccount</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>deletePost</servlet-name>
+
+<url-pattern>/deletePost</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>practicePage</servlet-name>
+
+<url-pattern>/practicePage</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>loggingIn</servlet-name>
+
+<url-pattern>/loggingIn</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>loggingOut</servlet-name>
+
+<url-pattern>/loggingOut</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>postServlet</servlet-name>
+
+<url-pattern>/postServlet</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>guestbook</servlet-name>
+
+<url-pattern>/guestbook</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>changePassword</servlet-name>
+
+<url-pattern>/changePassword</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>signingUp</servlet-name>
+
+<url-pattern>/signingUp</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>logInFail</servlet-name>
+
+<url-pattern>/logInFail</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>filterPosts</servlet-name>
+
+<url-pattern>/filterPosts</url-pattern>
+
+</servlet-mapping>
+
+
+<servlet-mapping>
+
+<servlet-name>twitterOAuth</servlet-name>
+
+<url-pattern>/twitterOAuth</url-pattern>
+
+</servlet-mapping>
+
+<!-- <servlet-mapping> <servlet-name>facebookOAuth</servlet-name> <url-pattern>/facebookOAuth</url-pattern> </servlet-mapping> <servlet-mapping> <servlet-name>twitterPostStatus</servlet-name> <url-pattern>/twitterPostStatus</url-pattern> </servlet-mapping> <servlet-mapping> <servlet-name>facebookPostStatus</servlet-name> <url-pattern>/facebookPostStatus</url-pattern> </servlet-mapping> <servlet-mapping> <servlet-name>PostFacebookFinal</servlet-name> <url-pattern>/facebookPostFinal</url-pattern> </servlet-mapping> -->
+
+
+
 <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+
+<welcome-file>index.jsp</welcome-file>
+
+</welcome-file-list>
+
 </web-app>

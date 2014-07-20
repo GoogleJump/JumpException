@@ -23,16 +23,14 @@ public class TwitterPostStatusServlet extends HttpServlet {
 			throws IOException {
 		Twitter twitter = new TwitterFactory().getInstance();
 		twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
-		String token = (String) req.getSession().getAttribute("twitterToken");
-		String tokenSecret = (String) req.getSession().getAttribute("twitterSecret");
-		if (token == null) return;
-		AccessToken accessToken = new AccessToken(token, tokenSecret);
+		ShubUser user = (ShubUser) req.getSession().getAttribute("user");
 		try {
-			twitter.setOAuthAccessToken(accessToken);
-			twitter.updateStatus("hi");
+			AccessToken twitterAccessToken = user.getTwitterAccessToken();
+			if(twitterAccessToken != null) {
+				twitter.setOAuthAccessToken(user.getTwitterAccessToken());
+				twitter.updateStatus("hi");
+			}
 		} catch (TwitterException e) {}
-		req.getSession().setAttribute("twitterToken", token);
-		req.getSession().setAttribute("twitterSecret", tokenSecret);
 		resp.sendRedirect("/signedIn.jsp");
 	}
 }

@@ -20,7 +20,10 @@ public class DeletePostServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		ShubUser user = (ShubUser) req.getSession().getAttribute("user");
-		user.deletePost(req, resp, null);
+		String date = req.getParameter("hiddenDate").toString();
+		Post post = user.getNewsfeed().getPost(date);
+		resp.getWriter().println(date);
+		user.deletePost(req, resp, post);
 //		String date = req.getParameter("hiddenDate").toString();
 //		ShubUser user = (ShubUser) req.getSession().getAttribute("user");
 //		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

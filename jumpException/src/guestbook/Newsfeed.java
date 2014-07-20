@@ -1,5 +1,6 @@
 package guestbook;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -8,6 +9,9 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.servlet.http.HttpServletResponse;
+
+import twitter4j.auth.AccessToken;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -60,8 +64,8 @@ public class Newsfeed implements Serializable{
 		return null;
 	}
 	
-	public boolean removePost(Post post) {
-		if(post.delete()) {
+	public boolean removePost(Post post, AccessToken twitterAccessToken) throws IOException {
+		if(post.delete(twitterAccessToken)) {
 			return posts.remove(post);
 		} else {
 			return false;
@@ -75,7 +79,7 @@ public class Newsfeed implements Serializable{
 
 	public void delete() {
 		while(posts.size() != 0) {
-			removePost(posts.get(0));
+//			removePost(posts.get(0));
 		}
 	}
 }

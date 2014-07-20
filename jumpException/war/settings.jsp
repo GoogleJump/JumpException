@@ -6,17 +6,38 @@
 		response.sendRedirect("/loggingOut");
 		return;
 	}
+	pageContext.setAttribute("sectionWithDynamicBackgroundImage", "container content-section text-center " + user.getBackgroundImage());
+
 %>
-<section id="Settings" class="container content-section text-center">
+<section id="Settings" class="${fn:escapeXml(sectionWithDynamicBackgroundImage)}">
 
 	<%
 		pageContext.setAttribute("curPassword", "");
 		pageContext.setAttribute("newPassword", "");
 		pageContext.setAttribute("confirmNewPassword", "");
 	%>
-	<form action="/twitterOAuth" method="post">
+	<% if(user.getTwitterAccessToken() == null) { %>
+		<form action="/twitterOAuth" method="post">
+			<div>
+				<input type="submit" value="Connect Twitter Account" />
+			</div>
+		</form>
+	<% } else { %>
+		<p>
+			YOU ARE CONNECTED TO TWITTER
+		</p>
+	<% } %>
+	<form action="/facebookOAuth" method="post">
 		<div>
-			<input type="submit" value="Connect Twitter Account" />
+			<input type="submit" value="Connect Facebook Account" />
+		</div>
+	</form>
+	<form action="/updateBackgroundImageServlet" method="post">
+		<p>Background Photo</p>
+		<div>
+			<input type="radio" name="backgroundImage" value="backgroundImage_FlowersAndSky" checked/>Default</br>
+			<input type="radio" name="backgroundImage" value="backgroundImage_Grassbells" />Default2</br>
+			<input type="submit" value="Save Background Image" />
 		</div>
 	</form>
 	<form action="/deleteAccount" method="post">
@@ -40,8 +61,6 @@
 			<input type="text" name="confirmNewPassword"
 				value="${fn:escapeXml(confirmNewPassword)}" />
 		</div>
-	
-	
 		<div>
 			<input type="submit" value="Change Password"/>
 		</div>

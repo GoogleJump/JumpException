@@ -18,5 +18,3 @@ public class MediaPackage {
 	}
 	
 }
-
-//test commit comment
