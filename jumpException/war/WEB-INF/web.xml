@@ -64,10 +64,10 @@
         <servlet-name>twitterPostStatus</servlet-name>
         <servlet-class>guestbook.TwitterPostStatusServlet</servlet-class>
     </servlet>
-    <servlet>
+    <!-- <servlet>
         <servlet-name>updateBackgroundImageServlet</servlet-name>
         <servlet-class>guestbook.UpdateBackgroundImageServlet</servlet-class>
-    </servlet>
+    </servlet> -->
   <!--   <servlet>
         <servlet-name>facebookOAuth</servlet-name>
         <servlet-class>guestbook.FacebookOAuthServlet</servlet-class>
@@ -81,10 +81,10 @@
         <servlet-class>guestbook.PostFacebookFinal</servlet-class> 
     </servlet>-->
     
-    <servlet-mapping>
+   <!-- <servlet-mapping>
         <servlet-name>updateBackgroundImageServlet</servlet-name>
         <url-pattern>/updateBackgroundImageServlet</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     <servlet-mapping>
         <servlet-name>sign</servlet-name>
         <url-pattern>/sign</url-pattern>
@@ -137,15 +137,15 @@
         <servlet-name>twitterOAuth</servlet-name>
         <url-pattern>/twitterOAuth</url-pattern>
     </servlet-mapping>
-<!--     <servlet-mapping>
+<!--    <servlet-mapping>
         <servlet-name>facebookOAuth</servlet-name>
         <url-pattern>/facebookOAuth</url-pattern>
-    </servlet-mapping>-->
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>twitterPostStatus</servlet-name>
         <url-pattern>/twitterPostStatus</url-pattern>
     </servlet-mapping>
-<!--     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>facebookPostStatus</servlet-name>
         <url-pattern>/facebookPostStatus</url-pattern> 
     </servlet-mapping>

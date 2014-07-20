@@ -241,22 +241,15 @@ public class ShubUser implements Serializable {
 			Status status = null;
 			System.out.println("twitterPost");
 			try {
-
 				if(twitterAccessToken != null) {
+					// user has authenticated with twitter
 					twitter.setOAuthAccessToken(twitterAccessToken);
 					status = twitter.updateStatus(twitterText);
-					try {
-						resp.getWriter().println("status id is " + status.getId());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					System.out.println("status id is " + status.getId());
-				} else {
-					System.out.println("twitter accesstoken null");
-
-				}
-			} catch (TwitterException e) {}
+				} else {}
+			} catch (TwitterException e) {
+				// user must have revoked access, or access token is otherwise invalid
+				twitterAccessToken = null;
+			}
 			if (status == null) return -1;
 			else return status.getId();
 		}

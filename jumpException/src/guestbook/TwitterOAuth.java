@@ -29,8 +29,6 @@ public class TwitterOAuth {
 			ShubUser user = (ShubUser) session.getAttribute("user");
 			user.setTwitterToken(accessTokenString, accessTokenSecret);
 			session.setAttribute("user", user);
-//			session.setAttribute("twitterToken", token);
-//			session.setAttribute("twitterSecret", tokenSecret);
 		} catch (TwitterException e) {}
 	}
 
