@@ -235,29 +235,40 @@ public class ShubUser implements Serializable {
 			return true;
 		}
 
-		public long twitterPost(String twitterText, HttpServletResponse resp) {
+		public long twitterPost(String twitterText, HttpServletResponse resp, HttpServletRequest req) {
 			Twitter twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
 			Status status = null;
-			System.out.println("twitterPost");
 			try {
 				if(twitterAccessToken != null) {
 					// user has authenticated with twitter
 					twitter.setOAuthAccessToken(twitterAccessToken);
 					status = twitter.updateStatus(twitterText);
 				} else {}
-			} catch (TwitterException e) {
-				// user must have revoked access, or access token is otherwise invalid
+			} catch (TwitterException e) {}
+			if (status.getId() == (long) -1) {
 				twitterAccessToken = null;
+				req.getSession().setAttribute("user", this);
+				deleteTwitterAccessToken();
+				return -2;
 			}
-			if (status == null) return -1;
-			else return status.getId();
+			return status.getId();
+		}
+		
+		public void deleteTwitterAccessToken() {
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			Entity entity = null;
+			Query query = new Query("TwitterAccessToken", datastoreKey);
+			List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+			entity = entities.get(0);
+			datastore.delete(entity.getKey());
+			twitterAccessToken = null;
 		}
 		
 		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) {
 			Date date = new Date();
 			System.out.println("twitterPost");
-			long twitterPostId = twitterPost(twitterText, resp);
+			long twitterPostId = twitterPost(twitterText, resp, req);
 		    Entity post = new Entity("Post", datastoreKey);
 		    overallText = voidOverallChecking(overallText);
 		    fbText = voidFacebookChecking(fbText, overallText, req);
