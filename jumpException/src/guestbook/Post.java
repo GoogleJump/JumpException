@@ -1,10 +1,11 @@
 package guestbook;
-
+//THIS IS A COMMENT
+//blah
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
+import java.util.*;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
