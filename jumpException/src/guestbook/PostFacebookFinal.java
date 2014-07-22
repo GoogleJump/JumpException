@@ -15,7 +15,7 @@ import facebook4j.auth.AccessToken;
 
 public class PostFacebookFinal extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	response.setContentType("text/plain");
+    	/*response.setContentType("text/plain");
     	StringBuffer URL = request.getRequestURL();
     	String code = request.getQueryString();
     	
@@ -45,7 +45,7 @@ public class PostFacebookFinal extends HttpServlet {
     	String messageID = null;
     	
     	try {
-			messageID = facebook1.postStatusMessage("HELLO");
+			messageID = facebook1.postStatusMessage("HELLO TEST");
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,8 +55,49 @@ public class PostFacebookFinal extends HttpServlet {
 			response.getWriter().println(e.toString());
 			e.printStackTrace();
 		}
+    	
 
     	response.getWriter().println(messageID);
-    	response.sendRedirect("signedIn.jsp"); 
+    	ShubUser user = (ShubUser) request.getSession().getAttribute("user");
+    	
+    	AccessToken t = user.getFacebookAccessToken();
+    	if (t == null){
+    		response.getWriter().println("NULL ACCESS TOKEN");
+    	}*/
+		response.setContentType("text/plain");
+    	StringBuffer URL = request.getRequestURL();
+    	String code = request.getQueryString();
+    	    	
+    	HttpSession session = request.getSession();
+    	
+    	if (code.charAt(0) == 'e'){
+    		response.sendRedirect("/signedIn.jsp"); 
+    	}
+    	
+    	code = code.substring(5);
+    	
+    	Facebook facebook1 = new FacebookFactory().getInstance();
+    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+        facebook1.setOAuthPermissions("public_profile");
+        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+    	
+    	        
+        AccessToken token = null;
+        ShubUser user = (ShubUser) session.getAttribute("user");
+        user.setFacebookToken(code, "facebookPost");
+		session.setAttribute("user", user);
+    	
+		response.getWriter().println(code);
+		
+		user = (ShubUser) session.getAttribute("user");
+		token = user.getFacebookAccessToken();
+		if (token == null){
+			response.getWriter().println("NULL ACCESS TOKEN"
+					+ "");
+		}
+		
+		session.setAttribute("facebook",facebook1);
+		
+		response.sendRedirect("/signedIn.jsp"); 
     }
 }

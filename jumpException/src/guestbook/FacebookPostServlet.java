@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
+import facebook4j.auth.AccessToken;
 
 
 public class FacebookPostServlet extends HttpServlet {
@@ -19,13 +20,40 @@ public class FacebookPostServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		Facebook facebook1 = new FacebookFactory().getInstance();
-    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
-        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+		ShubUser user = (ShubUser) req.getSession().getAttribute("user");
+		
+		if (user.getFacebookCode() != null){
+		
+			Facebook facebook1 = (Facebook) req.getSession().getAttribute("facebook");
         
-        String callbackURL = facebook1.getOAuthCallbackURL();	
+        	AccessToken token = user.getFacebookAccessToken();
         
-        resp.sendRedirect(facebook1.getOAuthAuthorizationURL(callbackURL));
+        	if (token == null){
+        		resp.getWriter().println("NULL TOKEN");
+        	}
+        
+        	String code = user.getFacebookCode();
+        
+        	facebook1.setOAuthAccessToken(user.getFacebookAccessToken());
+        
+        	try {
+				resp.getWriter().println(facebook1.getName());
+			} catch (IllegalStateException | FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				resp.getWriter().println(e.toString());
+			}
+        
+        
+        	try {
+				facebook1.postStatusMessage("HERE");
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				resp.getWriter().println(e.toString());
+			}
+		}
+        
+        resp.sendRedirect("/signedIn.jsp");
 	}
 }

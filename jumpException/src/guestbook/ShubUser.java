@@ -275,6 +275,7 @@ public class ShubUser implements Serializable {
 			Date date = new Date();
 			System.out.println("twitterPost");
 			long twitterPostId = twitterPost(twitterText, resp, req);
+			String facebookPostID = facebookPost(fbText); 
 		    Entity post = new Entity("Post", datastoreKey);
 		    overallText = voidOverallChecking(overallText);
 		    fbText = voidFacebookChecking(fbText, overallText, req);
@@ -298,6 +299,17 @@ public class ShubUser implements Serializable {
 			}
 		}
 		
+		private String facebookPost(String fbText) {
+			// TODO Auto-generated method stub
+			Facebook facebook1 = new FacebookFactory().getInstance();
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        
+	        
+			return null;
+		}
+
 		private String voidOverallChecking(Object textObj) {
 			if(textObj == null) {
 		    	return "";
@@ -361,7 +373,7 @@ public class ShubUser implements Serializable {
 			return twitterAccessToken;
 		}
 
-		public void fillAccessTokens() {
+		public void fillAccessTokens(HttpServletResponse resp) {
 			// TODO Auto-generated method stub
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -376,22 +388,22 @@ public class ShubUser implements Serializable {
 		    //FacebookTokens
 		    Query queryFacebook = new Query("FacebookAccessToken", datastoreKey);
 		    List<Entity> entitiesFacebook = datastore.prepare(queryFacebook).asList(FetchOptions.Builder.withLimit(100));
-		    if(entitiesFacebook.size() == 1) {
+		    if(entitiesFacebook.size() >= 1) {
 		    		Entity entityFacebook = entitiesFacebook.get(0);
-		    		Facebook facebook1 = new FacebookFactory().getInstance();
+
+		    		/*Facebook facebook1 = new FacebookFactory().getInstance();
 			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 			        facebook1.setOAuthPermissions("public_profile,publish_actions");
-			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
+			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookConnect");*/
 					
 			        this.facebookCode = entityFacebook.getProperty("facebookAccessCode").toString();
-					try {
-						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString());
+					/*try {
+						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString(),"http://1-dot-nietotesting.appspot.com/facebookConnect");
 					} catch (FacebookException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
 			}
-		    
 		}
 
 		public void setBackgroundImage(String backgroundImage) {
@@ -399,7 +411,7 @@ public class ShubUser implements Serializable {
 			this.backgroundImage = backgroundImage;
 		}
 
-		public void setFacebookToken(String code) {
+		public void setFacebookToken(String code, String redirect) {
 			// TODO Auto-generated method stub
 			this.facebookCode = code;
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -423,7 +435,8 @@ public class ShubUser implements Serializable {
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
+	        String callBack = "http://1-dot-nietotesting.appspot.com/" + redirect;
+	        facebook1.setOAuthCallbackURL(callBack);
 			
 			
 			try {
@@ -431,7 +444,10 @@ public class ShubUser implements Serializable {
 			} catch (FacebookException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
+			
+			
 		}
 		
 		public facebook4j.auth.AccessToken getFacebookAccessToken() {
