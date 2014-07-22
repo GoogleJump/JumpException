@@ -27,9 +27,10 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 
-//import facebook4j.Facebook;
-//import facebook4j.FacebookException;
-//import facebook4j.FacebookFactory;
+import facebook4j.Facebook;
+import facebook4j.FacebookException;
+import facebook4j.FacebookFactory;
+
 
 @PersistenceCapable(detachable="true")
 public class ShubUser implements Serializable {
@@ -55,7 +56,9 @@ public class ShubUser implements Serializable {
 	
 	private AccessToken twitterAccessToken;
 	
-//	private facebook4j.auth.AccessToken facebookAccessToken;
+	private String facebookCode;
+	
+	private facebook4j.auth.AccessToken facebookAccessToken;
 
 	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
@@ -63,7 +66,8 @@ public class ShubUser implements Serializable {
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
 		this.twitterAccessToken = null;
-//		this.facebookAccessToken = null;
+		this.facebookAccessToken = null;
+		this.facebookCode = null;
 		this.backgroundImage = "backgroundImage_FlowersAndSky";//default backgound image
 	}
 	
@@ -370,23 +374,23 @@ public class ShubUser implements Serializable {
 			} 
 		    
 		    //FacebookTokens
-//		    Query queryFacebook = new Query("FacebookAccessToken", datastoreKey);
-//		    List<Entity> entitiesFacebook = datastore.prepare(queryFacebook).asList(FetchOptions.Builder.withLimit(100));
-//		    if(entitiesFacebook.size() == 1) {
-//		    		Entity entityFacebook = entitiesFacebook.get(0);
-//		    		Facebook facebook1 = new FacebookFactory().getInstance();
-//			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
-//			        facebook1.setOAuthPermissions("public_profile,publish_actions");
-//			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
-//					
-//					
-//					try {
-//						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString());
-//					} catch (FacebookException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//			}
+		    Query queryFacebook = new Query("FacebookAccessToken", datastoreKey);
+		    List<Entity> entitiesFacebook = datastore.prepare(queryFacebook).asList(FetchOptions.Builder.withLimit(100));
+		    if(entitiesFacebook.size() == 1) {
+		    		Entity entityFacebook = entitiesFacebook.get(0);
+		    		Facebook facebook1 = new FacebookFactory().getInstance();
+			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+			        facebook1.setOAuthPermissions("public_profile,publish_actions");
+			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
+					
+			        this.facebookCode = entityFacebook.getProperty("facebookAccessCode").toString();
+					try {
+						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString());
+					} catch (FacebookException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
 		    
 		}
 
@@ -397,40 +401,45 @@ public class ShubUser implements Serializable {
 
 		public void setFacebookToken(String code) {
 			// TODO Auto-generated method stub
-//			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-//			
-//			Entity entity = null;
-//			if(facebookAccessToken != null) {
-//				Query query = new Query("FacebookAccessToken", datastoreKey);
-//			    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
-//			    if(entities.size() == 1) {
-//			    		entity = entities.get(0);
-//				} else {
-//					//ERROR
-//					return;
-//				}
-//			} else {
-//				entity = new Entity("FacebookAccessToken", datastoreKey);
-//			}
-//			entity.setProperty("facebookAccessCode", code);
-//			datastore.put(entity);
-//			
-//			Facebook facebook1 = new FacebookFactory().getInstance();
-//	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
-//	        facebook1.setOAuthPermissions("public_profile,publish_actions");
-//	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
-//			
-//			
-//			try {
-//				facebookAccessToken = facebook1.getOAuthAccessToken(code);
-//			} catch (FacebookException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			this.facebookCode = code;
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			
+			Entity entity = null;
+			if(facebookAccessToken != null) {
+				Query query = new Query("FacebookAccessToken", datastoreKey);
+			    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+			    if(entities.size() == 1) {
+			    		entity = entities.get(0);
+				} else {
+					//ERROR
+					return;
+				}
+			} else {
+				entity = new Entity("FacebookAccessToken", datastoreKey);
+			}
+			entity.setProperty("facebookAccessCode", code);
+			datastore.put(entity);
+			
+			Facebook facebook1 = new FacebookFactory().getInstance();
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+	        facebook1.setOAuthPermissions("public_profile,publish_actions");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/signin");
+			
+			
+			try {
+				facebookAccessToken = facebook1.getOAuthAccessToken(code);
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-//		public facebook4j.auth.AccessToken getFacebookAccessToken() {
-//			return facebookAccessToken;
-//		}
+		public facebook4j.auth.AccessToken getFacebookAccessToken() {
+			return facebookAccessToken;
+		}
+		
+		public String getFacebookCode(){
+			return facebookCode;			
+		}
 
 }
