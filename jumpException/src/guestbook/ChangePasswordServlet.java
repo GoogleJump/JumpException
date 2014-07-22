@@ -13,6 +13,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 
 public class ChangePasswordServlet extends HttpServlet {
 	  @Override
+	  //Made comment here 
 	  public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	      throws IOException {
 			ShubUser user = (ShubUser) req.getSession().getAttribute("user");
