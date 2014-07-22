@@ -271,11 +271,60 @@ public class ShubUser implements Serializable {
 			twitterAccessToken = null;
 		}
 		
-		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) {
-			Date date = new Date();
+		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+			Facebook facebook1 = new FacebookFactory().getInstance();
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        
+	        try {
+				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
+				
+				
+
+				Date date = new Date();
+				System.out.println("twitterPost");
+				long twitterPostId = twitterPost(twitterText, resp, req);
+				String facebookPostID = facebookPost(fbText,facebook1); 
+			    Entity post = new Entity("Post", datastoreKey);
+			    overallText = voidOverallChecking(overallText);
+			    fbText = voidFacebookChecking(fbText, overallText, req);
+			    twitterText = voidTwitterChecking(twitterText, overallText, twitterPostId, req);
+			    
+
+			    post.setProperty("date", date);
+			    post.setProperty("overallPost", overallText);
+			    post.setProperty("fbPost", fbText);
+			    post.setProperty("twitterPost", twitterText);
+			    post.setProperty("twitterPostId", twitterPostId);
+			    
+			    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			    datastore.put(post);
+			    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey()));
+				req.getSession().setAttribute("user", this);
+			    resp.getWriter().println("GOT HERE");
+				try {
+					resp.sendRedirect("/signedIn.jsp");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				resp.getWriter().println(e.toString());
+				req.getSession().setAttribute("fbText", fbText);
+				req.getSession().setAttribute("twitterText", twitterText);
+				req.getSession().setAttribute("overallText", overallText);
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+			}
+			
+			/*Date date = new Date();
 			System.out.println("twitterPost");
+			req.getSession().setAttribute("fbText", fbText);
+			req.getSession().setAttribute("twitterText", twitterText);
+			req.getSession().setAttribute("overallText", overallText);
+			String facebookPostID = facebookPost(fbText,resp); 
 			long twitterPostId = twitterPost(twitterText, resp, req);
-			String facebookPostID = facebookPost(fbText); 
 		    Entity post = new Entity("Post", datastoreKey);
 		    overallText = voidOverallChecking(overallText);
 		    fbText = voidFacebookChecking(fbText, overallText, req);
@@ -292,22 +341,40 @@ public class ShubUser implements Serializable {
 		    datastore.put(post);
 		    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey()));
 			req.getSession().setAttribute("user", this);
-		    try {
+		    resp.getWriter().println("GOT HERE");
+			try {
 				resp.sendRedirect("/signedIn.jsp");
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 		
-		private String facebookPost(String fbText) {
+		private String facebookPost(String fbText, Facebook facebook1) throws IOException {
 			// TODO Auto-generated method stub
-			Facebook facebook1 = new FacebookFactory().getInstance();
+			
+			try {
+				return facebook1.postStatusMessage(fbText);
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			/*Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
 	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
 	        
+	        try {
+				facebook1.setOAuthAccessToken(facebookAccessToken);
+				return facebook1.postStatusMessage(fbText);
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				resp.getWriter().println(e.toString());
+				//resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+			}*/
 	        
-			return null;
+			//return null;
 		}
 
 		private String voidOverallChecking(Object textObj) {
@@ -411,7 +478,7 @@ public class ShubUser implements Serializable {
 			this.backgroundImage = backgroundImage;
 		}
 
-		public void setFacebookToken(String code, String redirect) {
+		public void setFacebookToken(String code, String redirect, HttpServletResponse resp) throws IOException {
 			// TODO Auto-generated method stub
 			this.facebookCode = code;
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -444,7 +511,8 @@ public class ShubUser implements Serializable {
 			} catch (FacebookException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				
+				resp.getWriter().println(e.toString());
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL(callBack));
 			}
 			
 			

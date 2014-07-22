@@ -39,7 +39,7 @@ public class SignInServlet extends HttpServlet {
     	        
         AccessToken token = null;
         ShubUser user = (ShubUser) session.getAttribute("user");
-        user.setFacebookToken(code, "facebookConnect");
+        user.setFacebookToken(code, "facebookConnect",response);
 		session.setAttribute("user", user);
 		
 		session.setAttribute("facebook", facebook1);

@@ -15,7 +15,7 @@ import com.google.appengine.api.datastore.Entity;
 public class PostServlet extends HttpServlet{
 
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String overallText = req.getParameter("overallText");
 	    String fbText = req.getParameter("fbText");
 	    String twitterText = req.getParameter("twitterText");

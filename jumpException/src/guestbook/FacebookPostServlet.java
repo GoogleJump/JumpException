@@ -22,7 +22,7 @@ public class FacebookPostServlet extends HttpServlet {
 			throws IOException {
 		ShubUser user = (ShubUser) req.getSession().getAttribute("user");
 		
-		if (user.getFacebookCode() != null){
+		/*if (user.getFacebookCode() != null){
 		
 			Facebook facebook1 = (Facebook) req.getSession().getAttribute("facebook");
         
@@ -52,8 +52,12 @@ public class FacebookPostServlet extends HttpServlet {
 				e.printStackTrace();
 				resp.getWriter().println(e.toString());
 			}
-		}
-        
-        resp.sendRedirect("/signedIn.jsp");
+		}*/
+		/*if (user.getFacebookCode() != null){
+			user.setFacebookToken(user.getFacebookCode(), "facebookPost",resp);
+		}*/
+		//else{
+			resp.sendRedirect("/signedIn.jsp");
+		//}
 	}
 }
