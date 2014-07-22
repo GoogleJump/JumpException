@@ -109,7 +109,7 @@ public class LogIn {
 	    		
 	    		
 	    		//Sending the redirect to Facebook
-	    		Facebook facebook1 = new FacebookFactory().getInstance();
+	    		/*Facebook facebook1 = new FacebookFactory().getInstance();
 	        	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	            facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
 	            facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
@@ -124,14 +124,14 @@ public class LogIn {
 						e.printStackTrace();
 						resp.getWriter().println(e.toString());
 					}
-	            }else {
+	            }else {*/
 	            	try {
 						resp.sendRedirect("/signedIn.jsp");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-	            }
+	            //}
 				return;
 	    	}
 	    }

@@ -84,8 +84,30 @@ public class PostFacebookFinal extends HttpServlet {
     	        
         AccessToken token = null;
         ShubUser user = (ShubUser) session.getAttribute("user");
-        user.setFacebookToken(code, "facebookPost");
-		session.setAttribute("user", user);
+        user.setFacebookToken(code, "facebookPost",response);
+        
+        String overallText = (String) session.getAttribute("overallText");
+        String fbText = (String) session.getAttribute("fbText");
+        String twitterText = (String) session.getAttribute("twitterText");
+        
+        
+        session.setAttribute("user",user);
+        user = (ShubUser) session.getAttribute("user");
+        
+        user.post(overallText, fbText, twitterText, request, response);
+        response.getWriter().println("IN HERE");
+        response.getWriter().println(code);
+        //facebook1.setOAuthAccessToken(user.getFacebookAccessToken());
+        
+        /*try {
+			response.getWriter().println(facebook1.getName());
+		} catch (IllegalStateException | FacebookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.getWriter().println(e.toString());
+		}*/
+        
+		/*session.setAttribute("user", user);
     	
 		response.getWriter().println(code);
 		
@@ -96,8 +118,9 @@ public class PostFacebookFinal extends HttpServlet {
 					+ "");
 		}
 		
-		session.setAttribute("facebook",facebook1);
-		
-		response.sendRedirect("/signedIn.jsp"); 
+		session.setAttribute("facebook",facebook1);*/
+		//response.getWriter().println("got here");
+        
+		//response.sendRedirect("/signedIn.jsp"); 
     }
 }
