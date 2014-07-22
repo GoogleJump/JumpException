@@ -15,6 +15,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 
+import facebook4j.Facebook;
+import facebook4j.FacebookFactory;
+
 public class LogIn {
 	private ShubUser user;
 	private HttpServletRequest req;
@@ -25,7 +28,7 @@ public class LogIn {
 		this.resp = resp;
 	}
 	
-	public void doLogIn() {
+	public void doLogIn() throws IOException {
 
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
@@ -99,16 +102,36 @@ public class LogIn {
 	    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
 	    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
 		    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
-		    	user.fillAccessTokens();
 		    	user.fillNewsfeed();
-		    	session.setAttribute("user", user);
+	    		user.fillAccessTokens(resp);
+	    		session.setAttribute("user", user);
 	    		session.setAttribute("logInFailed", "false");
-				try {
-					resp.sendRedirect("/signedIn.jsp");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	    		
+	    		
+	    		//Sending the redirect to Facebook
+	    		Facebook facebook1 = new FacebookFactory().getInstance();
+	        	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+	            facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
+	            facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	            
+	            String callbackURL = facebook1.getOAuthCallbackURL();
+	            
+	            if (user.getFacebookCode() != null){
+	            	try {
+						resp.sendRedirect(facebook1.getOAuthAuthorizationURL(callbackURL));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						resp.getWriter().println(e.toString());
+					}
+	            }else {
+	            	try {
+						resp.sendRedirect("/signedIn.jsp");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
 				return;
 	    	}
 	    }

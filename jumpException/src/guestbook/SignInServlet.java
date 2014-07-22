@@ -39,26 +39,11 @@ public class SignInServlet extends HttpServlet {
     	        
         AccessToken token = null;
         ShubUser user = (ShubUser) session.getAttribute("user");
-        
-    	try {
-			token = facebook1.getOAuthAccessToken(code);
-			user.setFacebookToken(code);
-			session.setAttribute("user", user);
-    	} catch (FacebookException e) {
-			// TODO Auto-generated catch block
-			response.getWriter().println(e.getErrorMessage());
-		}
-
-    	
-    	try {
-			response.getWriter().println(facebook1.getName());
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FacebookException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        user.setFacebookToken(code, "facebookConnect");
+		session.setAttribute("user", user);
+		
+		session.setAttribute("facebook", facebook1);
+		
     	response.sendRedirect("http://1-dot-nietotesting.appspot.com/settings.jsp");  
     }
 }
