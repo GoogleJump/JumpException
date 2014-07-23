@@ -253,7 +253,7 @@ public class ShubUser implements Serializable {
 					req.getSession().setAttribute("user", this);
 					deleteTwitterAccessToken();
 				}
-				return -2;
+				return -1;
 			}
 			return status.getId();
 		}
@@ -281,13 +281,19 @@ public class ShubUser implements Serializable {
 	        
 	        try {
 				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
-				
+	        } catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				resp.getWriter().println(e.toString());
+
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+			}
 				
 
 				Date date = new Date();
 				System.out.println("twitterPost");
-				long twitterPostId = twitterPost(twitterText, resp, req);
 				String facebookPostID = facebookPost(fbText,facebook1); 
+				long twitterPostId = twitterPost(twitterText, resp, req);
 			    Entity post = new Entity("Post", datastoreKey);
 			    overallText = voidOverallChecking(overallText);
 			    fbText = voidFacebookChecking(fbText, overallText, req);
@@ -313,13 +319,7 @@ public class ShubUser implements Serializable {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			} catch (FacebookException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				resp.getWriter().println(e.toString());
-
-				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
-			}
+			
 			
 			/*Date date = new Date();
 			System.out.println("twitterPost");

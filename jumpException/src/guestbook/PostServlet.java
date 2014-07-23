@@ -1,16 +1,11 @@
 package guestbook;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
-import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
 
 public class PostServlet extends HttpServlet{
 
@@ -19,6 +14,7 @@ public class PostServlet extends HttpServlet{
 		String overallText = req.getParameter("overallText");
 	    String fbText = req.getParameter("fbText");
 	    String twitterText = req.getParameter("twitterText");
+	    File photo = (File) req.getSession().getAttribute("myPhoto");
 	    ShubUser user = (ShubUser) req.getSession().getAttribute("user");
 	    user.post(overallText, fbText, twitterText, req, resp);
 	    
