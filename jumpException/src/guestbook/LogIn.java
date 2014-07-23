@@ -101,7 +101,7 @@ public class LogIn {
 	    	String password = passwordText.toString();
 	    	if(userInDatabase.getProperty("username").toString().equals(signInText.toString()) &&
 	    			userInDatabase.getProperty("password").toString().equals(passwordText.toString())) {
-		    	user = new ShubUser(username, password, userInDatabase.getKey(), new Newsfeed());
+		    	user = new ShubUser(username, userInDatabase.getKey(), new Newsfeed());
 		    	user.fillNewsfeed();
 	    		user.fillAccessTokens(resp);
 	    		session.setAttribute("user", user);

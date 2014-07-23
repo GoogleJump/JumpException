@@ -13,6 +13,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -25,6 +26,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 
 import facebook4j.Facebook;
@@ -42,9 +44,6 @@ public class ShubUser implements Serializable {
 	@Persistent
 	private String username;
 	
-	@Persistent
-	private String password;
-	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key datastoreKey;
@@ -60,9 +59,8 @@ public class ShubUser implements Serializable {
 	
 	private facebook4j.auth.AccessToken facebookAccessToken;
 
-	public ShubUser(String username, String password, Key datastoreKey, Newsfeed newsfeed) {
+	public ShubUser(String username, Key datastoreKey, Newsfeed newsfeed) {
 		this.username = username;
-		this.password = password;
 		this.datastoreKey = datastoreKey;
 		this.newsfeed = newsfeed;
 		this.twitterAccessToken = null;
@@ -73,10 +71,6 @@ public class ShubUser implements Serializable {
 	
 	public String getUsername() {
 		return username;
-	}
-	
-	public String getPassword() {
-		return password;
 	}
 	
 	public Key getKey() {
@@ -118,19 +112,22 @@ public class ShubUser implements Serializable {
 	}
 	
 	public boolean changePassword(String curPassword, String newPassword, String confirmNewPassword) {
-		if(arePasswordsUsable(curPassword, newPassword, confirmNewPassword)) {
-			if(curPassword.equals(password) && 
-				newPassword.equals(confirmNewPassword)) {
-				setPassword(confirmNewPassword);
-				return true;
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Key signInKey = KeyFactory.createKey("SignIn", username);
+	    Query query = new Query("Shub", signInKey);
+	    List<Entity> userDatabase = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    if(userDatabase.size() == 1) {
+	    	Entity entity = userDatabase.get(0);
+			if(arePasswordsUsable(curPassword, newPassword, confirmNewPassword)) {
+				if(curPassword.equals(entity.getProperty("password")) && 
+					newPassword.equals(confirmNewPassword)) {
+					entity.setProperty("password", confirmNewPassword);
+					datastore.put(entity);
+					return true;
+				}
 			}
-		}
+	    }
 		return false;
-	}
-	
-	public void setPassword(String confirmNewPassword) {
-		// TODO Auto-generated method stub
-		this.password = confirmNewPassword;
 	}
 	
 	public void setKey(Key key) {
@@ -272,6 +269,11 @@ public class ShubUser implements Serializable {
 		}
 		
 		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+			HttpSession session = req.getSession();
+			session.setAttribute("fbText", fbText);
+			session.setAttribute("twitterText", twitterText);
+			session.setAttribute("overallText", overallText);
+	
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
@@ -304,6 +306,9 @@ public class ShubUser implements Serializable {
 				req.getSession().setAttribute("user", this);
 			    resp.getWriter().println("GOT HERE");
 				try {
+					session.removeAttribute("fbText");
+					session.removeAttribute("twitterText");
+					session.removeAttribute("overallText");
 					resp.sendRedirect("/signedIn.jsp");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -312,9 +317,7 @@ public class ShubUser implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				resp.getWriter().println(e.toString());
-				req.getSession().setAttribute("fbText", fbText);
-				req.getSession().setAttribute("twitterText", twitterText);
-				req.getSession().setAttribute("overallText", overallText);
+
 				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
 			}
 			
