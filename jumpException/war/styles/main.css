@@ -4,6 +4,13 @@
     background-color: #00CC7A;
 }*/
 
+.center {
+    margin: 10px -46px; 
+    position:relative;
+    top:50%; 
+    left:50%;
+}
+
 .backgroundImage_FlowersAndSky {
 	background: url("./img/flowers_and_sky.jpg");
 }

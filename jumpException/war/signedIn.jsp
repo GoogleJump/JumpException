@@ -56,7 +56,12 @@
 			</form>
             <p>Type and Share!</p>
             <p></p>
+
             <form class="margin-bottom-8em" action="/postServlet" method="post" onchange="overallTextOnChange()">
+            	<div>
+	            	<img id="uploadPreview" style="width: 100px; height: 100px;" />
+					<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
+                </div>
                 <div>
                     <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
                 </div>
@@ -172,6 +177,18 @@
 	function togglePasswordChangeVisibility() {
 		
 	}
+</script>
+<script>
+function PreviewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+
+    oFReader.onload = function (oFREvent) {
+        document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+};
+
+
 </script>
 
 

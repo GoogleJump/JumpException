@@ -22,6 +22,8 @@
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 
 <%@ page import="guestbook.*" %>
+<%@ page import="guestbook.ShubUser" %>
+
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%	
 	
