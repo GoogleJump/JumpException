@@ -1,11 +1,12 @@
 package guestbook;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.appengine.api.datastore.Blob;
 
 public class PostServlet extends HttpServlet{
 
@@ -14,9 +15,16 @@ public class PostServlet extends HttpServlet{
 		String overallText = req.getParameter("overallText");
 	    String fbText = req.getParameter("fbText");
 	    String twitterText = req.getParameter("twitterText");
-	    File photo = (File) req.getSession().getAttribute("myPhoto");
+	    System.out.println("heloooooo " + fbText + twitterText + overallText);
 	    ShubUser user = (ShubUser) req.getSession().getAttribute("user");
-	    user.post(overallText, fbText, twitterText, req, resp);
+	    Blob blob = (Blob) req.getSession().getAttribute("curBlob");
+	    if(blob != null && req.getParameter("myPhoto") != null) {
+//	    	user.postWithMedia(overallText, fbText, twitterText, req, resp)
+	    } else {
+		    user.post(overallText, fbText, twitterText, req, resp);
+	    }
+
+	 
 	    
 	    
 	    

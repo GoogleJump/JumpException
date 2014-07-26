@@ -13,6 +13,13 @@
 
 </servlet>
 
+<servlet>
+
+<servlet-name>UploadImageServlet</servlet-name>
+
+<servlet-class>guestbook.UploadImageServlet</servlet-class>
+
+</servlet>
 
 <servlet>
 
@@ -103,6 +110,22 @@
 
 </servlet>
 
+<servlet>
+
+<servlet-name>cancelEditPost</servlet-name>
+
+<servlet-class>guestbook.CancelEditPostServlet</servlet-class>
+
+</servlet>
+
+<servlet>
+
+<servlet-name>editPost</servlet-name>
+
+<servlet-class>guestbook.EditPostServlet</servlet-class>
+
+</servlet>
+
 
 <servlet>
 
@@ -170,6 +193,14 @@
 
 </servlet-mapping>
 
+<servlet-mapping>
+
+<servlet-name>UploadImageServlet</servlet-name>
+
+<url-pattern>/UploadImageServlet</url-pattern>
+
+</servlet-mapping>
+
 
 <servlet-mapping>
 
@@ -224,6 +255,21 @@
 
 </servlet-mapping>
 
+<servlet-mapping>
+
+<servlet-name>editPost</servlet-name>
+
+<url-pattern>/editPost</url-pattern>
+
+</servlet-mapping>
+
+<servlet-mapping>
+
+<servlet-name>cancelEditPost</servlet-name>
+
+<url-pattern>/cancelEditPost</url-pattern>
+
+</servlet-mapping>
 
 <servlet-mapping>
 
