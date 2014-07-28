@@ -88,6 +88,17 @@ div.col-lg-8.col-lg-offset-2 {
 	margin-left: 1.6em;	
 }
 
+#fbEditCheckbox:checked + #fbEditText {
+	display:block;
+	width: 90%;
+}
+
+#twitterEditCheckbox:checked + #twitterEditText {
+	display:block;
+	width: 90%;
+	margin-left: 1.6em;	
+}
+
 input[type="submit"] {
 	color: black;
 }

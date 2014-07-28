@@ -45,6 +45,8 @@ public class Post implements Serializable {
 	
 	private long twitterPostId;
 	
+	private boolean isEditing;
+	
 	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key) {
 		this.date = date;
 		this.overallText = overallText;
@@ -52,6 +54,7 @@ public class Post implements Serializable {
 		this.twitterText = twitterText;
 		this.twitterPostId = twitterPostId;
 		this.key = key;
+		this.isEditing = false;
 	}
 	
 	public String getText(String socialMedia) {
@@ -62,6 +65,14 @@ public class Post implements Serializable {
 			case "twitter" : return twitterText;
 			default : return "ERROR";//error
 		}
+	}
+	
+	public void setIsEditing(boolean isEditing) {
+		this.isEditing = isEditing;
+	}
+	
+	public boolean getIsEditing() {
+		return isEditing;
 	}
 
 	//THIS METHOD IS NOT CAP SENSITIVE

@@ -1,6 +1,7 @@
 <%String pageName= "signedIn";%>
 
 <%@ include file="./header.jsp" %>
+<%@ page import="com.google.appengine.api.datastore.Blob" %>
 <%
 	ShubUser user = (ShubUser) session.getAttribute("user");
 	if(user == null) {
@@ -10,6 +11,8 @@
 	pageContext.setAttribute("username", user.getUsername());
 	pageContext.setAttribute("sectionWithDynamicBackgroundImage", "container content-section text-center " + user.getBackgroundImage());
 
+	Blob blob = (Blob) session.getAttribute("blob");
+	pageContext.setAttribute("blob", blob);
 	/*Object searchTextObj = session.getAttribute("searchText");
 	String searchText = "";
 	if(searchTextObj != null) {
@@ -57,11 +60,12 @@
             <p>Type and Share!</p>
             <p></p>
 
-            <form class="margin-bottom-8em" action="/postServlet" method="post" onchange="overallTextOnChange()">
-            	<div>
-	            	<img id="uploadPreview" style="width: 100px; height: 100px;" />
-					<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
-                </div>
+			<form action="/UploadImageServlet" method="post">
+				<img id="uploadPreview" style="width: 100px; height: 100px;" />
+				<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
+			</form>
+            <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
+                <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />
                 <div>
                     <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
                 </div>
@@ -76,6 +80,7 @@
                     <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
                     <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
                 </div>
+                
             </form>
             <p >Individualize:</p>
             <p></p>
@@ -94,14 +99,40 @@
   							for(Post post : user.getNewsfeed().getPosts(searchText)) {
 								pageContext.setAttribute("curDatePost", post.getText("date"));
 								pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
+								if(post.getIsEditing()) {
   						%>
-								<form action="/deletePost" method="post">
-									<input type="submit" value="X" />
-									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-								</form>
-								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-								<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
+  									<form action="/saveEdit" method="post">
+										<input type="submit" value="Post" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<form action="/cancelEditPost" method="post">
+										<input type="submit" value="Cancel" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />										
+									</form>
+									<label>Facebook:</label>
+				                    <% 
+										if(post.getText("facebook").equals("")) {
+										//MUST PUT IN A CHECK FOR IMAGE ALSO	
+									%>
+				                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked">				                    		
+				                    <%	} else { %>
+				                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked" checked>
+				                    <%	} %>	
+				                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbEditText" id="fbEditText">${fn:escapeXml(curFacebookPost)}</textarea>				                    		
+				                    
+  						<%		} else { %>
+									<form action="/deletePost" method="post">
+										<input type="submit" value="X" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<form action="/editPost" method="post">
+										<input type="submit" value="Edit" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
+									<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
 						<%
+  								}
 							}
 						%>
             </div>
@@ -109,16 +140,45 @@
             	<!-- TWITTER -->
 						<%
 							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-												pageContext.setAttribute("curDatePost", post.getText("date"));
-												pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
+								pageContext.setAttribute("curDatePost", post.getText("date"));
+								pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
+								if(post.getIsEditing()) {
+									//this is done here and not in facebook because need both to be edited
+									post.setIsEditing(false);
+  						%>
+  									<form action="/saveEdit" method="post">
+										<input type="submit" value="Post" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<form action="/cancelEditPost" method="post">
+										<input type="submit" value="Cancel" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<label>Twitter:</label>
+									<% 
+										if(post.getText("twitter").equals("")) {
+										//MUST PUT IN A CHECK FOR IMAGE ALSO	
+									%>
+				                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked">
+				                    <%	} else { %>
+				                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked" checked>
+				                    <%	} %>		
+				                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterEditText" id="twitterEditText">${fn:escapeXml(curTwitterPost)}</textarea>
+						<%		} else { 
+
 						%>
-								<form action="/deletePost" method="post">
-									<input type="submit" value="X" />
-									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-								</form>
-								<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-								<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
+									<form action="/deletePost" method="post">
+										<input type="submit" value="X" />
+										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<form action="/editPost" method="post">
+											<input type="submit" value="Edit" />
+											<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+									</form>
+									<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
+									<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
 						<%
+								}
 							}
 						%>
             </div>
@@ -182,10 +242,15 @@
 function PreviewImage() {
     var oFReader = new FileReader();
     oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+	
 
     oFReader.onload = function (oFREvent) {
+
         document.getElementById("uploadPreview").src = oFREvent.target.result;
     };
+    
+    document.location.href="/UploadImageServlet";
+
 };
 
 

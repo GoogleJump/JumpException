@@ -1,9 +1,11 @@
 package guestbook;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 
@@ -258,6 +260,23 @@ public class ShubUser implements Serializable {
 			return status.getId();
 		}
 		
+//		public Status twitterPostWithFileMedia(Twitter twitter, String status, File media) {
+//			// construct the custom request
+//	    	String url = "https://upload.twitter.com/1/statuses/update_with_media.json";
+//	    	twitter4j.HttpParameter p1 = new twitter4j.HttpParameter("status",status);
+//	    	twitter4j.HttpParameter p2 = new twitter4j.HttpParameter("media[]",media);
+//	    	twitter4j.HttpParameter[] arr = { p1, p2 };
+//	    	
+//	    	try {
+////				media.toURL();
+//			} catch (MalformedURLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//	    	// make call to factory method
+//	    	
+//		}
+		
 		public void deleteTwitterAccessToken() {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Entity entity = null;
@@ -270,9 +289,9 @@ public class ShubUser implements Serializable {
 		
 		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 			HttpSession session = req.getSession();
-			session.setAttribute("fbText", fbText);
-			session.setAttribute("twitterText", twitterText);
-			session.setAttribute("overallText", overallText);
+//			session.setAttribute("fbText", fbText);
+//			session.setAttribute("twitterText", twitterText);
+//			session.setAttribute("overallText", overallText);
 	
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
@@ -308,13 +327,14 @@ public class ShubUser implements Serializable {
 			    
 			    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			    datastore.put(post);
+			    System.out.println("posting");
 			    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey()));
 				req.getSession().setAttribute("user", this);
 			    resp.getWriter().println("GOT HERE");
 				try {
-					session.removeAttribute("fbText");
-					session.removeAttribute("twitterText");
-					session.removeAttribute("overallText");
+//					session.removeAttribute("fbText");
+//					session.removeAttribute("twitterText");
+//					session.removeAttribute("overallText");
 					resp.sendRedirect("/signedIn.jsp");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -357,7 +377,7 @@ public class ShubUser implements Serializable {
 			
 			try {
 				return facebook1.postStatusMessage(fbText);
-			} catch (FacebookException e) {
+			} catch (FacebookException | IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
