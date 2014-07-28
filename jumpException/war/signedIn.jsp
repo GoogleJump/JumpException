@@ -60,7 +60,7 @@
             <p>Type and Share!</p>
             <p></p>
 
-			<form action="/UploadImageServlet" method="post">
+			<form action="/UploadImageServlet" enctype="multipart/form-data" method="post">
 				<img id="uploadPreview" style="width: 100px; height: 100px;" />
 				<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
 			</form>
