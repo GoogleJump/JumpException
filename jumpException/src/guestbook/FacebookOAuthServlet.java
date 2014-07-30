@@ -21,7 +21,7 @@ public class FacebookOAuthServlet extends HttpServlet {
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
 	      throws ServletException, IOException {
 		  Facebook facebook = new FacebookFactory().getInstance();
-	      facebook.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+	      facebook.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
 	      facebook.setOAuthPermissions("public_profile,publish_actions");
 	     
 	      String callbackURL = facebook.getOAuthCallbackURL();

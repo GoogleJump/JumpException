@@ -77,7 +77,7 @@ public class PostFacebookFinal extends HttpServlet {
     	code = code.substring(5);
     	
     	Facebook facebook1 = new FacebookFactory().getInstance();
-    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
         facebook1.setOAuthPermissions("public_profile");
         facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
     	
