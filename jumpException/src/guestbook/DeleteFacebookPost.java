@@ -13,7 +13,7 @@ import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.auth.AccessToken;
 
-public class PostFacebookFinal extends HttpServlet {
+public class DeleteFacebookPost extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain");
     	StringBuffer URL = request.getRequestURL();
@@ -37,28 +37,15 @@ public class PostFacebookFinal extends HttpServlet {
         ShubUser user = (ShubUser) session.getAttribute("user");
         user.setFacebookToken(code, "facebookPost",response);
         
-        if (session.getAttribute("overallText") != null){
-        	String overallText = (String) session.getAttribute("overallText");
-        	String fbText = (String) session.getAttribute("fbText");
-        	String twitterText = (String) session.getAttribute("twitterText");
+        String overallText = (String) session.getAttribute("overallText");
+        String fbText = (String) session.getAttribute("fbText");
+        String twitterText = (String) session.getAttribute("twitterText");
         
-        	session.setAttribute("user",user);
-            user = (ShubUser) session.getAttribute("user");
-            
-            session.removeAttribute("overallText");
-            session.removeAttribute("fbText");
-            session.removeAttribute("twitterText");
-            user.post(overallText, fbText, twitterText, request, response);
-        }
-        else{
-        	Post post = (Post)session.getAttribute("post");
-        	
-        	session.setAttribute("user",user);
-            user = (ShubUser) session.getAttribute("user");
-        	session.removeAttribute("post");
-        	
-        	user.deletePost(request, response,post);
-        }
+        
+        session.setAttribute("user",user);
+        user = (ShubUser) session.getAttribute("user");
+        
+        user.post(overallText, fbText, twitterText, request, response);
         response.getWriter().println("IN HERE");
         response.getWriter().println(code);
         //facebook1.setOAuthAccessToken(user.getFacebookAccessToken());

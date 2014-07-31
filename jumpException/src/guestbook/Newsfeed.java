@@ -15,6 +15,8 @@ import twitter4j.auth.AccessToken;
 
 import com.google.appengine.api.datastore.Key;
 
+import facebook4j.Facebook;
+
 @PersistenceCapable(detachable="true")
 public class Newsfeed implements Serializable{ 
 	
@@ -64,8 +66,8 @@ public class Newsfeed implements Serializable{
 		return null;
 	}
 	
-	public boolean removePost(Post post, AccessToken twitterAccessToken) throws IOException {
-		if(post.delete(twitterAccessToken)) {
+	public boolean removePost(Post post, AccessToken twitterAccessToken, Facebook facebook) throws IOException {
+		if(post.delete(twitterAccessToken, facebook)) {
 			return posts.remove(post);
 		} else {
 			return false;

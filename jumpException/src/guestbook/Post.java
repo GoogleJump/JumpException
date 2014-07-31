@@ -3,9 +3,8 @@ package guestbook;
 //blah
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import java.util.*;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -23,6 +22,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
+
+import facebook4j.Facebook;
+import facebook4j.FacebookException;
 
 @PersistenceCapable(detachable="true")
 public class Post implements Serializable {
@@ -45,9 +47,11 @@ public class Post implements Serializable {
 	
 	private long twitterPostId;
 	
+	private String fbPostID;
+	
 	private boolean isEditing;
 	
-	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key) {
+	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key, String fbPostID) {
 		this.date = date;
 		this.overallText = overallText;
 		this.fbText = fbText;
@@ -55,6 +59,7 @@ public class Post implements Serializable {
 		this.twitterPostId = twitterPostId;
 		this.key = key;
 		this.isEditing = false;
+		this.fbPostID = fbPostID;
 	}
 	
 	public String getText(String socialMedia) {
@@ -86,18 +91,29 @@ public class Post implements Serializable {
 		return date;
 	}
 
-	public boolean delete(AccessToken twitterAccessToken) throws IOException {
+	public boolean delete(AccessToken twitterAccessToken, Facebook facebook) throws IOException {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Query query = new Query("Post", key).addSort("date", Query.SortDirection.ASCENDING);
 	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 	    if(entities.size() == 1) {
 		    	deleteTwitterPost(twitterAccessToken);
+		    	deleteFacebookPost(facebook);
 	    		datastore.delete(key);
 	    		return true;
 		}
 	    return false;
 	}
 
+	private void deleteFacebookPost(Facebook facebook) throws IOException {
+		if (fbPostID != null){
+			try {
+				facebook.deletePost(fbPostID);
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	private void deleteTwitterPost(AccessToken twitterAccessToken) throws IOException {
 		if(twitterPostId != -1 && twitterAccessToken != null) {
 			Twitter twitter = new TwitterFactory().getInstance();
