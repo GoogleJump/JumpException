@@ -102,7 +102,8 @@ public class ShubUser implements Serializable {
 	    	String overallText = voidChecking(overallObj);
 	    	String fbText = voidChecking(fbObj);
 	    	String twitterText = voidChecking(twitterObj);
-	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), twitterPostId, entity.getKey()));
+	    	String fbPostID = (String) entity.getProperty("fbPostID");
+	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), twitterPostId, entity.getKey(),fbPostID));
 	    }
 	}
 	
@@ -213,12 +214,43 @@ public class ShubUser implements Serializable {
 		}
 		
 		public boolean deletePost(HttpServletRequest req, HttpServletResponse resp, Post post) throws IOException {
+			
+			Facebook facebook1 = new FacebookFactory().getInstance();
+	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
+	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        
 			if(post == null) {
 				String date = req.getParameter("hiddenDate").toString();
 				post = newsfeed.getPost(date);
 			}
-			newsfeed.removePost(post, twitterAccessToken);
-			req.getSession().setAttribute("user", this);
+			
+			
+			try {
+				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
+				
+				//req.getSession().setAttribute("facebook",facebook1);
+				
+				
+				
+				newsfeed.removePost(post, twitterAccessToken, facebook1);
+				req.getSession().setAttribute("user", this);
+							
+				try {
+					resp.sendRedirect("/signedIn.jsp");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} catch (FacebookException e1) {
+				req.getSession().setAttribute("post", post);
+				
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 //			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 //			Query query = new Query("Post", datastoreKey).addSort("date", Query.SortDirection.ASCENDING);
 //		    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
@@ -229,12 +261,6 @@ public class ShubUser implements Serializable {
 //		    		req.getSession().setAttribute("user", this);
 //		    	}
 //			}
-			try {
-				resp.sendRedirect("/signedIn.jsp");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return true;
 		}
 
@@ -300,19 +326,13 @@ public class ShubUser implements Serializable {
 	        
 	        try {
 				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
-	        } catch (FacebookException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				resp.getWriter().println(e.toString());
-
-				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
-			}
 				
+				//req.getSession().setAttribute("facebook", facebook1);
 
 				Date date = new Date();
 				System.out.println("twitterPost");
-				String facebookPostID = facebookPost(fbText,facebook1); 
 				long twitterPostId = twitterPost(twitterText, resp, req);
+				String facebookPostID = facebookPost(fbText,facebook1); 
 			    Entity post = new Entity("Post", datastoreKey);
 			    overallText = voidOverallChecking(overallText);
 			    fbText = voidFacebookChecking(fbText, overallText, req);
@@ -324,21 +344,27 @@ public class ShubUser implements Serializable {
 			    post.setProperty("fbPost", fbText);
 			    post.setProperty("twitterPost", twitterText);
 			    post.setProperty("twitterPostId", twitterPostId);
+			    post.setProperty("fbPostID", facebookPostID);
 			    
 			    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			    datastore.put(post);
-			    System.out.println("posting");
-			    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey()));
+			    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey(),facebookPostID));
 				req.getSession().setAttribute("user", this);
 			    resp.getWriter().println("GOT HERE");
 				try {
-//					session.removeAttribute("fbText");
-//					session.removeAttribute("twitterText");
-//					session.removeAttribute("overallText");
 					resp.sendRedirect("/signedIn.jsp");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				resp.getWriter().println(e.toString());
+				req.getSession().setAttribute("fbText", fbText);
+				req.getSession().setAttribute("twitterText", twitterText);
+				req.getSession().setAttribute("overallText", overallText);
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+			}
 			
 			
 			/*Date date = new Date();
