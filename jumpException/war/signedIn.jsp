@@ -108,8 +108,8 @@
 						post.setIsEditing(false);
 			%>
 						<form action="/routeEditServlets" method="post">
-							<input type="submit" name="action" value="Post" /> <br>
-							<input type="submit" name="action" value="Cancel" />
+							<input type="submit" name="action" value="Post" /> <br><br>
+							<input type="submit" name="action" value="Cancel" /> <br>
 							<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
 				            <div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
 				                   <!-- FACEBOOK -->
@@ -122,7 +122,7 @@
 			                    <%	} else { %>
 			                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked" checked>
 			                    <%	} %>	
-			                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbEditText" id="fbEditText">${fn:escapeXml(editedFbPost)}</textarea>
+			                    <textarea class="socialTextArea" rows="4" cols="30" type="text" style="margin: 0px 20.5px 0px 0px; width: 528px; height: 84px;" name="fbEditText" id="fbEditText">${fn:escapeXml(editedFbPost)}</textarea>
 		                    </div>		                    		
 						    <div class="theme-container">
 						    	<!-- TWITTER -->

@@ -98,30 +98,36 @@ div.col-lg-8.col-lg-offset-2 {
 }
 
 .socialTextArea {
-	display:none;
-	
+	display: block;
+	visibility: hidden;
 }
 
 #fbCheckbox:checked + #fbText {
 	display:block;
+	visibility: visible;
 	width: 90%;
 }
 
 #twitterCheckbox:checked + #twitterText {
 	display:block;
+	visibility: visible;
 	width: 90%;
 	margin-left: 1.6em;	
 }
 
 #fbEditCheckbox:checked + #fbEditText {
 	display:block;
+	visibility: visible;
 	width: 90%;
+	position: relative;
 }
 
 #twitterEditCheckbox:checked + #twitterEditText {
 	display:block;
-	width: 90%;
+	visibility: visible;
+	width: 45%;
 	margin-left: 1.6em;	
+	position: relative;
 }
 
 input[type="submit"] {
