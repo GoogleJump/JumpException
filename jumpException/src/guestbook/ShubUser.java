@@ -311,12 +311,12 @@ public class ShubUser implements Serializable {
 
 				Date date = new Date();
 				System.out.println("twitterPost");
+
+			    Entity post = new Entity("Post", datastoreKey);
+			    
+			    
 				String facebookPostID = facebookPost(fbText,facebook1); 
 				long twitterPostId = twitterPost(twitterText, resp, req);
-			    Entity post = new Entity("Post", datastoreKey);
-			    overallText = voidOverallChecking(overallText);
-			    fbText = voidFacebookChecking(fbText, overallText, req);
-			    twitterText = voidTwitterChecking(twitterText, overallText, twitterPostId, req);
 			    
 
 			    post.setProperty("date", date);
@@ -400,39 +400,7 @@ public class ShubUser implements Serializable {
 			//return null;
 		}
 
-		private String voidOverallChecking(Object textObj) {
-			if(textObj == null) {
-		    	return "";
-		    }
-			return textObj.toString();
-		}
 		
-		private String voidFacebookChecking(Object textObj, Object overallText, HttpServletRequest req) {
-			System.out.println("FACEBOOK CHECKBOX " + req.getParameter("fbCheckbox"));
-			boolean isFbCheckboxChecked = req.getParameter("fbCheckbox") != null;
-		    if(!isFbCheckboxChecked) {
-		    	textObj = overallText;
-		    } else if(textObj == null){
-		    	return "";
-		    }
-			return textObj.toString();
-		}
-		
-		private String voidTwitterChecking(Object textObj, Object overallText, long twitterPostId, HttpServletRequest req) {
-			System.out.println("TWITTER CHECKBOX " + req.getParameter("twitterCheckbox"));
-			if(twitterPostId != -1) { 
-				boolean isTwitterCheckboxChecked = req.getParameter("twitterCheckbox") != null;
-			    if(!isTwitterCheckboxChecked) {
-			    	textObj = overallText;
-			    } else if(textObj == null){
-			    	return "";
-			    }
-			} else { //no post to twitter
-				return "";
-			}
-				
-			return textObj.toString();
-		}
 
 		public void setTwitterToken(String accessTokenString,
 				String accessTokenSecret) {

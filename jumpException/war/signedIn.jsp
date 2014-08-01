@@ -89,100 +89,92 @@
 			</div>
 			<div class="col-md-offset-6">
 				<h3>Twitter</h3>
-			</div>						
+			</div>				
         </div>
         <div class="post-bottom">
-            <div class="col-xs-6 col-md-6 mg-btm-2">
-                   <!-- FACEBOOK -->
-            
-						<%
-  							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curDatePost", post.getText("date"));
-								pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
-								if(post.getIsEditing()) {
-  						%>
-  									<form action="/saveEdit" method="post">
-										<input type="submit" value="Post" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<form action="/cancelEditPost" method="post">
-										<input type="submit" value="Cancel" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />										
-									</form>
-									<label>Facebook:</label>
-				                    <% 
-										if(post.getText("facebook").equals("")) {
-										//MUST PUT IN A CHECK FOR IMAGE ALSO	
-									%>
-				                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked">				                    		
-				                    <%	} else { %>
-				                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked" checked>
-				                    <%	} %>	
-				                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbEditText" id="fbEditText">${fn:escapeXml(curFacebookPost)}</textarea>				                    		
-				                    
-  						<%		} else { %>
-									<form action="/deletePost" method="post">
-										<input type="submit" value="X" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<form action="/editPost" method="post">
-										<input type="submit" value="Edit" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-									<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
-						<%
-  								}
-							}
-						%>
-            </div>
-            <div class="col-xs-6 col-md-6 col-md-offset-6 mg-btm-2">
-            	<!-- TWITTER -->
-						<%
-							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curDatePost", post.getText("date"));
-								pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
-								if(post.getIsEditing()) {
-									//this is done here and not in facebook because need both to be edited
-									post.setIsEditing(false);
-  						%>
-  									<form action="/saveEdit" method="post">
-										<input type="submit" value="Post" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<form action="/cancelEditPost" method="post">
-										<input type="submit" value="Cancel" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<label>Twitter:</label>
-									<% 
-										if(post.getText("twitter").equals("")) {
-										//MUST PUT IN A CHECK FOR IMAGE ALSO	
-									%>
-				                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked">
-				                    <%	} else { %>
-				                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked" checked>
-				                    <%	} %>		
-				                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterEditText" id="twitterEditText">${fn:escapeXml(curTwitterPost)}</textarea>
-						<%		} else { 
+        	<%
+				for(Post post : user.getNewsfeed().getPosts(searchText)) {
+					pageContext.setAttribute("curDatePost", post.getText("date"));
+					pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
+					pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
+			%>
+				<div class="transparent-container" >
+				<div class="theme container">
+				
+			<%
+					if(post.getIsEditing()) {
+						pageContext.setAttribute("editedFbPost", post.getText("facebook"));
+						pageContext.setAttribute("editedTwitterPost", post.getText("twitter"));
+						post.setIsEditing(false);
+			%>
+						<form action="/routeEditServlets" method="post">
+							<input type="submit" name="action" value="Post" /> <br>
+							<input type="submit" name="action" value="Cancel" />
+							<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+				            <div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
+				                   <!-- FACEBOOK -->
+								<label>Facebook:</label>
+			                    <% 
+									if(post.getText("facebook").equals("")) {
+									//MUST PUT IN A CHECK FOR IMAGE ALSO	
+								%>
+			                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked">				                    		
+			                    <%	} else { %>
+			                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked" checked>
+			                    <%	} %>	
+			                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbEditText" id="fbEditText">${fn:escapeXml(editedFbPost)}</textarea>
+		                    </div>		                    		
+						    <div class="theme-container">
+						    	<!-- TWITTER -->
+						    	<label>Twitter:</label>
+								<% 
+									if(post.getText("twitter").equals("")) {
+									//MUST PUT IN A CHECK FOR IMAGE ALSO	
+								%>
+			                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked">
+			                    <%	} else { %>
+			                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked" checked>
+			                    <%	} %>		
+			                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterEditText" id="twitterEditText">${fn:escapeXml(editedTwitterPost)}</textarea>
+						    </div> 
+			   			</form>             
+		  						
+		  						
+			<%		} else { %>
+							<form action="/deletePost" method="post">
+								<input type="submit" value="X" />
+								<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+							</form>
+							<form action="/editPost" method="post">
+								<input type="submit" value="Edit" />
+								<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+							</form>
+							<table width="100%">
+								<tr>
+									<td width="50%">
+										<div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
+							                   <!-- FACEBOOK -->
+											<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
+											<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
+										</div>
+									</td>
+									<td width="50%">
+										<div class="theme-container">
+											<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
+											<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
+										</div>
+									</td>
+								</tr>
+							</table>
+			<%
+					}
+			%>
+				</div>
+				</div>
+			<%
+				}
+			%>
 
-						%>
-									<form action="/deletePost" method="post">
-										<input type="submit" value="X" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<form action="/editPost" method="post">
-											<input type="submit" value="Edit" />
-											<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-									<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
-						<%
-								}
-							}
-						%>
-            </div>
-        </div>
     </div>
     <!-- /top innerbox -->
     <!-- <table>

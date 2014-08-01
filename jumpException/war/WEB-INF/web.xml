@@ -7,6 +7,13 @@
 
 <servlet>
 
+<servlet-name>routeEditServlets</servlet-name>
+
+<servlet-class>guestbook.RouteEditServlets</servlet-class>
+
+</servlet>
+<servlet>
+
 <servlet-name>sign</servlet-name>
 
 <servlet-class>guestbook.SignGuestbookServlet</servlet-class>
@@ -112,14 +119,6 @@
 
 <servlet>
 
-<servlet-name>cancelEditPost</servlet-name>
-
-<servlet-class>guestbook.CancelEditPostServlet</servlet-class>
-
-</servlet>
-
-<servlet>
-
 <servlet-name>editPost</servlet-name>
 
 <servlet-class>guestbook.EditPostServlet</servlet-class>
@@ -184,6 +183,14 @@
 	<servlet-class>guestbook.PostFacebookFinal</servlet-class>
 </servlet>
 
+
+<servlet-mapping>
+
+<servlet-name>routeEditServlets</servlet-name>
+
+<url-pattern>/routeEditServlets</url-pattern>
+
+</servlet-mapping>
 
 <servlet-mapping>
 
@@ -260,14 +267,6 @@
 <servlet-name>editPost</servlet-name>
 
 <url-pattern>/editPost</url-pattern>
-
-</servlet-mapping>
-
-<servlet-mapping>
-
-<servlet-name>cancelEditPost</servlet-name>
-
-<url-pattern>/cancelEditPost</url-pattern>
 
 </servlet-mapping>
 
