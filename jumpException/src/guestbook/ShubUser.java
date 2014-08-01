@@ -318,6 +318,10 @@ public class ShubUser implements Serializable {
 //			session.setAttribute("fbText", fbText);
 //			session.setAttribute("twitterText", twitterText);
 //			session.setAttribute("overallText", overallText);
+			
+			if (facebookCode == null){
+				resp.sendRedirect("/signedIn.jsp");
+			}
 	
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
@@ -527,6 +531,28 @@ public class ShubUser implements Serializable {
 			this.backgroundImage = backgroundImage;
 		}
 
+		public void setFacebookCode(String code){
+			this.facebookCode = code;
+			
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			
+			Entity entity = null;
+			if(facebookAccessToken != null) {
+				Query query = new Query("FacebookAccessToken", datastoreKey);
+			    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+			    if(entities.size() == 1) {
+			    		entity = entities.get(0);
+				} else {
+					//ERROR
+					return;
+				}
+			} else {
+				entity = new Entity("FacebookAccessToken", datastoreKey);
+			}
+			entity.setProperty("facebookAccessCode", code);
+			datastore.put(entity);
+		}
+		
 		public void setFacebookToken(String code, String redirect, HttpServletResponse resp) throws IOException {
 			// TODO Auto-generated method stub
 			this.facebookCode = code;
