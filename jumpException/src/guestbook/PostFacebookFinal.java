@@ -35,7 +35,8 @@ public class PostFacebookFinal extends HttpServlet {
     	        
         AccessToken token = null;
         ShubUser user = (ShubUser) session.getAttribute("user");
-        user.setFacebookToken(code, "facebookPost",response);
+        //user.setFacebookToken(code, "facebookPost",response);
+        user.setFacebookCode(code);
         
         if (session.getAttribute("overallText") != null){
         	String overallText = (String) session.getAttribute("overallText");
