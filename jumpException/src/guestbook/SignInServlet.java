@@ -26,7 +26,7 @@ public class SignInServlet extends HttpServlet {
     	HttpSession session = request.getSession();
     	
     	if (code.charAt(0) == 'e'){
-    		response.sendRedirect("http://1-dot-nietotesting.appspot.com/settings.jsp"); 
+    		response.sendRedirect("/settings.jsp"); 
     	}
     	
     	code = code.substring(5);
@@ -34,16 +34,17 @@ public class SignInServlet extends HttpServlet {
     	Facebook facebook1 = new FacebookFactory().getInstance();
     	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
         facebook1.setOAuthPermissions("public_profile");
-        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookConnect");
+        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookConnect");
     	
     	        
         AccessToken token = null;
         ShubUser user = (ShubUser) session.getAttribute("user");
-        user.setFacebookToken(code, "facebookConnect",response);
+        //user.setFacebookToken(code, "facebookConnect",response);
+        user.setFacebookCode(code);
 		session.setAttribute("user", user);
 		
 		session.setAttribute("facebook", facebook1);
 		
-    	response.sendRedirect("http://1-dot-nietotesting.appspot.com/settings.jsp");  
+    	response.sendRedirect("/settings.jsp");  
     }
 }
