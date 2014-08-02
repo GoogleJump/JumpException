@@ -218,7 +218,7 @@ public class ShubUser implements Serializable {
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookPost");
 	        
 			if(post == null) {
 				String date = req.getParameter("hiddenDate").toString();
@@ -246,7 +246,7 @@ public class ShubUser implements Serializable {
 			} catch (FacebookException e1) {
 				req.getSession().setAttribute("post", post);
 				
-				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotest14.appspot.com/facebookPost"));
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -326,7 +326,7 @@ public class ShubUser implements Serializable {
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookPost");
 	        
 	        try {
 				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
@@ -367,7 +367,7 @@ public class ShubUser implements Serializable {
 				req.getSession().setAttribute("fbText", fbText);
 				req.getSession().setAttribute("twitterText", twitterText);
 				req.getSession().setAttribute("overallText", overallText);
-				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotest14.appspot.com/facebookPost"));
 			}
 			
 			
@@ -415,7 +415,7 @@ public class ShubUser implements Serializable {
 			/*Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookPost");
 	        
 	        try {
 				facebook1.setOAuthAccessToken(facebookAccessToken);
@@ -424,7 +424,7 @@ public class ShubUser implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				resp.getWriter().println(e.toString());
-				//resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotesting.appspot.com/facebookPost"));
+				//resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotest14.appspot.com/facebookPost"));
 			}*/
 	        
 			//return null;
@@ -514,11 +514,11 @@ public class ShubUser implements Serializable {
 		    		/*Facebook facebook1 = new FacebookFactory().getInstance();
 			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 			        facebook1.setOAuthPermissions("public_profile,publish_actions");
-			        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookConnect");*/
+			        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookConnect");*/
 					
 			        this.facebookCode = entityFacebook.getProperty("facebookAccessCode").toString();
 					/*try {
-						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString(),"http://1-dot-nietotesting.appspot.com/facebookConnect");
+						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString(),"http://1-dot-nietotest14.appspot.com/facebookConnect");
 					} catch (FacebookException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -577,7 +577,7 @@ public class ShubUser implements Serializable {
 			Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions");
-	        String callBack = "http://1-dot-nietotesting.appspot.com/" + redirect;
+	        String callBack = "http://1-dot-nietotest14.appspot.com/" + redirect;
 	        facebook1.setOAuthCallbackURL(callBack);
 			
 			

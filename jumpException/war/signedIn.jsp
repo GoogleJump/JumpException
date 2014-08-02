@@ -47,16 +47,6 @@
                     <input type="submit" value="Sign Out">
                 </div>
             </form>
-            <form action="/twitterPostStatus" method="post">
-				<div>
-					<input type="submit" value="Say Hi to Twitter!" />
-				</div>
-			</form>
-			<form action="/facebookPostStatus" method="post">
-				<div>
-					<input type="submit" value="Say Hi to Facebook!" />
-				</div>
-			</form>
             <p>Type and Share!</p>
             <p></p>
 
