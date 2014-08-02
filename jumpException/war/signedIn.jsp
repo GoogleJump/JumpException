@@ -9,7 +9,7 @@
 		return;
 	}
 	pageContext.setAttribute("username", user.getUsername());
-	pageContext.setAttribute("sectionWithDynamicBackgroundImage", "container content-section text-center " + user.getBackgroundImage());
+	pageContext.setAttribute("dynamicBackgroundImage", user.getBackgroundImage());
 
 	Blob blob = (Blob) session.getAttribute("blob");
 	pageContext.setAttribute("blob", blob);
@@ -35,141 +35,141 @@
 	}
 	*/
 %>
-
-<section id="SignedIn" class="${fn:escapeXml(sectionWithDynamicBackgroundImage)}">
-    <div class="container body">
-        <!--<div class="row"> Top Innerbox -->
-        <div class="post-top">
-            <p>Hello, ${fn:escapeXml(username)}!</p>
-            <p></p>
-            <form action="/loggingOut" method="get">
-                <div>
-                    <input type="submit" value="Sign Out">
-                </div>
-            </form>
-            <form action="/twitterPostStatus" method="post">
-				<div>
-					<input type="submit" value="Say Hi to Twitter!" />
+<div class="${fn:escapeXml(dynamicBackgroundImage)}">
+	<section id="SignedIn" class="container content-section text-center">
+	    <div class="container body">
+	        <!--<div class="row"> Top Innerbox -->
+	        <div class="post-top">
+	            <p>Hello, ${fn:escapeXml(username)}!</p>
+	            <p></p>
+	            <form action="/loggingOut" method="get">
+	                <div>
+	                    <input type="submit" value="Sign Out">
+	                </div>
+	            </form>
+	            <form action="/twitterPostStatus" method="post">
+					<div>
+						<input type="submit" value="Say Hi to Twitter!" />
+					</div>
+				</form>
+				<form action="/facebookPostStatus" method="post">
+					<div>
+						<input type="submit" value="Say Hi to Facebook!" />
+					</div>
+				</form>
+	            <p>Type and Share!</p>
+	            <p></p>
+	
+				<form action="/UploadImageServlet" enctype="multipart/form-data" method="post">
+					<img id="uploadPreview" style="width: 100px; height: 100px;" />
+					<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
+				</form>
+	            <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
+	                <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />
+	                <div>
+	                    <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
+	                </div>
+	                <button class="btn btn-danger btn-outline" type="submit">Post</button>
+	                <div class="col-xs-6 col-md-6 mg-btm-2">
+	                    <label>Facebook:</label>
+	                    <input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked">
+	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbText" id="fbText" value=""></textarea>
+	                </div>
+	                <div class="col-md-offset-6 col-md-6">
+	                    <label>Twitter:</label>
+	                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
+	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
+	                </div>
+	                
+	            </form>
+	            <p >Individualize:</p>
+	            <p></p>
+	            <div class="col-xs-6 col-md-6 mg-btm-2">
+					<h3>Facebook</h3>
 				</div>
-			</form>
-			<form action="/facebookPostStatus" method="post">
-				<div>
-					<input type="submit" value="Say Hi to Facebook!" />
-				</div>
-			</form>
-            <p>Type and Share!</p>
-            <p></p>
-
-			<form action="/UploadImageServlet" enctype="multipart/form-data" method="post">
-				<img id="uploadPreview" style="width: 100px; height: 100px;" />
-				<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
-			</form>
-            <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
-                <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />
-                <div>
-                    <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
-                </div>
-                <button class="btn btn-danger btn-outline" type="submit">Post</button>
-                <div class="col-xs-6 col-md-6 mg-btm-2">
-                    <label>Facebook:</label>
-                    <input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked">
-                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbText" id="fbText" value=""></textarea>
-                </div>
-                <div class="col-md-offset-6 col-md-6">
-                    <label>Twitter:</label>
-                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
-                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
-                </div>
-                
-            </form>
-            <p >Individualize:</p>
-            <p></p>
-            <div class="col-xs-6 col-md-6 mg-btm-2">
-				<h3>Facebook</h3>
-			</div>
-			<div class="col-md-offset-6">
-				<h3>Twitter</h3>
-			</div>				
-        </div>
-        <div class="post-bottom">
-        	<%
-				for(Post post : user.getNewsfeed().getPosts(searchText)) {
-					pageContext.setAttribute("curDatePost", post.getText("date"));
-					pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
-					pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
-			%>
-				<div class="transparent-container" >
-				<div class="theme container">
-				
-			<%
-					if(post.getIsEditing()) {
-						pageContext.setAttribute("editedFbPost", post.getText("facebook"));
-						pageContext.setAttribute("editedTwitterPost", post.getText("twitter"));
-						post.setIsEditing(false);
-			%>
-						<form action="/routeEditServlets" method="post">
-							<input type="submit" name="action" value="Post" /> <br><br>
-							<input type="submit" name="action" value="Cancel" /> <br>
-							<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-				            <div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
-				                   <!-- FACEBOOK -->
-								<label>Facebook:</label>
-			                    <% 
-									if(post.getText("facebook").equals("")) {
-									//MUST PUT IN A CHECK FOR IMAGE ALSO	
-								%>
-			                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked">				                    		
-			                    <%	} else { %>
-			                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked" checked>
-			                    <%	} %>	
-			                    <textarea class="socialTextArea" rows="4" cols="30" type="text" style="margin: 0px 20.5px 0px 0px; width: 528px; height: 84px;" name="fbEditText" id="fbEditText">${fn:escapeXml(editedFbPost)}</textarea>
-		                    </div>		                    		
-						    <div class="theme-container">
-						    	<!-- TWITTER -->
-						    	<label>Twitter:</label>
-								<% 
-									if(post.getText("twitter").equals("")) {
-									//MUST PUT IN A CHECK FOR IMAGE ALSO	
-								%>
-			                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked">
-			                    <%	} else { %>
-			                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked" checked>
-			                    <%	} %>		
-			                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterEditText" id="twitterEditText">${fn:escapeXml(editedTwitterPost)}</textarea>
-						    </div> 
-			   			</form>             
-		  						
-		  						
-			<%		} else { %>
-							<form action="/deletePost" method="post">
-								<input type="submit" value="X" />
+				<div class="col-md-offset-6">
+					<h3>Twitter</h3>
+				</div>				
+	        </div>
+	        <div class="post-bottom">
+	        	<%
+					for(Post post : user.getNewsfeed().getPosts(searchText)) {
+						pageContext.setAttribute("curDatePost", post.getText("date"));
+						pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
+						pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
+				%>
+					<div class="transparent-container" >
+					<div class="theme container">
+					
+				<%
+						if(post.getIsEditing()) {
+							pageContext.setAttribute("editedFbPost", post.getText("facebook"));
+							pageContext.setAttribute("editedTwitterPost", post.getText("twitter"));
+							post.setIsEditing(false);
+				%>
+							<form action="/routeEditServlets" method="post">
+								<input type="submit" name="action" value="Post" /> <br><br>
+								<input type="submit" name="action" value="Cancel" /> <br>
 								<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-							</form>
-							<form action="/editPost" method="post">
-								<input type="submit" value="Edit" />
-								<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-							</form>
-							<table width="100%">
-								<tr>
-									<td width="50%">
-										<div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
-							                   <!-- FACEBOOK -->
-											<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-											<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
-										</div>
-									</td>
-									<td width="50%">
-										<div class="theme-container">
-											<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-											<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
-										</div>
-									</td>
-								</tr>
-							</table>
-			<%
-					}
-			%>
-				</div>
+					            <div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
+					                   <!-- FACEBOOK -->
+									<label>Facebook:</label>
+				                    <% 
+										if(post.getText("facebook").equals("")) {
+										//MUST PUT IN A CHECK FOR IMAGE ALSO	
+									%>
+				                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked">				                    		
+				                    <%	} else { %>
+				                    		<input type="checkbox" name="fbEditCheckbox" id="fbEditCheckbox" value="checked" checked>
+				                    <%	} %>	
+				                    <textarea class="socialTextArea" rows="4" cols="30" type="text" style="margin: 0px 20.5px 0px 0px; width: 528px; height: 84px;" name="fbEditText" id="fbEditText">${fn:escapeXml(editedFbPost)}</textarea>
+			                    </div>		                    		
+							    <div class="theme-container">
+							    	<!-- TWITTER -->
+							    	<label>Twitter:</label>
+									<% 
+										if(post.getText("twitter").equals("")) {
+										//MUST PUT IN A CHECK FOR IMAGE ALSO	
+									%>
+				                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked">
+				                    <%	} else { %>
+				                    		<input type="checkbox" name="twitterEditCheckbox" id="twitterEditCheckbox" value="checked" checked>
+				                    <%	} %>		
+				                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterEditText" id="twitterEditText">${fn:escapeXml(editedTwitterPost)}</textarea>
+							    </div> 
+				   			</form>             
+			  						
+			  						
+				<%		} else { %>
+								<form action="/deletePost" method="post">
+									<input type="submit" value="X" />
+									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+								</form>
+								<form action="/editPost" method="post">
+									<input type="submit" value="Edit" />
+									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+								</form>
+								<table width="100%">
+									<tr>
+										<td width="50%">
+											<div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
+								                   <!-- FACEBOOK -->
+												<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
+												<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
+											</div>
+										</td>
+										<td width="50%">
+											<div class="theme-container">
+												<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
+												<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
+											</div>
+										</td>
+									</tr>
+								</table>
+				<%
+						}
+				%>
+					</div>
 				</div>
 			<%
 				}
