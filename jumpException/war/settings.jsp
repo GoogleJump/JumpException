@@ -44,17 +44,20 @@
 			<% } %>
 			<form action="/updateBackgroundImageServlet" method="post">
 				<p class="theme-text">Background Photo</p>
-				<div>
-					<input type="radio" name="backgroundImage" value="backgroundImage_FlowersAndSky" checked/>Flowers and Sky</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Grassbells" />Grassbells</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Bridgewater" />Bridgewater</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Cascades" />Cascades</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Plane_Zealand" />Plane Zealand</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Ripples" />Ripples</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Sunset" />Sunset</br>
-					<input type="radio" name="backgroundImage" value="backgroundImage_Web" />Web</br>
-					
-					<input type="submit" value="Save Background Image" />
+				<a class="theme-text" href="http://www.bosleyjarrett.com">Photos by Bosley Jarrett Photography</a>
+				<div class="radioBox">
+					<div class="radios">
+						<input type="radio" name="backgroundImage" value="backgroundImage_FlowersAndSky" checked> Flowers and Sky</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Grassbells" /> Grassbells</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Bridgewater" /> Bridgewater</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Cascades" /> Cascades</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Plane_Zealand" /> Plane Zealand</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Ripples" /> Ripples</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Sunset" /> Sunset</br>
+						<input type="radio" name="backgroundImage" value="backgroundImage_Web" /> Web</br>
+						
+						<input type="submit" value="Save Background Image" />
+					</div>
 				</div>
 			</form>
 			<p class="theme-text">Profile</p>

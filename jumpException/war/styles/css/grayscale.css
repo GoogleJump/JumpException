@@ -250,6 +250,18 @@ a:focus {
     padding-top: 100px;
 }
 
+.log-in {
+	width: 100%;
+    padding: 50px 0;
+    color: #fff;
+    background: url(../img/plane_zealand.jpg) no-repeat center center scroll;
+    background-color: #000;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
 .download-section {
     width: 100%;
     padding: 50px 0;
@@ -296,13 +308,13 @@ a:focus {
     /*border: 1px solid #28c3ab;
     color: #28c3ab;*/
     border: 1px solid #FF99AF);
-    color: #FF99AF;
-    background-color: transparent;
+    color: #fff;
+    
 }
 
 .btn-default:hover,
 .btn-default:focus {
-    border: 1px solid #FF99AF;
+    border: 1px solid #FF99AF);
     background-color: #FF99AF;
     outline: 0;
     color: #fff;

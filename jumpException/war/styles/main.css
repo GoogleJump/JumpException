@@ -15,6 +15,16 @@
 	color: #FF99AF;
 }
 
+.radioBox {
+
+}
+
+.radios {
+	/*margin: 0 auto;
+	text-align: left;
+	display: block;*/
+}
+
 .backgroundImage_FlowersAndSky {
 	background: url("./img/flowers_and_sky.jpg");
 	background-size: cover;
