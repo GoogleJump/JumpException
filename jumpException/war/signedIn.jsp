@@ -42,21 +42,6 @@
 	        <div class="post-top">
 	            <p>Hello, ${fn:escapeXml(username)}!</p>
 	            <p></p>
-	            <form action="/loggingOut" method="get">
-	                <div>
-	                    <input type="submit" value="Sign Out">
-	                </div>
-	            </form>
-	            <form action="/twitterPostStatus" method="post">
-					<div>
-						<input type="submit" value="Say Hi to Twitter!" />
-					</div>
-				</form>
-				<form action="/facebookPostStatus" method="post">
-					<div>
-						<input type="submit" value="Say Hi to Facebook!" />
-					</div>
-				</form>
 	            <p>Type and Share!</p>
 	            <p></p>
 	
@@ -70,27 +55,37 @@
 	                    <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
 	                </div>
 	                <button class="btn btn-danger btn-outline" type="submit">Post</button>
+	               	<p >Individualize:</p>
 	                <div class="col-xs-6 col-md-6 mg-btm-2">
 	                    <label>Facebook:</label>
 	                    <input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked">
 	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbText" id="fbText" value=""></textarea>
 	                </div>
-	                <div class="col-md-offset-6 col-md-6">
+	                <div class="col-md-offset-6 col-sm-offset-6 col-md-6">
 	                    <label>Twitter:</label>
 	                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
 	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
 	                </div>
 	                
 	            </form>
-	            <p >Individualize:</p>
 	            <p></p>
-	            <div class="col-xs-6 col-md-6 mg-btm-2">
-					<h3>Facebook</h3>
-				</div>
-				<div class="col-md-offset-6">
-					<h3>Twitter</h3>
-				</div>				
-	        </div>
+	            <div class="transparent-container">
+		            <div class="theme-container">
+			            <table width="100%">
+							<tr>
+								<td width="50%">
+									<div class="" style="text-align:center;">
+										<h3>Facebook</h3>
+									</div>
+								</td>
+								<td width="50%">
+									<div class="" style="text-align:center;">
+										<h3>Twitter</h3>
+									</div>	
+								</td>
+							</tr>
+						</table>			
+		       		</div>
 	        <div class="post-bottom">
 	        	<%
 					for(Post post : user.getNewsfeed().getPosts(searchText)) {
@@ -152,16 +147,16 @@
 								<table width="100%">
 									<tr>
 										<td width="50%">
-											<div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
+											<div class="theme-container" style="text-align:center;"> <!-- col-xs-6 col-md-6 mg-btm-2 -->
 								                   <!-- FACEBOOK -->
-												<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-												<blockquote>${fn:escapeXml(curFacebookPost)}</blockquote>
+												${fn:escapeXml(curDatePost)}</br></br>
+												${fn:escapeXml(curFacebookPost)}
 											</div>
 										</td>
 										<td width="50%">
-											<div class="theme-container">
-												<blockquote>${fn:escapeXml(curDatePost)}</blockquote>
-												<blockquote>${fn:escapeXml(curTwitterPost)}</blockquote>
+											<div class="theme-container" style="text-align:center;">
+												${fn:escapeXml(curDatePost)}</br></br>
+												${fn:escapeXml(curTwitterPost)}
 											</div>
 										</td>
 									</tr>
