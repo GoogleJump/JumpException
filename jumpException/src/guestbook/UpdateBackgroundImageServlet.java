@@ -17,6 +17,6 @@ public class UpdateBackgroundImageServlet extends HttpServlet{
 		 ShubUser user = (ShubUser) req.getSession().getAttribute("user");
 		 user.setBackgroundImage(backgroundImage);
 		 req.getSession().setAttribute("user", user);
-		 resp.sendRedirect("/signedIn.jsp");
+		 resp.sendRedirect("/settings.jsp");
 	}
 }

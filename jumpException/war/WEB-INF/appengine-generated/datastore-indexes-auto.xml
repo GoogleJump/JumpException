@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 <!-- Indices written at Sat, 2 Aug 2014 23:50:29 EDT -->
+=======
+<!-- Indices written at Tue, 5 Aug 2014 16:28:56 CDT -->
+>>>>>>> JustinsNewestBranch
 
 <datastore-indexes>
 
-    <!-- Used 1 time in query history -->
+    <!-- Used 2 times in query history -->
     <datastore-index kind="Post" ancestor="true" source="auto">
         <property name="date" direction="asc"/>
     </datastore-index>

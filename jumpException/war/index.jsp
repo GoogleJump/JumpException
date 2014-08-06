@@ -23,31 +23,33 @@
         </div>
     </section>
 
-    <section id="Shub" class="container content-section text-center">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2">
-                <h2>Log In</h2>
-                
-                <%
-                    Object logInFailed = session.getAttribute("logInFailed");
-                    if(logInFailed == null) {
-                %>
-                    	<%@ include file = "./logIn.jsp" %>
-
-                	<% } else if(logInFailed.toString().equals("true")) {
-                    %>
-                    
-                    		<%@ include file = "./logInFail.jsp" %>
-                    <% } else {
-                    
-                    %>	
-                        <%@ include file = "./logIn.jsp" %>
-                <% }
-                %>
-
-
-            </div>
-        </div>
+    <section id="Shub" class="content-section text-center">
+    	<div class="log-in">
+	        <div class="container">
+	            <div class="col-lg-8 col-lg-offset-2">
+	                <h2>Log In</h2>
+	                
+	                <%
+	                    Object logInFailed = session.getAttribute("logInFailed");
+	                    if(logInFailed == null) {
+	                %>
+	                    	<%@ include file = "./logIn.jsp" %>
+	
+	                	<% } else if(logInFailed.toString().equals("true")) {
+	                    %>
+	                    
+	                    		<%@ include file = "./logInFail.jsp" %>
+	                    <% } else {
+	                    
+	                    %>	
+	                        <%@ include file = "./logIn.jsp" %>
+	                <% }
+	                %>
+	
+	
+	            </div>
+	        </div>
+       </div>
     </section>
 
     <section id="SignUp" class="content-section text-center">
@@ -76,7 +78,7 @@
         </div>
     </section>
 
-    <section id="contact" class="container content-section text-center">
+<!--     <section id="contact" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Contact Start Bootstrap</h2>
@@ -92,10 +94,10 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </section> 
 
     <div id="map"></div>
-
+-->
     <!-- Core JavaScript Files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>

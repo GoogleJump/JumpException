@@ -11,12 +11,58 @@
     left:50%;
 }
 
+.theme-text {
+	color: #FF99AF;
+}
+
+.radioBox {
+
+}
+
+.radios {
+	/*margin: 0 auto;
+	text-align: left;
+	display: block;*/
+}
+
 .backgroundImage_FlowersAndSky {
 	background: url("./img/flowers_and_sky.jpg");
+	background-size: cover;
 }
 
 .backgroundImage_Grassbells {
 	background: url("./img/grassbells.jpg");
+	background-size: cover;
+}
+
+.backgroundImage_Bridgewater {
+	background: url("./img/bridgewater.jpg");
+	background-size: cover;
+}
+
+.backgroundImage_Cascades {
+	background: url("./img/cascades.jpg");
+	background-size: cover;
+}
+
+.backgroundImage_Plane_Zealand {
+	background: url("./img/plane_zealand.jpg");
+	background-size: cover;
+}
+
+.backgroundImage_Ripples {
+	background: url("./img/ripples.jpg");
+	background-size: cover;
+}
+
+.backgroundImage_Sunset {
+	background: url("./img/sunset.jpg");
+	background-size: cover;
+}
+
+.backgroundImage_Web {
+	background: url("./img/web.jpg");
+	background-size: cover;
 }
 
 .margin-bottom-8em {
@@ -32,9 +78,35 @@ div.container.body {
     /* height: auto; */
     /* overflow: overlay; */
 }
+
+div.transparent-container {
+	background:transparent;
+	padding-top: 25px;
+}
+
+div.theme.container {
+    border-radius: 1em;
+    background: #FF99AF;
+    position: relative;
+    width: auto;
+    padding: 10px;
+    /* margin-bottom: 10em; */
+    /* height: auto; */
+    /* overflow: overlay; */
+}
+
 div.post-top {
     position: relative;
 }
+div.post-bottom {
+    position: relative;
+    /* width: initial; */
+    height: 100%;
+    /* overflow-y: visible; */
+    overflow: auto;
+    /* bottom: 2em; */
+}
+
 div.post-bottom {
     position: relative;
     /* width: initial; */
@@ -49,6 +121,11 @@ section#SignedIn {
     position: relative;
 }
 
+section#Settings {
+    height: auto;
+    position: relative;
+}
+
 .shubcolor {
 	background: "#FF99AF"
 }
@@ -57,6 +134,14 @@ section#SignedIn {
 	background: #FF99AF;
 }
 
+
+div.col-lg-8.col-lg-offset-2.theme-container {
+	margin-bottom: 10em;
+	border-radius: 1em;
+    background: #FF99AF;
+    position: absolute;
+    width: auto;
+}
 
 div.col-lg-8.col-lg-offset-2 {
 	margin-bottom: 10em;
@@ -73,30 +158,36 @@ div.col-lg-8.col-lg-offset-2 {
 }
 
 .socialTextArea {
-	display:none;
-	position:absolute;
+	display: block;
+	visibility: hidden;
 }
 
 #fbCheckbox:checked + #fbText {
 	display:block;
+	visibility: visible;
 	width: 90%;
 }
 
 #twitterCheckbox:checked + #twitterText {
 	display:block;
+	visibility: visible;
 	width: 90%;
 	margin-left: 1.6em;	
 }
 
 #fbEditCheckbox:checked + #fbEditText {
 	display:block;
+	visibility: visible;
 	width: 90%;
+	position: relative;
 }
 
 #twitterEditCheckbox:checked + #twitterEditText {
 	display:block;
-	width: 90%;
+	visibility: visible;
+	width: 45%;
 	margin-left: 1.6em;	
+	position: relative;
 }
 
 input[type="submit"] {
@@ -117,6 +208,15 @@ textarea[type="text"] {
 
 div.col-xs-6.col-md-6.mg-btm-2 {
 	position: absolute;
+	/*bottom: 1em;*/
+}
+
+div.col-xs-6.col-md-6.mg-btm-2.theme-container {
+	position: absolute;
+	border-radius: 1em;
+    background: #FF99AF;
+    position: relative;
+    width: auto;
 	/*bottom: 1em;*/
 }
 
