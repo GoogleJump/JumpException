@@ -23,6 +23,13 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -59,6 +66,8 @@ public class ShubUser implements Serializable {
 	
 	private String facebookCode;
 	
+	private String googlePlusUserId;
+	
 	private facebook4j.auth.AccessToken facebookAccessToken;
 
 	public ShubUser(String username, Key datastoreKey, Newsfeed newsfeed) {
@@ -68,7 +77,99 @@ public class ShubUser implements Serializable {
 		this.twitterAccessToken = null;
 		this.facebookAccessToken = null;
 		this.facebookCode = null;
+		this.googlePlusUserId = null;
 		this.backgroundImage = "backgroundImage_FlowersAndSky";//default backgound image
+	}
+	
+	public String getGooglePlusUserId() {
+		return googlePlusUserId;
+	}
+	
+	public void setGooglePlusUserId(String googlePlusUserId) {
+		
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+		Entity entity = null;
+		Query query = new Query("GooglePlusUserId", datastoreKey);
+	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    if(entities.size() == 1) {
+	    	System.out.println("in datastore");
+	    	entity = entities.get(0);
+		} else {
+			//ERROR
+	    	System.out.println("not in datastore");
+			entity = new Entity("GooglePlusUserId", datastoreKey);
+		}
+
+		entity.setProperty("googlePlusUserId", googlePlusUserId);
+		datastore.put(entity);
+		this.googlePlusUserId = googlePlusUserId;
+	}
+	
+	public Person getGooglePlusProfile(String googlePlusUserId, HttpServletRequest req, HttpServletResponse resp) {
+	    Person profile = null;
+	    Credential credential = null;
+	    GoogleAuthorizationCodeFlow authFlow = null;
+	    try {
+			authFlow = Utils.initializeFlow();
+		    credential = authFlow.loadCredential(googlePlusUserId);
+		    if (credential == null) {
+		      // If we don't have a token in store, redirect to authorization screen.
+		      resp.sendRedirect(
+		          authFlow.newAuthorizationUrl().setRedirectUri(Utils.getRedirectUri(req)).build());
+		      return profile;
+		    }
+	    } catch(IOException e) {
+	    	e.printStackTrace();
+	    }
+
+	    // If we do have stored credentials, build the Plus object using them.
+	    Plus plus = new Plus.Builder(
+	        Utils.HTTP_TRANSPORT, Utils.JSON_FACTORY, credential).setApplicationName("").build();
+	    // Make the API call
+
+	    try {
+	    	profile = plus.people().get("me").execute();
+	    	HttpSession session = req.getSession();
+	    	ShubUser user = (ShubUser) session.getAttribute("user");
+	    	
+	    	user.setGooglePlusUserId(Utils.getUserId(req));
+	    	session.setAttribute("user", user);
+	    } catch(IOException e) {
+	    	//The Authorization has been revoked so we must ask for it again
+	    	ShubUser user = (ShubUser) req.getSession().getAttribute("user");
+	    	user.deleteGooglePlusUserId();
+	    	req.getSession().setAttribute("user", user);
+	    	try {
+				authFlow.getCredentialStore().delete(Utils.getUserId(req), credential);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	    	try {
+				resp.sendRedirect(
+				          authFlow.newAuthorizationUrl().setRedirectUri(Utils.getRedirectUri(req)).build());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	    	      return profile;
+	    }
+	    return profile;
+	}
+	
+	public void deleteGooglePlusUserId() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+		Entity entity = null;
+		Query query = new Query("GooglePlusUserId", datastoreKey);
+	    List<Entity> entities = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    if(entities.size() == 1) {
+	    	System.out.println("in datastore");
+	    	entity = entities.get(0);
+	    	datastore.delete(entity.getKey());
+		}
+		this.googlePlusUserId = null;
 	}
 	
 	public String getUsername() {
@@ -258,6 +359,37 @@ public class ShubUser implements Serializable {
 				return -1;
 			}
 			return status.getId();
+		}
+		
+		public twitter4j.User getTwitterUser() {
+			Twitter twitter = new TwitterFactory().getInstance();
+			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
+			try {
+				if(twitterAccessToken != null) {
+					// user has authenticated with twitter
+					twitter.setOAuthAccessToken(twitterAccessToken);
+					return twitter.showUser(twitter.getId());
+				} else {}
+			} catch (TwitterException e) {
+				e.printStackTrace();
+			}
+			//something went wrong
+			return null;
+		}
+		
+		public facebook4j.User getFacebookUser() {
+			Facebook facebook1 = new FacebookFactory().getInstance();
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
+	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
+	        facebook1.setOAuthCallbackURL("http://1-dot-nietotesting.appspot.com/facebookPost");
+	        
+	        try {
+				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
+				return facebook1.getMe();
+	        } catch (FacebookException e) {
+				// TODO Auto-generated catch block
+			}
+	        return null;
 		}
 		
 //		public Status twitterPostWithFileMedia(Twitter twitter, String status, File media) {
@@ -461,6 +593,15 @@ public class ShubUser implements Serializable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}*/
+			}
+		    
+		    //Google+ ID
+			Query query = new Query("GooglePlusUserId", datastoreKey);
+		    List<Entity> entitiesGooglePlus = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+		    System.out.println("g+++++");
+		    if(entitiesGooglePlus.size() == 1) {
+		    	System.out.println("getting it");
+				this.googlePlusUserId = entitiesGooglePlus.get(0).getProperty("googlePlusUserId").toString();
 			}
 		}
 

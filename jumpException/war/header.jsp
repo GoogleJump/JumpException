@@ -23,6 +23,7 @@
 
 <%@ page import="guestbook.*" %>
 <%@ page import="guestbook.ShubUser" %>
+<%@ page import="com.google.api.services.plus.model.Person"%>
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%	

@@ -56,13 +56,18 @@
 	                </div>
 	                <button class="btn btn-danger btn-outline" type="submit">Post</button>
 	               	<p >Individualize:</p>
-	                <div class="col-xs-6 col-md-6 mg-btm-2">
+	                <div class="col-xs-4 col-md-4 mg-btm-2"><!-- col-xs-6 col-md-6 mg-btm-2 -->
 	                    <label>Facebook:</label>
 	                    <input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked">
 	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbText" id="fbText" value=""></textarea>
 	                </div>
-	                <div class="col-md-offset-6 col-sm-offset-6 col-md-6">
+	                <div class="col-md-offset-0 col-sm-offset-0 col-md-4 col-sm-4"> <!-- col-md-offset-6 col-sm-offset-6 col-md-6 -->
 	                    <label>Twitter:</label>
+	                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
+	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
+	                </div>
+	                <div class="col-md-offset-0 col-sm-offset-0 col-md-4 col-sm-4"><!-- col-md-offset-6 col-sm-offset-6 col-md-6 -->
+	                    <label>Google+:</label>
 	                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
 	                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
 	                </div>
@@ -73,15 +78,82 @@
 		            <div class="theme-container">
 			            <table width="100%">
 							<tr>
-								<td width="50%">
+								<td width="33%">
 									<div class="" style="text-align:center;">
 										<h3>Facebook</h3>
+										<% if(user.getFacebookCode() != null) { 
+												facebook4j.User facebookUser = user.getFacebookUser();
+												String facebookImageUrl = facebookUser.getPicture().getURL().toString();
+												String facebookProfileLink = facebookUser.getLink().toString();
+												String facebookUserName = facebookUser.getUsername();
+												pageContext.setAttribute("twitterProfileImage", facebookImageUrl);
+												pageContext.setAttribute("twitterProfileLink", facebookProfileLink);
+												pageContext.setAttribute("facebookUserName", facebookUserName);
+										%>
+											<form style="text-align:center;">
+												<input type="image" src="${fn:escapeXml(facebookImageUrl)}"></br></br>
+												<a class="theme-text" href="${fn:escapeXml(facebookProfileLink)}">${fn:escapeXml(facebookUserName)}</a>
+											</form>
+										<%
+											} else {
+										%>
+												<p style="text-align:center;">See Settings to Connect</p>
+										<%
+											}
+										%>
 									</div>
 								</td>
-								<td width="50%">
+								<td width="33%">
 									<div class="" style="text-align:center;">
 										<h3>Twitter</h3>
+										<% if(user.getTwitterAccessToken() != null) { 
+												twitter4j.User twitterUser = user.getTwitterUser();
+												String twitterImageUrl = twitterUser.getProfileImageURL();
+												String twitterProfileLink = twitterUser.getURL();
+												String twitterUserName = twitterUser.getName();
+												pageContext.setAttribute("twitterProfileImage", twitterImageUrl);
+												pageContext.setAttribute("twitterProfileLink", twitterProfileLink);
+												pageContext.setAttribute("twitterUserName", twitterUserName);
+										%>
+											<form style="text-align:center;">
+												<input type="image" src="${fn:escapeXml(twitterProfileImage)}"></br></br>
+												<a class="theme-text" href="${fn:escapeXml(twitterProfileLink)}">${fn:escapeXml(twitterUserName)}</a>
+											</form>
+										<%
+											} else {
+												user.deleteTwitterAccessToken();											
+										%>
+												<p style="text-align:center;">See Settings to Connect</p>
+										<%
+											}
+										%>
 									</div>	
+								</td>
+								<td width="33%">
+									<div class="" style="text-align:center;">
+										<h3>Google+</h3>
+									</div>	
+									<% if(user.getGooglePlusUserId() != null) { 
+											Person profile = user.getGooglePlusProfile(user.getGooglePlusUserId(), request, response);	
+											String googlePlusImageUrl = profile.getImage().getUrl();
+											String googlePlusProfileLink = profile.getUrl();
+											String googlePlusUserName = profile.getDisplayName();
+											pageContext.setAttribute("googlePlusImageUrl", googlePlusImageUrl);
+											pageContext.setAttribute("googlePlusProfileLink", googlePlusProfileLink);
+											pageContext.setAttribute("googlePlusUserName", googlePlusUserName);
+									%>
+										<form style="text-align:center;">
+											<input type="image" src="${fn:escapeXml(googlePlusImageUrl)}"></br></br>
+											<a class="theme-text" href="${fn:escapeXml(googlePlusProfileLink)}">${fn:escapeXml(googlePlusUserName)}</a>
+										</form>										
+									<%
+										} else {
+											user.deleteGooglePlusUserId();
+									%>
+											<p style="text-align:center;">See Settings to Connect</p>
+									<%
+										}
+									%>
 								</td>
 							</tr>
 						</table>			
@@ -144,19 +216,23 @@
 									<input type="submit" value="Edit" />
 									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
 								</form>
+								${fn:escapeXml(curDatePost)}</br></br>
 								<table width="100%">
 									<tr>
-										<td width="50%">
+										<td width="33%">
 											<div class="theme-container" style="text-align:center;"> <!-- col-xs-6 col-md-6 mg-btm-2 -->
 								                   <!-- FACEBOOK -->
-												${fn:escapeXml(curDatePost)}</br></br>
 												${fn:escapeXml(curFacebookPost)}
 											</div>
 										</td>
-										<td width="50%">
+										<td width="33%">
 											<div class="theme-container" style="text-align:center;">
-												${fn:escapeXml(curDatePost)}</br></br>
 												${fn:escapeXml(curTwitterPost)}
+											</div>
+										</td>
+										<td width="33%">
+											<div class="theme-container" style="text-align:center;">
+												<!-- google+ posts go here -->
 											</div>
 										</td>
 									</tr>

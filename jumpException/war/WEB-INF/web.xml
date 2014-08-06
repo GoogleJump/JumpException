@@ -348,6 +348,23 @@
 	<url-pattern>/facebookPost</url-pattern>
 </servlet-mapping>
 
+	<servlet>
+		<servlet-name>PlusSampleServlet</servlet-name>
+		<servlet-class>guestbook.PlusSampleServlet</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>PlusSampleServlet</servlet-name>
+		<url-pattern>/plussampleservlet</url-pattern>
+	</servlet-mapping>	
+	<servlet>	
+		<servlet-name>PlusSampleAuthCallbackServlet</servlet-name>
+		<servlet-class>guestbook.PlusSampleAuthCallbackServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PlusSampleAuthCallbackServlet</servlet-name>
+		<url-pattern>/oauth2callback</url-pattern>
+	</servlet-mapping>
+
 
 <welcome-file-list>
 

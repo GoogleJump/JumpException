@@ -42,6 +42,17 @@
 					YOU ARE CONNECTED TO FACEBOOK
 				</p>
 			<% } %>
+			<% if(user.getGooglePlusUserId() == null) { %>
+			 	<form action="/plussampleservlet" method="get">
+					<div>
+						<input type="submit" value="Connect Google+ Account" />
+					</div>
+				</form>
+			<% } else { %>
+				<p class="theme-text">
+					YOU ARE CONNECTED TO GOOGLE+
+				</p>
+			<% } %>
 			<form action="/updateBackgroundImageServlet" method="post">
 				<p class="theme-text">Background Photo</p>
 				<a class="theme-text" href="http://www.bosleyjarrett.com">Photos by Bosley Jarrett Photography</a>
