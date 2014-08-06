@@ -25,7 +25,7 @@ public class FacebookOAuthServlet extends HttpServlet {
 	      facebook.setOAuthPermissions("public_profile,publish_actions");
 	     
 	      String callbackURL = facebook.getOAuthCallbackURL();
-	      facebook.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookConnect");
+	      facebook.setOAuthCallbackURL("http://1-dot-shubexception.appspot.com/facebookConnect");
 	        
 	      callbackURL = facebook.getOAuthCallbackURL();	
 	      

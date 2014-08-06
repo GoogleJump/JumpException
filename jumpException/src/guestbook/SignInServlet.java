@@ -26,7 +26,7 @@ public class SignInServlet extends HttpServlet {
     	HttpSession session = request.getSession();
     	
     	if (code.charAt(0) == 'e'){
-    		response.sendRedirect("http://1-dot-gbook144.appspot.com/settings.jsp"); 
+    		response.sendRedirect("http://1-dot-shubexception.appspot.com/settings.jsp"); 
     	}
     	
     	code = code.substring(5);
@@ -34,7 +34,7 @@ public class SignInServlet extends HttpServlet {
     	Facebook facebook1 = new FacebookFactory().getInstance();
     	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
         facebook1.setOAuthPermissions("public_profile");
-        facebook1.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookConnect");
+        facebook1.setOAuthCallbackURL("http://1-dot-shubexception.appspot.com/facebookConnect");
     	
     	        
         AccessToken token = null;

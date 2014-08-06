@@ -20,6 +20,7 @@ public class PostFacebookFinal extends HttpServlet {
     	String code = request.getQueryString();
     	    	
     	HttpSession session = request.getSession();
+    	ShubUser user = (ShubUser) session.getAttribute("user");
     	
     	if (code.charAt(0) == 'e'){
     		response.sendRedirect("/signedIn.jsp"); 
@@ -30,11 +31,11 @@ public class PostFacebookFinal extends HttpServlet {
     	Facebook facebook1 = new FacebookFactory().getInstance();
     	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
         facebook1.setOAuthPermissions("public_profile");
-        facebook1.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookPost");
+        facebook1.setOAuthCallbackURL("http://1-dot-shubexception.appspot.com/facebookPost");
     	
     	        
         AccessToken token = null;
-        ShubUser user = (ShubUser) session.getAttribute("user");
+        //ShubUser user = (ShubUser) session.getAttribute("user");
         //user.setFacebookToken(code, "facebookPost",response);
         user.setFacebookCode(code);
         
@@ -49,6 +50,7 @@ public class PostFacebookFinal extends HttpServlet {
             session.removeAttribute("overallText");
             session.removeAttribute("fbText");
             session.removeAttribute("twitterText");
+            response.getWriter().println("IN SESSION ATTRIBUTE NOT NULL");
             user.post(overallText, fbText, twitterText, request, response);
         }
         else{

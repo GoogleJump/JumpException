@@ -4,6 +4,7 @@
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="com.google.appengine.api.datastore.Blob" %>
+<%@ page import="com.google.api.services.plus.model.Person"%>
 <%
 	ShubUser user = (ShubUser) session.getAttribute("user");
 	if(user == null) {
@@ -36,73 +37,7 @@
 	}
 	*/
 %>
-<<<<<<< HEAD
 
-<section id="SignedIn" class="${fn:escapeXml(sectionWithDynamicBackgroundImage)}">
-    <div class="container body">
-        <!--<div class="row"> Top Innerbox -->
-        <div class="post-top">
-            <p>Hello, ${fn:escapeXml(username)}!</p>
-            <p></p>
-            <form action="/loggingOut" method="get">
-                <div>
-                    <input type="submit" value="Sign Out">
-                </div>
-            </form>
-            <p>Type and Share!</p>
-            <p></p>
-
-			<form action="<%= blobstoreService.createUploadUrl("/UploadImageServlet") %>" enctype="multipart/form-data" method="post">
-				<img id="uploadPreview" style="width: 100px; height: 100px;" />
-				<input class="center" id="uploadImage" type="file" name="myPhoto" />
-				<input name="Submit" type="submit" value="Sumbit">
-			</form>
-            <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
-                <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />
-                <div>
-                    <textarea rows="3" cols="50" type="text" name="overallText" id="overallText" value=""></textarea>
-                </div>
-                <button class="btn btn-danger btn-outline" type="submit">Post</button>
-                <div class="col-xs-6 col-md-6 mg-btm-2">
-                    <label>Facebook:</label>
-                    <input type="checkbox" name="fbCheckbox" id="fbCheckbox" value="checked">
-                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="fbText" id="fbText" value=""></textarea>
-                </div>
-                <div class="col-md-offset-6 col-md-6">
-                    <label>Twitter:</label>
-                    <input type="checkbox" name="twitterCheckbox" id="twitterCheckbox" value="checked">
-                    <textarea class="socialTextArea" rows="4" cols="30" type="text" name="twitterText" id="twitterText" value=""></textarea>
-                </div>
-                
-            </form>
-            <p >Individualize:</p>
-            <p></p>
-            <div class="col-xs-6 col-md-6 mg-btm-2">
-				<h3>Facebook</h3>
-			</div>
-			<div class="col-md-offset-6">
-				<h3>Twitter</h3>
-			</div>						
-        </div>
-        <div class="post-bottom">
-            <div class="col-xs-6 col-md-6 mg-btm-2">
-                   <!-- FACEBOOK -->
-            
-						<%
-  							for(Post post : user.getNewsfeed().getPosts(searchText)) {
-								pageContext.setAttribute("curDatePost", post.getText("date"));
-								pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
-								if(post.getIsEditing()) {
-  						%>
-  									<form action="/saveEdit" method="post">
-										<input type="submit" value="Post" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
-									</form>
-									<form action="/cancelEditPost" method="post">
-										<input type="submit" value="Cancel" />
-										<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />										
-									</form>
-=======
 <div class="${fn:escapeXml(dynamicBackgroundImage)}">
 	<section id="SignedIn" class="container content-section text-center">
 	    <div class="container body">
@@ -113,10 +48,11 @@
 	            <p>Type and Share!</p>
 	            <p></p>
 	
-				<form action="/UploadImageServlet" enctype="multipart/form-data" method="post">
+				<form action="<%= blobstoreService.createUploadUrl("/UploadImageServlet") %>" enctype="multipart/form-data" method="post">
 					<img id="uploadPreview" style="width: 100px; height: 100px;" />
-					<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
-				</form>
+					<input class="center" id="uploadImage" type="file" name="myPhoto" />
+				<input name="Submit" type="submit" value="Sumbit">
+			</form>
 	            <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
 	                <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />
 	                <div>
@@ -149,51 +85,51 @@
 								<td width="33%">
 									<div class="" style="text-align:center;">
 										<h3>Facebook</h3>
-										<% if(user.getFacebookCode() != null) { 
+										<%/* if(user.getFacebookCode() != null) { 
 												facebook4j.User facebookUser = user.getFacebookUser();
 												String facebookImageUrl = facebookUser.getPicture().getURL().toString();
 												String facebookProfileLink = facebookUser.getLink().toString();
 												String facebookUserName = facebookUser.getUsername();
 												pageContext.setAttribute("twitterProfileImage", facebookImageUrl);
 												pageContext.setAttribute("twitterProfileLink", facebookProfileLink);
-												pageContext.setAttribute("facebookUserName", facebookUserName);
+												pageContext.setAttribute("facebookUserName", facebookUserName);*/
 										%>
 											<form style="text-align:center;">
 												<input type="image" src="${fn:escapeXml(facebookImageUrl)}"></br></br>
 												<a class="theme-text" href="${fn:escapeXml(facebookProfileLink)}">${fn:escapeXml(facebookUserName)}</a>
 											</form>
 										<%
-											} else {
+											//} else {
 										%>
 												<p style="text-align:center;">See Settings to Connect</p>
 										<%
-											}
+											//}
 										%>
 									</div>
 								</td>
 								<td width="33%">
 									<div class="" style="text-align:center;">
 										<h3>Twitter</h3>
-										<% if(user.getTwitterAccessToken() != null) { 
+										<% /*if(user.getTwitterAccessToken() != null) { 
 												twitter4j.User twitterUser = user.getTwitterUser();
 												String twitterImageUrl = twitterUser.getProfileImageURL();
 												String twitterProfileLink = twitterUser.getURL();
 												String twitterUserName = twitterUser.getName();
 												pageContext.setAttribute("twitterProfileImage", twitterImageUrl);
 												pageContext.setAttribute("twitterProfileLink", twitterProfileLink);
-												pageContext.setAttribute("twitterUserName", twitterUserName);
+												pageContext.setAttribute("twitterUserName", twitterUserName);*/
 										%>
-											<form style="text-align:center;">
+									<!-- 		<form style="text-align:center;">
 												<input type="image" src="${fn:escapeXml(twitterProfileImage)}"></br></br>
 												<a class="theme-text" href="${fn:escapeXml(twitterProfileLink)}">${fn:escapeXml(twitterUserName)}</a>
-											</form>
+											</form>-->
 										<%
-											} else {
-												user.deleteTwitterAccessToken();											
+								/*			} else {
+												user.deleteTwitterAccessToken();	*/										
 										%>
 												<p style="text-align:center;">See Settings to Connect</p>
 										<%
-											}
+										//	}
 										%>
 									</div>	
 								</td>
@@ -248,7 +184,7 @@
 								<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
 					            <div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
 					                   <!-- FACEBOOK -->
->>>>>>> JustinsNewestBranch
+
 									<label>Facebook:</label>
 				                    <% 
 										if(post.getText("facebook").equals("")) {

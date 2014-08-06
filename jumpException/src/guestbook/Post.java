@@ -16,6 +16,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 
+import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -51,7 +52,9 @@ public class Post implements Serializable {
 	
 	private boolean isEditing;
 	
-	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key, String fbPostID) {
+	private String blobURL;
+	
+	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key, String fbPostID, String blobURL) {
 		this.date = date;
 		this.overallText = overallText;
 		this.fbText = fbText;
@@ -60,6 +63,7 @@ public class Post implements Serializable {
 		this.key = key;
 		this.isEditing = false;
 		this.fbPostID = fbPostID;
+		this.blobURL = blobURL;
 	}
 	
 	public String getText(String socialMedia) {

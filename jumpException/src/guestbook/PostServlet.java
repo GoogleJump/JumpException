@@ -27,10 +27,15 @@ public class PostServlet extends HttpServlet{
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String overallText = voidOverallChecking(req.getParameter("overallText"));
 	    String fbText = voidFacebookChecking(req.getParameter("fbText"), overallText, req);
+	    resp.getWriter().println(req.getParameter("twitterText").toString());
 	    String twitterText = voidTwitterChecking(req.getParameter("twitterText"), overallText, req);
-	    
+	    resp.getWriter().println(twitterText);
+	    if (twitterText ==  null){
+	    	resp.getWriter().println("null twitter text");
+	    }
 	    System.out.println("heloooooo " + fbText + twitterText + overallText);
 	    ShubUser user = (ShubUser) req.getSession().getAttribute("user");
+	    user.post(overallText, fbText, twitterText, req, resp);
 	    //Blob blob = (Blob) req.getSession().getAttribute("curBlob");
 	   // if(blob != null && req.getParameter("myPhoto") != null) {
 //	    	user.postWithMedia(overallText, fbText, twitterText, req, resp);
@@ -50,7 +55,7 @@ public class PostServlet extends HttpServlet{
 		System.out.println("FACEBOOK CHECKBOX " + req.getParameter("fbCheckbox"));
 		boolean isFbCheckboxChecked = req.getParameter("fbCheckbox") != null;
 	    if(!isFbCheckboxChecked) {
-	    	textObj = overallText;
+	    	textObj = "";
 	    } else if(textObj == null){
 	    	return "";
 	    }
@@ -62,13 +67,13 @@ public class PostServlet extends HttpServlet{
 //		if(twitterPostId != -1) { 
 			boolean isTwitterCheckboxChecked = req.getParameter("twitterCheckbox") != null;
 		    if(!isTwitterCheckboxChecked) {
-		    	textObj = overallText;
+		    	textObj = "";
 		    } else if(textObj == null){
 		    	return "";
 //		    }
-		} else { //no post to twitter
+		}/* else { //no post to twitter
 			return "";
-		}
+		}*/
 			
 		return textObj.toString();
 	}
