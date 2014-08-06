@@ -8,6 +8,8 @@
 		return;
 	}
 	TwitterOAuth t = new TwitterOAuth();
-	t.setAccessToken(request, session);
-  	response.sendRedirect("/signedIn.jsp");		
+	t.setAccessToken(request, session, response);
+	
+	response.getWriter().println(user.getTwitterAccessToken().toString());
+  	response.sendRedirect("/settings.jsp");		
 %>

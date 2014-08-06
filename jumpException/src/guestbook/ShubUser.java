@@ -2,6 +2,7 @@ package guestbook;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -18,11 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreInputStream;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -34,6 +38,10 @@ import com.google.appengine.api.datastore.Query;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
+import facebook4j.Media;
+import facebook4j.Photo;
+import facebook4j.PhotoUpdate;
+import facebook4j.PostUpdate;
 
 
 @PersistenceCapable(detachable="true")
@@ -216,9 +224,9 @@ public class ShubUser implements Serializable {
 		public boolean deletePost(HttpServletRequest req, HttpServletResponse resp, Post post) throws IOException {
 			
 			Facebook facebook1 = new FacebookFactory().getInstance();
-	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookPost");
+	        facebook1.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookPost");
 	        
 			if(post == null) {
 				String date = req.getParameter("hiddenDate").toString();
@@ -246,7 +254,7 @@ public class ShubUser implements Serializable {
 			} catch (FacebookException e1) {
 				req.getSession().setAttribute("post", post);
 				
-				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotest14.appspot.com/facebookPost"));
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-gbook144.appspot.com/facebookPost"));
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -266,13 +274,25 @@ public class ShubUser implements Serializable {
 
 		public long twitterPost(String twitterText, HttpServletResponse resp, HttpServletRequest req) {
 			Twitter twitter = new TwitterFactory().getInstance();
-			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2"); 
+			twitter.setOAuthConsumer("e2dhz5jfNkBUjxLA5zvu6g2dF", "kkFca63qmafTc4gFO8657trsj4Xklf1gXyXQ5xYRv1LnR5ScvC"); 
 			Status status = null;
 			try {
 				if(twitterAccessToken != null) {
 					// user has authenticated with twitter
 					twitter.setOAuthAccessToken(twitterAccessToken);
-					status = twitter.updateStatus(twitterText);
+					StatusUpdate s = new StatusUpdate(twitterText);
+					BlobKey blobkey = (BlobKey) req.getSession().getAttribute("blobKey");
+					InputStream is = null;
+					try {
+						is = new BlobstoreInputStream(blobkey);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (is != null){
+						s.setMedia("photo", is);
+					}
+					status = twitter.updateStatus(s);
 				} else {}
 			} catch (TwitterException e) {}
 			if (status == null) {
@@ -319,14 +339,11 @@ public class ShubUser implements Serializable {
 //			session.setAttribute("twitterText", twitterText);
 //			session.setAttribute("overallText", overallText);
 			
-			if (facebookCode == null){
-				resp.sendRedirect("/signedIn.jsp");
-			}
 	
 			Facebook facebook1 = new FacebookFactory().getInstance();
-	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookPost");
+	        facebook1.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookPost");
 	        
 	        try {
 				facebookAccessToken = facebook1.getOAuthAccessToken(facebookCode);
@@ -336,7 +353,7 @@ public class ShubUser implements Serializable {
 				Date date = new Date();
 				System.out.println("twitterPost");
 				long twitterPostId = twitterPost(twitterText, resp, req);
-				String facebookPostID = facebookPost(fbText,facebook1); 
+				String facebookPostID = facebookPost(req,fbText,facebook1); 
 			    Entity post = new Entity("Post", datastoreKey);
 			    overallText = voidOverallChecking(overallText);
 			    fbText = voidFacebookChecking(fbText, overallText, req);
@@ -367,7 +384,7 @@ public class ShubUser implements Serializable {
 				req.getSession().setAttribute("fbText", fbText);
 				req.getSession().setAttribute("twitterText", twitterText);
 				req.getSession().setAttribute("overallText", overallText);
-				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotest14.appspot.com/facebookPost"));
+				resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-gbook144.appspot.com/facebookPost"));
 			}
 			
 			
@@ -402,20 +419,43 @@ public class ShubUser implements Serializable {
 			}*/
 		}
 		
-		private String facebookPost(String fbText, Facebook facebook1) throws IOException {
+		private String facebookPost(HttpServletRequest req, String fbText, Facebook facebook1) throws IOException {
 			// TODO Auto-generated method stub
-			
+			BlobKey blobkey = (BlobKey) req.getSession().getAttribute("blobKey");
+			InputStream is = null;
 			try {
-				return facebook1.postStatusMessage(fbText);
-			} catch (FacebookException | IllegalStateException e) {
+				is = new BlobstoreInputStream(blobkey);
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+			}
+			
+			if (is != null){
+				Media media = new Media("photo",is);
+				try {
+					PhotoUpdate photo = new PhotoUpdate(media);
+					photo.setMessage(fbText);
+					String photoId = facebook1.postPhoto(photo);
+					return photoId;
+				} catch (FacebookException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
+			}
+			else {
+				try {
+					return facebook1.postStatusMessage(fbText);
+				} catch (FacebookException | IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
 			}
 			/*Facebook facebook1 = new FacebookFactory().getInstance();
 	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions,create_event");
-	        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookPost");
+	        facebook1.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookPost");
 	        
 	        try {
 				facebook1.setOAuthAccessToken(facebookAccessToken);
@@ -424,7 +464,7 @@ public class ShubUser implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				resp.getWriter().println(e.toString());
-				//resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-nietotest14.appspot.com/facebookPost"));
+				//resp.sendRedirect(facebook1.getOAuthAuthorizationURL("http://1-dot-gbook144.appspot.com/facebookPost"));
 			}*/
 	        
 			//return null;
@@ -487,6 +527,7 @@ public class ShubUser implements Serializable {
 			datastore.put(entity);
 			
 			twitterAccessToken = new AccessToken(accessTokenString, accessTokenSecret);
+			
 		}
 		
 		public AccessToken getTwitterAccessToken() {
@@ -514,11 +555,11 @@ public class ShubUser implements Serializable {
 		    		/*Facebook facebook1 = new FacebookFactory().getInstance();
 			    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 			        facebook1.setOAuthPermissions("public_profile,publish_actions");
-			        facebook1.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookConnect");*/
+			        facebook1.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookConnect");*/
 					
 			        this.facebookCode = entityFacebook.getProperty("facebookAccessCode").toString();
 					/*try {
-						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString(),"http://1-dot-nietotest14.appspot.com/facebookConnect");
+						facebookAccessToken = facebook1.getOAuthAccessToken(entityFacebook.getProperty("facebookAccessCode").toString(),"http://1-dot-gbook144.appspot.com/facebookConnect");
 					} catch (FacebookException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -575,9 +616,9 @@ public class ShubUser implements Serializable {
 			datastore.put(entity);
 			
 			Facebook facebook1 = new FacebookFactory().getInstance();
-	    	facebook1.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
+	    	facebook1.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	        facebook1.setOAuthPermissions("public_profile,publish_actions");
-	        String callBack = "http://1-dot-nietotest14.appspot.com/" + redirect;
+	        String callBack = "http://1-dot-gbook144.appspot.com/" + redirect;
 	        facebook1.setOAuthCallbackURL(callBack);
 			
 			

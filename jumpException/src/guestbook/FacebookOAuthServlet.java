@@ -21,16 +21,18 @@ public class FacebookOAuthServlet extends HttpServlet {
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
 	      throws ServletException, IOException {
 		  Facebook facebook = new FacebookFactory().getInstance();
-	      facebook.setOAuthAppId("570453233070594", "afcacdbbd1eb6b5395288ccc3d23d871");
+	      facebook.setOAuthAppId("1487004968203759", "a93f6a442ad306cc5e73c4a0de47fe9e");
 	      facebook.setOAuthPermissions("public_profile,publish_actions");
 	     
 	      String callbackURL = facebook.getOAuthCallbackURL();
-	      facebook.setOAuthCallbackURL("http://1-dot-nietotest14.appspot.com/facebookConnect");
+	      facebook.setOAuthCallbackURL("http://1-dot-gbook144.appspot.com/facebookConnect");
 	        
 	      callbackURL = facebook.getOAuthCallbackURL();	
 	      
 	      response.getWriter().println("GOT HERE");
 	      
+	      
+	      ShubUser user = (ShubUser) request.getSession().getAttribute("user");
 	      response.sendRedirect(facebook.getOAuthAuthorizationURL(callbackURL));
 	  }
 }

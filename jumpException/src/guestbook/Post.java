@@ -117,7 +117,7 @@ public class Post implements Serializable {
 	private void deleteTwitterPost(AccessToken twitterAccessToken) throws IOException {
 		if(twitterPostId != -1 && twitterAccessToken != null) {
 			Twitter twitter = new TwitterFactory().getInstance();
-			twitter.setOAuthConsumer("H85zXNFtTHBIUgpFA3pGqDWoV", "rwUCF2JW8pG7lwKKLCIEs6MKDtiQbUeAIswlNxocPBZPlsFYi2");
+			twitter.setOAuthConsumer("e2dhz5jfNkBUjxLA5zvu6g2dF", "kkFca63qmafTc4gFO8657trsj4Xklf1gXyXQ5xYRv1LnR5ScvC");
 			twitter.setOAuthAccessToken(twitterAccessToken);
 			try {
 				twitter.destroyStatus(twitterPostId);
