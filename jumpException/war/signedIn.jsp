@@ -1,6 +1,8 @@
 <%String pageName= "signedIn";%>
 
 <%@ include file="./header.jsp" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="com.google.appengine.api.datastore.Blob" %>
 <%
 	ShubUser user = (ShubUser) session.getAttribute("user");
@@ -11,8 +13,7 @@
 	pageContext.setAttribute("username", user.getUsername());
 	pageContext.setAttribute("sectionWithDynamicBackgroundImage", "container content-section text-center " + user.getBackgroundImage());
 
-	Blob blob = (Blob) session.getAttribute("blob");
-	pageContext.setAttribute("blob", blob);
+	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	/*Object searchTextObj = session.getAttribute("searchText");
 	String searchText = "";
 	if(searchTextObj != null) {
@@ -50,9 +51,10 @@
             <p>Type and Share!</p>
             <p></p>
 
-			<form action="/UploadImageServlet" enctype="multipart/form-data" method="post">
+			<form action="<%= blobstoreService.createUploadUrl("/UploadImageServlet") %>" enctype="multipart/form-data" method="post">
 				<img id="uploadPreview" style="width: 100px; height: 100px;" />
-				<input class="center" id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
+				<input class="center" id="uploadImage" type="file" name="myPhoto" />
+				<input name="Submit" type="submit" value="Sumbit">
 			</form>
             <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
                 <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />

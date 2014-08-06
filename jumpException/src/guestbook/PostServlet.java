@@ -1,12 +1,25 @@
 package guestbook;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import twitter4j.Status;
+import twitter4j.StatusUpdate;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+
 import com.google.appengine.api.datastore.Blob;
+
+import facebook4j.Media;
 
 public class PostServlet extends HttpServlet{
 
@@ -15,14 +28,15 @@ public class PostServlet extends HttpServlet{
 		String overallText = req.getParameter("overallText");
 	    String fbText = req.getParameter("fbText");
 	    String twitterText = req.getParameter("twitterText");
-	    System.out.println("heloooooo " + fbText + twitterText + overallText);
-	    ShubUser user = (ShubUser) req.getSession().getAttribute("user");
-	    Blob blob = (Blob) req.getSession().getAttribute("curBlob");
-	    if(blob != null && req.getParameter("myPhoto") != null) {
+		ShubUser user = (ShubUser) req.getSession().getAttribute("user");
+		user.post(overallText, fbText, twitterText, req, resp);
+		//user.twitterPost(twitterText, resp, req);
+	    //Blob blob = (Blob) req.getSession().getAttribute("curBlob");
+	 //   if(blob != null && req.getParameter("myPhoto") != null) {
 //	    	user.postWithMedia(overallText, fbText, twitterText, req, resp)
-	    } else {
-		    user.post(overallText, fbText, twitterText, req, resp);
-	    }
+	 //   } else {
+		  //  user.post(overallText, fbText, twitterText, req, resp);
+	 //   }
 
 	 
 	    
