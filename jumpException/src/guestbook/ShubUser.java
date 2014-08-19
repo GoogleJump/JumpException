@@ -218,7 +218,8 @@ public class ShubUser implements Serializable {
 	    	String twitterText = voidChecking(twitterObj);
 	    	String fbPostID = (String) entity.getProperty("fbPostID");
 	    	String blobURL = (String) entity.getProperty("blobURL");
-	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), twitterPostId, entity.getKey(),fbPostID,blobURL));
+	    	BlobKey blobKey = (BlobKey) entity.getProperty("blobKey");
+	    	newsfeed.addFirst(new Post(date, overallText.toString(), fbText.toString(), twitterText.toString(), twitterPostId, entity.getKey(),fbPostID,blobURL, blobKey));
 	    }
 	}
 	
@@ -387,7 +388,10 @@ public class ShubUser implements Serializable {
 				if(twitterAccessToken != null) {
 					// user has authenticated with twitter
 					twitter.setOAuthAccessToken(twitterAccessToken);
-					twitterText = twitterText.substring(140);
+					
+					if (twitterText.length() > 140){
+						twitterText = twitterText.substring(0,140);
+					}
 					StatusUpdate s = new StatusUpdate(twitterText);
 					BlobKey blobkey = (BlobKey) req.getSession().getAttribute("blobKey");
 					InputStream is = null;
@@ -476,36 +480,7 @@ public class ShubUser implements Serializable {
 			twitterAccessToken = null;
 		}
 		
-		
-		public void post_helper(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) throws IOException{
-			Date date = new Date();
-			System.out.println("twitterPost");
-
-		    Entity post = new Entity("Post", datastoreKey);
-		    resp.getWriter().println("in here");
-		    long twitterPostId = twitterPost(twitterText, resp, req);
-		    
-		    post.setProperty("date", date);
-		    post.setProperty("overallPost", overallText);
-		    post.setProperty("fbPost", fbText);
-		    post.setProperty("twitterPost", twitterText);
-		    post.setProperty("twitterPostId", twitterPostId);
-		    post.setProperty("fbPostID", null);
-		    
-		    BlobKey blobKey = (BlobKey) req.getSession().getAttribute("blobKey");
-		    req.getSession().removeAttribute("blobKey");
-		    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		    datastore.put(post);
-		    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey(),null, blobKey));
-			req.getSession().setAttribute("user", this);
-		    resp.getWriter().println("GOT HERE");
-			try {
-				resp.sendRedirect("/signedIn.jsp");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
+				
 		public void post(String overallText, String fbText, String twitterText, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 			HttpSession session = req.getSession();
 //			session.setAttribute("fbText", fbText);
@@ -532,9 +507,11 @@ public class ShubUser implements Serializable {
 			    
 			    long twitterPostId = twitterPost(twitterText, resp, req);
 			    resp.getWriter().println("here twitter post");
-				String facebookPostID = facebookPost(req, fbText,facebook1); 
-				//long twitterPostId = twitterPost(twitterText, resp, req);
+				String facebookPostID = facebookPost(req, fbText,facebook1, resp); 
+//				long twitterPostId = twitterPost(twitterText, resp, req);
 			    
+				resp.getWriter().println(facebookPostID);
+				resp.getWriter().println(twitterPostId);
 				BlobKey blobKey = (BlobKey) req.getSession().getAttribute("blobKey");
 
 			    post.setProperty("date", date);
@@ -543,19 +520,34 @@ public class ShubUser implements Serializable {
 			    post.setProperty("twitterPost", twitterText);
 			    post.setProperty("twitterPostId", twitterPostId);
 			    post.setProperty("fbPostID", facebookPostID);
-		    	ImagesService imagesService = ImagesServiceFactory.getImagesService();
-		    	String blobURL = imagesService.getServingUrl(blobKey);
-
+		    	
+			    String blobURL = null;
+			    if (blobKey != null) {
+			    	ImagesService imagesService = ImagesServiceFactory.getImagesService();
+			    	blobURL = imagesService.getServingUrl(blobKey);
+				    req.getSession().removeAttribute("blobKey");
+			    } else if(req.getSession().getAttribute("editImageURL") != null) { //from editing
+			    	blobURL = req.getSession().getAttribute("editImageURL").toString();
+			    	req.getSession().removeAttribute("editImageURL");
+			    }
 			    post.setProperty("blobURL", blobURL);
+			    post.setProperty("blobKey", blobKey);
 			    
-			    req.getSession().removeAttribute("blobKey");
 			    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			    datastore.put(post);
-			    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey(),facebookPostID, blobURL));
+			    newsfeed.addFirst(new Post(date, overallText, fbText, twitterText, twitterPostId, post.getKey(),facebookPostID, blobURL,blobKey));
 				req.getSession().setAttribute("user", this);
 			    resp.getWriter().println("GOT HERE");
 				try {
-					resp.sendRedirect("/signedIn.jsp");
+					Object deleteDate = req.getSession().getAttribute("deleteDate");
+					if(deleteDate == null){
+						resp.sendRedirect("/signedIn.jsp");
+					} else {
+						String deleteString = deleteDate.toString();
+						Post deletePost = getNewsfeed().getPost(deleteString);
+						req.getSession().removeAttribute("deleteDate");
+						deletePost(req, resp, deletePost);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -601,12 +593,12 @@ public class ShubUser implements Serializable {
 			}*/
 		}
 		
-		private String facebookPost(HttpServletRequest req, String fbText, Facebook facebook1) throws IOException {
+		private String facebookPost(HttpServletRequest req, String fbText, Facebook facebook1, HttpServletResponse resp) throws IOException {
 			// TODO Auto-generated method stub
 			BlobKey blobkey = (BlobKey) req.getSession().getAttribute("blobKey");
 			InputStream is = null;
 			if (blobkey != null){
-				//InputStream is = null;
+				resp.getWriter().println("NOT NULL BLOBKEY");
 				try {
 					is = new BlobstoreInputStream(blobkey);
 				} catch (IOException e) {
@@ -617,6 +609,7 @@ public class ShubUser implements Serializable {
 			if (is != null){
 				Media media = new Media("photo",is);
 				try {
+					resp.getWriter().println("TRYING TO PRINT PICTURE");
 					PhotoUpdate photo = new PhotoUpdate(media);
 					photo.setMessage(fbText);
 					String photoId = facebook1.postPhoto(photo);
@@ -632,6 +625,7 @@ public class ShubUser implements Serializable {
 					return facebook1.postStatusMessage(fbText);
 				} catch (FacebookException | IllegalStateException e) {
 					// TODO Auto-generated catch block
+					resp.getWriter().println(e.toString());
 					e.printStackTrace();
 					return null;
 				}

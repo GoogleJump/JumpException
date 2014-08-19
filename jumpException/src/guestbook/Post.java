@@ -54,7 +54,9 @@ public class Post implements Serializable {
 	
 	private String blobURL;
 	
-	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key, String fbPostID, String blobURL) {
+	private BlobKey blobKey;
+	
+	public Post(Date date, String overallText, String fbText, String twitterText, long twitterPostId, Key key, String fbPostID, String blobURL, BlobKey blobKey) {
 		this.date = date;
 		this.overallText = overallText;
 		this.fbText = fbText;
@@ -64,6 +66,7 @@ public class Post implements Serializable {
 		this.isEditing = false;
 		this.fbPostID = fbPostID;
 		this.blobURL = blobURL;
+		this.blobKey = blobKey;
 	}
 	
 	public String getText(String socialMedia) {
@@ -74,6 +77,10 @@ public class Post implements Serializable {
 			case "twitter" : return twitterText;
 			default : return "ERROR";//error
 		}
+	}
+	
+	public BlobKey getPicture(){
+		return blobKey;
 	}
 	
 	public void setIsEditing(boolean isEditing) {
@@ -93,6 +100,10 @@ public class Post implements Serializable {
 	
 	public Date getDate() {
 		return date;
+	}
+	
+	public String getBlobURL() {
+		return blobURL;
 	}
 
 	public boolean delete(AccessToken twitterAccessToken, Facebook facebook) throws IOException {

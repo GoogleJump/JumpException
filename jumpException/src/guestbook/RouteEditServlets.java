@@ -10,6 +10,7 @@ import javax.servlet.jsp.JspFactory;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
+import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.Blob;
 
 public class RouteEditServlets extends HttpServlet{
@@ -43,6 +44,15 @@ public class RouteEditServlets extends HttpServlet{
 	    req.getSession().removeAttribute("fbEditText");
 	    req.getSession().removeAttribute("twitterEditText");
 	    Blob blob = (Blob) req.getSession().getAttribute("curBlob");
+	    
+	    String date = req.getParameter("hiddenDate").toString();
+	    Post post = user.getNewsfeed().getPost(date);
+	    
+	    BlobKey key = post.getPicture();
+	    req.getSession().setAttribute("blobKey",key);
+	    req.getSession().setAttribute("editImageURL", post.getBlobURL());
+		req.getSession().setAttribute("deleteDate", date);
+	    
 	    if(blob != null && req.getParameter("myPhoto") != null) {
 //	    	user.postWithMedia(overallText, fbText, twitterText, req, resp);
 	    } else {
@@ -55,14 +65,14 @@ public class RouteEditServlets extends HttpServlet{
 	    }
 	    
 	    //Delete the previous post
-	    String date = req.getParameter("hiddenDate").toString();
-		Post post = user.getNewsfeed().getPost(date);
-		try {
-			user.deletePost(req, resp, post);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	   
+//		Post post = user.getNewsfeed().getPost(date);
+//		try {
+//			user.deletePost(req, resp, post);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	private String voidOverallChecking(Object textObj) {
@@ -104,6 +114,8 @@ public class RouteEditServlets extends HttpServlet{
 		String date = req.getParameter("hiddenDate").toString();
 		Post post = user.getNewsfeed().getPost(date);
 		post.setIsEditing(false);
+		req.getSession().removeAttribute("deleteDate");
+		req.getSession().setAttribute("user", user);
 		try {
 			resp.sendRedirect("/signedIn.jsp");
 		} catch (IOException e) {

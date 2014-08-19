@@ -52,6 +52,8 @@ public class PostFacebookFinal extends HttpServlet {
             session.removeAttribute("twitterText");
             response.getWriter().println("IN SESSION ATTRIBUTE NOT NULL");
             user.post(overallText, fbText, twitterText, request, response);
+			//response.sendRedirect("/signedIn.jsp");
+
         }
         else{
         	Post post = (Post)session.getAttribute("post");

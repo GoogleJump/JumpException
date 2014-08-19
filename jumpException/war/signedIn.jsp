@@ -1,10 +1,14 @@
+<%@page import="com.google.appengine.api.blobstore.BlobKey"%>
 <%String pageName= "signedIn";%>
 
 <%@ include file="./header.jsp" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="com.google.appengine.api.datastore.Blob" %>
-<%@ page import="com.google.api.services.plus.model.Person"%>
+
+<%@ page import="com.google.appengine.api.images.ImagesService"%>
+<%@ page import="com.google.appengine.api.images.ImagesServiceFactory" %>
+
 <%
 	ShubUser user = (ShubUser) session.getAttribute("user");
 	if(user == null) {
@@ -47,11 +51,19 @@
 	            <p></p>
 	            <p>Type and Share!</p>
 	            <p></p>
-	
+				
 				<form action="<%= blobstoreService.createUploadUrl("/UploadImageServlet") %>" enctype="multipart/form-data" method="post">
-					<img id="uploadPreview" style="width: 100px; height: 100px;" />
+					<!-- <img id="uploadPreview" style="width: 100px; height: 100px;" /> -->
+					<% if(request.getSession().getAttribute("blobKey") != null) {
+							BlobKey blobKey = (BlobKey) request.getSession().getAttribute("blobKey");
+							ImagesService imagesService = ImagesServiceFactory.getImagesService();
+					    	String blobURL = imagesService.getServingUrl(blobKey);
+						    pageContext.setAttribute("blobURL", blobURL);
+					%>
+						<input class="center" href="#" id="image" type="hidden" onchange="turnOffLink()" src="${fn:escapeXml(blobURL)}" />
+					<% } %>
 					<input class="center" id="uploadImage" type="file" name="myPhoto" />
-				<input name="Submit" type="submit" value="Sumbit">
+					<input name="Submit" type="submit" value="Submit">
 			</form>
 	            <form class="margin-bottom-8em"  action="/postServlet" method="post" onchange="overallTextOnChange()">
 	                <input type="hidden" name="blob" value="${fn:escapeXml(blob)}" />
@@ -94,14 +106,14 @@
 												pageContext.setAttribute("twitterProfileLink", facebookProfileLink);
 												pageContext.setAttribute("facebookUserName", facebookUserName);*/
 										%>
-											<form style="text-align:center;">
+										<!-- 	<form style="text-align:center;">
 												<input type="image" src="${fn:escapeXml(facebookImageUrl)}"></br></br>
 												<a class="theme-text" href="${fn:escapeXml(facebookProfileLink)}">${fn:escapeXml(facebookUserName)}</a>
-											</form>
+											</form> -->
 										<%
 											//} else {
 										%>
-												<p style="text-align:center;">See Settings to Connect</p>
+												<!-- <p style="text-align:center;">See Settings to Connect</p> -->
 										<%
 											//}
 										%>
@@ -127,7 +139,7 @@
 								/*			} else {
 												user.deleteTwitterAccessToken();	*/										
 										%>
-												<p style="text-align:center;">See Settings to Connect</p>
+											<!-- <p style="text-align:center;">See Settings to Connect</p> -->
 										<%
 										//	}
 										%>
@@ -138,6 +150,9 @@
 										<h3>Google+</h3>
 									</div>	
 									<% if(user.getGooglePlusUserId() != null) { 
+									%>
+										<%@ page import="com.google.api.services.plus.model.Person"%>
+									<%
 											Person profile = user.getGooglePlusProfile(user.getGooglePlusUserId(), request, response);	
 											String googlePlusImageUrl = profile.getImage().getUrl();
 											String googlePlusProfileLink = profile.getUrl();
@@ -168,20 +183,34 @@
 						pageContext.setAttribute("curDatePost", post.getText("date"));
 						pageContext.setAttribute("curFacebookPost", post.getText("facebook"));
 						pageContext.setAttribute("curTwitterPost", post.getText("twitter"));
+						
 				%>
 					<div class="transparent-container" >
 					<div class="theme container">
 					
+				
 				<%
-						if(post.getIsEditing()) {
+					
+					if(post.getIsEditing()) {
 							pageContext.setAttribute("editedFbPost", post.getText("facebook"));
 							pageContext.setAttribute("editedTwitterPost", post.getText("twitter"));
 							post.setIsEditing(false);
+							request.getSession().setAttribute("user",user);
 				%>
 							<form action="/routeEditServlets" method="post">
 								<input type="submit" name="action" value="Post" /> <br><br>
 								<input type="submit" name="action" value="Cancel" /> <br>
 								<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
+								${fn:escapeXml(curDatePost)}</br></br>
+								
+								<%
+									if(post.getBlobURL() != null) {
+										pageContext.setAttribute("blobURL", post.getBlobURL());
+								%>
+										<div class="" style="text-align:center;">
+											<input type="image" src="${fn:escapeXml(blobURL)}">
+										</div>
+								<% } %>
 					            <div class="col-xs-6 col-md-6 mg-btm-2 theme-container">
 					                   <!-- FACEBOOK -->
 
@@ -222,6 +251,14 @@
 									<input type="hidden" name="hiddenDate"value="${fn:escapeXml(curDatePost)}" />
 								</form>
 								${fn:escapeXml(curDatePost)}</br></br>
+								<%
+									if(post.getBlobURL() != null) {
+										pageContext.setAttribute("blobURL", post.getBlobURL());
+								%>
+										<div class="" style="text-align:center;">
+											<input type="image" src="${fn:escapeXml(blobURL)}">
+										</div>
+								<% } %>
 								<table width="100%">
 									<tr>
 										<td width="33%">
@@ -317,11 +354,16 @@ function PreviewImage() {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
     };
     
-    document.location.href="/UploadImageServlet";
 
 };
 
 
+</script>
+<script>
+	function turnOffLink()
+	{
+	    document.getElementById('image').disabled = true;
+	}
 </script>
 
 
