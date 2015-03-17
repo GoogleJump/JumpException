@@ -1,4 +1,4 @@
 JumpException
 =============
-NOTE: PLEASE LOOK AT MASTER2 BRANCH FOR MOST UP TO DATE PROJECT
+Note: Master should now be the correct version. If you have problems use master2
 Git users unite!
