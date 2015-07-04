@@ -1,4 +1,4 @@
 JumpException
 =============
-Note: Master should now be the correct version. If you have problems use master2
-Git users unite!
+SHUB - Social Hub
+SHUB is a website created to connect to multiple social media account and post / edit to each all at the same time!
